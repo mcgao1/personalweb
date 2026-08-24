@@ -9,7 +9,6 @@
 <body>
 
 <div class="sky"></div>
-<div class="flood-in" id="flood-in"></div>
 
 <div class="intro">
   <a class="back" href="index.html">&larr; Back to the planet</a>
@@ -132,10 +131,41 @@
     thicket.appendChild(leaf);
   }
 
-  // the green that flooded in from Master recedes to reveal the thicket
+  // a burst of leaves lands as the page opens, then the thicket
+  // (already in place underneath) fades and settles into view
+  const introBurstColors = ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'];
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight * 0.12;
+  for (let i = 0; i < 50; i++) {
+    const size = 14 + Math.random() * 24;
+    const el = document.createElement('div');
+    el.className = 'leaf-particle';
+    el.style.position = 'fixed';
+    el.style.zIndex = '100';
+    el.style.borderRadius = '0 100% 0 100%';
+    el.style.pointerEvents = 'none';
+    el.style.width = size + 'px';
+    el.style.height = (size * 0.55) + 'px';
+    el.style.left = cx + 'px';
+    el.style.top = cy + 'px';
+    el.style.background = introBurstColors[Math.floor(Math.random() * introBurstColors.length)];
+    document.body.appendChild(el);
+
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 180 + Math.random() * 620;
+    const dx = Math.cos(angle) * dist;
+    const dy = Math.abs(Math.sin(angle)) * dist * 0.7 + 40;
+    const rot = Math.random() * 720 - 360;
+    const anim = el.animate([
+      { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+      { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', opacity: 0 }
+    ], { duration: 750 + Math.random() * 400, easing: 'cubic-bezier(0.2,0.7,0.3,1)' });
+    anim.onfinish = function () { el.remove(); };
+  }
+
   setTimeout(function () {
-    document.getElementById('flood-in').classList.add('receded');
-  }, 270);
+    thicket.classList.add('revealed');
+  }, 150);
 </script>
 </body>
 </html>

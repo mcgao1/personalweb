@@ -246,20 +246,25 @@ body.stage-grown .replay-intro {
   color: rgba(238, 242, 248, 0.8);
 }
 
-/* ---------- Flood: the green wipe when leaving for Master ---------- */
+/* ---------- Leaf particles: hover leak + click burst on Master ---------- */
 
-.flood {
+.leaf-particle {
   position: fixed;
-  inset: 0;
   z-index: 100;
-  background: #3fae5c;
-  clip-path: circle(0% at var(--fx, 90%) var(--fy, 8%));
-  transition: clip-path 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 100% 0 100%;
   pointer-events: none;
+  will-change: transform, opacity;
 }
 
-.flood.active {
-  clip-path: circle(150% at var(--fx, 90%) var(--fy, 8%));
+.leaf-particle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  width: 84%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%) rotate(-3deg);
 }
 
 /* ---------- Hint ---------- */

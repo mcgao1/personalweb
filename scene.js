@@ -12,7 +12,6 @@
   const tooltip = document.getElementById('tooltip');
   const replayBtn = document.getElementById('replay-intro');
   const tagMaster = document.getElementById('tag-master');
-  const flood = document.getElementById('flood');
 
   let visitorName = '';
   let greetLines = [];
@@ -132,24 +131,77 @@
     location.reload();
   });
 
-  // ---------- Green flood: Master floods the screen, then carries
-  // through to the thicket page it lands on ----------
+  // ---------- Leaves: Master leaks leaves on hover, bursts into a
+  // pile of them on click, then carries through to the thicket page ----------
+  const LEAF_COLORS = ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'];
+
+  function spawnLeaf(x, y, size) {
+    const el = document.createElement('div');
+    el.className = 'leaf-particle';
+    el.style.width = size + 'px';
+    el.style.height = (size * 0.55) + 'px';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.background = LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)];
+    document.body.appendChild(el);
+    return el;
+  }
+
+  let leakTimer = null;
+
+  function startLeak() {
+    if (!body.classList.contains('stage-grown')) return;
+    if (leakTimer) return;
+    leakTimer = setInterval(function () {
+      const rect = tagMaster.getBoundingClientRect();
+      const x = rect.left + rect.width * Math.random();
+      const y = rect.top + rect.height * Math.random();
+      const el = spawnLeaf(x, y, 12 + Math.random() * 12);
+      const dx = Math.random() * 46 - 23;
+      const dy = -(36 + Math.random() * 46);
+      const rot = Math.random() * 280 - 140;
+      const anim = el.animate([
+        { transform: 'translate(0,0) rotate(0deg)', opacity: 0.9 },
+        { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', opacity: 0 }
+      ], { duration: 850, easing: 'ease-out' });
+      anim.onfinish = function () { el.remove(); };
+    }, 150);
+  }
+
+  function stopLeak() {
+    clearInterval(leakTimer);
+    leakTimer = null;
+  }
+
+  tagMaster.addEventListener('mouseenter', startLeak);
+  tagMaster.addEventListener('mouseleave', stopLeak);
+
   tagMaster.addEventListener('click', function (e) {
     e.preventDefault();
+    stopLeak();
     const dest = tagMaster.getAttribute('href');
     const rect = tagMaster.getBoundingClientRect();
-    const fx = ((rect.left + rect.width / 2) / window.innerWidth * 100) + '%';
-    const fy = ((rect.top + rect.height / 2) / window.innerHeight * 100) + '%';
-    flood.style.setProperty('--fx', fx);
-    flood.style.setProperty('--fy', fy);
-    // a short delay (not requestAnimationFrame, which some contexts
-    // throttle) so the browser paints the 0% state before animating
-    setTimeout(function () {
-      flood.classList.add('active');
-    }, 20);
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    for (let i = 0; i < 44; i++) {
+      const el = spawnLeaf(cx, cy, 14 + Math.random() * 22);
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 220 + Math.random() * 560;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist - 120;
+      const rot = Math.random() * 720 - 360;
+      const scale = 0.6 + Math.random() * 0.9;
+      const anim = el.animate([
+        { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
+        { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) scale(' + scale + ')', opacity: 0 }
+      ], { duration: 700 + Math.random() * 320, easing: 'cubic-bezier(0.2,0.7,0.3,1)' });
+      anim.onfinish = function () { el.remove(); };
+    }
+
     setTimeout(function () {
       window.location.href = dest;
-    }, 600);
+    }, 620);
   });
 
   // ---------- Space / Enter mirrors the generic advance action ----------

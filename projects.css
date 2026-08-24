@@ -23,20 +23,17 @@ body {
   z-index: -1;
 }
 
-/* ---------- Arrival flood: recedes to reveal the thicket ---------- */
+/* ---------- Leaf burst particles (arrival, matches scene.js's Master burst) ---------- */
 
-.flood-in {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: #3fae5c;
-  clip-path: circle(150% at 50% 10%);
-  transition: clip-path 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
-}
-
-.flood-in.receded {
-  clip-path: circle(0% at 50% 10%);
+.leaf-particle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  width: 84%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%) rotate(-3deg);
 }
 
 /* ---------- Intro ---------- */
@@ -76,6 +73,14 @@ body {
   margin: 20px auto 0;
   min-height: 1300px;
   padding: 0 20px;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.thicket.revealed {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* ---------- Sign ---------- */
