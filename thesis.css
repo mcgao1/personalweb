@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
+
+:root {
+  --paper: #d6c49d;
+  --panel: #f5eddb;
+  --ink: #221c14;
+  --rose: #b8505c;
+  --rose-soft: #ddb2b0;
+  --olive: #524d28;
+  --olive-soft: #c1bc8c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(34,28,20,0.08), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(34,28,20,0.08), transparent),
+    radial-gradient(1px 1px at 40% 80%, rgba(34,28,20,0.06), transparent);
+  color: var(--ink);
+  font-family: 'Source Serif 4', Georgia, serif;
+  line-height: 1.7;
+}
+
+/* the one accent hand-drawn face, used only for the title and figure labels */
+.hand {
+  font-family: 'Kalam', cursive;
+}
+
+.page {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 56px 24px 120px;
+  position: relative;
+}
+
+.col {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.back {
+  display: inline-block;
+  color: var(--ink);
+  opacity: 0.6;
+  text-decoration: none;
+  font-family: 'Source Serif 4', serif;
+  font-size: 14px;
+  margin-bottom: 36px;
+}
+.back:hover { opacity: 1; }
+
+/* ---------- Header ---------- */
+
+.eyebrow {
+  font-family: 'Source Serif 4', serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--rose);
+  border: 2px solid var(--rose);
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 3px;
+  transform: rotate(-2deg);
+  margin-bottom: 18px;
+}
+
+h1.title {
+  font-family: 'Kalam', cursive;
+  font-weight: 700;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.25;
+  margin-bottom: 20px;
+}
+
+.tagline {
+  font-size: 19px;
+  font-style: italic;
+  color: #3a3323;
+  border-left: 3px solid var(--olive);
+  padding-left: 16px;
+  margin-bottom: 20px;
+}
+
+.role-line {
+  font-size: 14px;
+  color: var(--olive);
+}
+
+/* ---------- Squiggle divider ---------- */
+
+.squiggle {
+  width: 100%;
+  height: 14px;
+  margin: 44px 0 34px;
+  background-repeat: repeat-x;
+  background-size: 24px 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='14' viewBox='0 0 24 14'%3E%3Cpath d='M0 7 Q6 0 12 7 T24 7' stroke='%23221c14' stroke-width='1.5' fill='none' opacity='0.3'/%3E%3C/svg%3E");
+}
+
+/* ---------- Body copy ---------- */
+
+article h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 8px 0 14px;
+}
+
+article p {
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+
+article ol {
+  padding-left: 22px;
+  margin-bottom: 14px;
+}
+
+article ol li {
+  margin-bottom: 10px;
+}
+
+.tech-line {
+  font-size: 14.5px;
+  color: #3a3323;
+  background: var(--olive-soft);
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+/* ---------- Pull stat ---------- */
+
+.pull-stat {
+  margin: 40px 0;
+  padding: 22px 24px;
+  background: var(--rose-soft);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  transform: rotate(-0.6deg);
+}
+
+.pull-stat .big {
+  font-family: 'Kalam', cursive;
+  font-weight: 700;
+  font-size: 28px;
+  display: block;
+}
+
+.pull-stat .small {
+  font-size: 14.5px;
+  color: #3a3323;
+}
+
+/* ---------- Side-rail figures ---------- */
+/* Wide screens: figures break out of the text column into the margins,
+   each one sitting beside the paragraph it belongs to. Charts get a
+   framed "clipped in" look; footage plays borderless, just clip + caption. */
+
+.side-fig {
+  width: 280px;
+  margin: 10px 0 28px;
+}
+
+.side-fig.chart {
+  background: var(--panel);
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 6px 6px 0 rgba(34,28,20,0.15);
+  padding: 8px;
+}
+
+.side-fig.chart img {
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(34,28,20,0.15);
+}
+
+.side-fig.video {
+  width: 330px;
+}
+
+.side-fig.video video {
+  width: 100%;
+  display: block;
+  border-radius: 6px;
+}
+
+.side-fig figcaption {
+  font-family: 'Kalam', cursive;
+  font-size: 13px;
+  color: var(--ink);
+  padding: 8px 4px 2px;
+}
+
+@media (min-width: 1280px) {
+  .side-fig {
+    margin-top: 4px;
+  }
+  .side-fig:not(.left) {
+    float: right;
+    clear: right;
+    transform: rotate(0.8deg);
+  }
+  .side-fig.left {
+    float: left;
+    clear: left;
+    transform: rotate(-0.8deg);
+  }
+}
+
+.note {
+  clear: both;
+  margin-top: 20px;
+  font-family: 'Kalam', cursive;
+  font-size: 14px;
+  color: #5c5638;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

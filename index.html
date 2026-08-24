@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello, I'm here</title>
+<link rel="stylesheet" href="scene.css">
+</head>
+<body class="stage-wide">
+
+<div class="sky" id="sky"></div>
+
+<div class="universe" id="universe">
+  <svg id="scene-svg" viewBox="0 0 400 400" width="400" height="400">
+
+    <!-- planet -->
+    <g id="planet">
+      <circle cx="200" cy="330" r="150" fill="#123a52"/>
+      <ellipse cx="200" cy="330" rx="150" ry="150" fill="url(#planetShade)"/>
+      <ellipse cx="150" cy="270" rx="30" ry="10" fill="#0f2f42" opacity="0.6"/>
+      <ellipse cx="260" cy="300" rx="22" ry="8" fill="#0f2f42" opacity="0.5"/>
+    </g>
+
+    <!-- bamboo chair -->
+    <g id="chair" stroke="#a9773f" stroke-width="4" stroke-linecap="round" fill="none">
+      <line x1="150" y1="270" x2="150" y2="210"/>
+      <line x1="250" y1="270" x2="250" y2="210"/>
+      <line x1="150" y1="240" x2="250" y2="240"/>
+      <line x1="150" y1="270" x2="180" y2="270"/>
+      <line x1="220" y1="270" x2="250" y2="270"/>
+      <path d="M150 210 Q145 190 165 185" />
+      <path d="M250 210 Q255 190 235 185" />
+    </g>
+
+    <!-- figure -->
+    <g id="figure">
+      <!-- body -->
+      <path d="M165 260 Q160 210 200 205 Q240 210 235 260 Z" fill="#1f7fd6"/>
+      <!-- necklace (decorative, no interaction yet) -->
+      <circle cx="200" cy="248" r="5" fill="#ffd76a" id="necklace"/>
+      <!-- head -->
+      <path d="M160 165
+               C158 130, 175 95, 200 92
+               C228 90, 248 118, 246 150
+               C248 165, 240 178, 228 186
+               C222 196, 205 202, 195 200
+               C178 199, 164 190, 160 175
+               Z" fill="#2E90E0" stroke="#123a52" stroke-width="2"/>
+
+      <!-- eyes closed -->
+      <g id="eyes-closed">
+        <path d="M177 152 Q184 158 191 152" stroke="#123a52" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M207 150 Q215 156 223 150" stroke="#123a52" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <!-- eyes open -->
+      <g id="eyes-open" opacity="0">
+        <circle cx="184" cy="153" r="4" fill="#0c2230"/>
+        <circle cx="215" cy="151" r="4" fill="#0c2230"/>
+      </g>
+
+      <!-- brows -->
+      <path d="M172 138 Q184 130 196 137" stroke="#123a52" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+      <path d="M204 135 Q216 127 228 133" stroke="#123a52" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+
+      <!-- mouth -->
+      <path d="M186 176 Q200 182 214 175" stroke="#123a52" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+      <!-- rising arrows: shown while asleep, above the head -->
+      <g id="arrows-rising">
+        <path class="rising-arrow a1" d="M172,80 L178,70 L184,80" stroke="#dfe8f5" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="rising-arrow a2" d="M194,63 L200,53 L206,63" stroke="#dfe8f5" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="rising-arrow a3" d="M216,78 L222,68 L228,78" stroke="#dfe8f5" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+
+      <!-- twinkling stars: shown once awake, replaces the rising arrows -->
+      <g id="stars-twinkle">
+        <g class="twinkle-star s1">
+          <line x1="178" y1="66" x2="178" y2="78" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="172" y1="72" x2="184" y2="72" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g class="twinkle-star s2">
+          <line x1="200" y1="50" x2="200" y2="60" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="195" y1="55" x2="205" y2="55" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g class="twinkle-star s3">
+          <line x1="222" y1="64" x2="222" y2="76" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
+          <line x1="216" y1="70" x2="228" y2="70" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
+        </g>
+      </g>
+
+      <!-- grass sprouts (hidden until grown) -->
+      <g id="grass" opacity="0">
+        <path id="blade-1" d="M188 95 Q182 60 170 30" stroke="#8a8f86" stroke-width="4" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+        <path id="blade-2" d="M212 93 Q222 55 236 24" stroke="#3fae5c" stroke-width="4" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      </g>
+    </g>
+
+    <defs>
+      <radialGradient id="planetShade" cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="#2f6f8f" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#0b2333" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <div class="tag tag-bachelor" id="tag-bachelor">Bachelor</div>
+  <a class="tag tag-master" id="tag-master" href="projects.html">Master</a>
+</div>
+
+<button class="replay-intro" id="replay-intro" type="button">&#8634; replay intro</button>
+
+<div class="flood" id="flood"></div>
+
+<div class="hint" id="hint"></div>
+<div class="tooltip" id="tooltip"></div>
+
+<div class="dialog" id="dialog">
+  <div class="dialog-lines" id="dialog-lines"></div>
+
+  <form class="name-form" id="name-form">
+    <label for="name-input">What should I call you?</label>
+    <input id="name-input" type="text" maxlength="20" autocomplete="off" placeholder="your name" required>
+    <button type="submit">→</button>
+  </form>
+
+  <button class="ok-btn" id="ok-btn">OK</button>
+</div>
+
+<script src="scene.js"></script>
+</body>
+</html>

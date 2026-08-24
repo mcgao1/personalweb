@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master · Portfolio</title>
+<link rel="stylesheet" href="projects.css">
+</head>
+<body>
+
+<div class="sky"></div>
+<div class="flood-in" id="flood-in"></div>
+
+<div class="intro">
+  <a class="back" href="index.html">&larr; Back to the planet</a>
+  <h1>Six signs, one dense thicket</h1>
+  <p class="lead">Not every idea makes it out of the leaves. These six did. Click a sign to see the whole thing.</p>
+</div>
+
+<div class="thicket" id="thicket"></div>
+
+<script src="projects-data.js"></script>
+<script>
+  // Each project gets its own visual identity: a small preview of the
+  // full page's palette and display font, so the sign out here already
+  // hints at what's behind it.
+  const THEMES = {
+    thesis: {
+      page: 'project-thesis.html', rotate: -6,
+      bg: '#d9c9a3', ink: '#221c14', accent: '#b8505c',
+      font: "'Kalam', cursive", fontUrl: 'Kalam:wght@700'
+    },
+    greenscreen: {
+      page: 'project-greenscreen.html', rotate: 4,
+      bg: '#ffde00', ink: '#0d0d0a', accent: '#c8102e',
+      font: "'Anton', sans-serif", fontUrl: 'Anton'
+    },
+    sdg: {
+      page: 'project-sdg.html', rotate: -3,
+      bg: '#fdf3da', ink: '#171512', accent: '#e2362b',
+      font: "'Chewy', cursive", fontUrl: 'Chewy'
+    },
+    greenspaces: {
+      page: 'project-greenspaces.html', rotate: 5,
+      bg: '#0f380f', ink: '#9bbc0f', accent: '#9bbc0f',
+      font: "'Press Start 2P', cursive", fontUrl: 'Press+Start+2P'
+    },
+    policybrief: {
+      page: 'project-policybrief.html', rotate: -5,
+      bg: '#f3ece0', ink: '#182640', accent: '#3ea8dc',
+      font: "'Fredoka', sans-serif", fontUrl: 'Fredoka:wght@600'
+    },
+    'siu-plastics': {
+      page: 'project-siu-plastics.html', rotate: 3,
+      bg: 'linear-gradient(160deg,#bfe8f5,#d8f5e3)', ink: '#1c3b46', accent: '#0d7ea6',
+      font: "'Comfortaa', cursive", fontUrl: 'Comfortaa:wght@700'
+    }
+  };
+
+  // pull in only the display fonts each mini-sign actually needs
+  const fontLink = document.createElement('link');
+  fontLink.rel = 'stylesheet';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=' +
+    Object.values(THEMES).map(function (t) { return t.fontUrl; }).join('&family=') +
+    '&display=swap';
+  document.head.appendChild(fontLink);
+
+  // hand-placed positions so the six signs read clearly and don't
+  // collide, scattered rather than gridded
+  const LAYOUT = [
+    { top: '4%',  left: '6%'  },
+    { top: '2%',  left: '56%' },
+    { top: '30%', left: '30%' },
+    { top: '34%', left: '72%' },
+    { top: '62%', left: '4%'  },
+    { top: '66%', left: '52%' }
+  ];
+
+  const thicket = document.getElementById('thicket');
+
+  window.PROJECTS.forEach(function (p, i) {
+    const theme = THEMES[p.id];
+    const pos = LAYOUT[i];
+
+    const sign = document.createElement('a');
+    sign.className = 'sign';
+    sign.href = theme.page;
+    sign.style.top = pos.top;
+    sign.style.left = pos.left;
+    sign.style.setProperty('--rotate', theme.rotate + 'deg');
+    sign.style.setProperty('--bg', theme.bg);
+    sign.style.setProperty('--ink', theme.ink);
+    sign.style.setProperty('--accent', theme.accent);
+    sign.style.setProperty('--font', theme.font);
+    sign.innerHTML =
+      '<span class="sign-index">0' + (i + 1) + '</span>' +
+      '<span class="sign-title">' + p.title + '</span>' +
+      '<span class="sign-tag">' + p.tagline + '</span>';
+    thicket.appendChild(sign);
+
+    // a couple of leaves lean over each sign's corner, like it's
+    // half-tucked into the bush
+    [0, 1].forEach(function (j) {
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf leaf-on-sign';
+      leaf.style.top = 'calc(' + pos.top + ' - ' + (10 + j * 14) + 'px)';
+      leaf.style.left = 'calc(' + pos.left + ' + ' + (10 + j * 40) + 'px)';
+      leaf.style.setProperty('--lrot', (Math.random() * 60 - 30) + 'deg');
+      leaf.style.setProperty('--lsize', (46 + Math.random() * 20) + 'px');
+      leaf.style.setProperty('--lcolor', ['#2d5016', '#3e7b27', '#4f9d3a'][j % 3]);
+      thicket.appendChild(leaf);
+    });
+  });
+
+  // extra bare leaf clusters with nothing behind them: the ideas that
+  // never got built, filling out the rest of the thicket densely so
+  // it reads as undergrowth, not empty space with six signs in it
+  const CLUSTER_COUNT = 90;
+  const colors = ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'];
+  for (let i = 0; i < CLUSTER_COUNT; i++) {
+    const top = Math.random() * 96 + '%';
+    const left = Math.random() * 97 + '%';
+    const size = 24 + Math.random() * 56;
+    const isBack = Math.random() < 0.45; // a back layer, dimmer and softer, for depth
+    const leaf = document.createElement('div');
+    leaf.className = 'leaf leaf-ambient' + (isBack ? ' leaf-back' : '');
+    leaf.style.top = top;
+    leaf.style.left = left;
+    leaf.style.setProperty('--lrot', (Math.random() * 360) + 'deg');
+    leaf.style.setProperty('--lsize', size + 'px');
+    leaf.style.setProperty('--lcolor', colors[Math.floor(Math.random() * colors.length)]);
+    thicket.appendChild(leaf);
+  }
+
+  // the green that flooded in from Master recedes to reveal the thicket
+  setTimeout(function () {
+    document.getElementById('flood-in').classList.add('receded');
+  }, 270);
+</script>
+</body>
+</html>

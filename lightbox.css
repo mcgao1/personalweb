@@ -1,0 +1,113 @@
+/* Universal image lightbox: click any .lightbox-img to pop it open,
+   zoom with the buttons or the scroll wheel, drag to pan once zoomed,
+   click it again (or the backdrop / Esc / close button) to close.
+   Neutral styling on purpose so it sits consistently on top of every
+   project page's own theme. */
+
+img.lightbox-img {
+  cursor: zoom-in;
+}
+
+.lb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  padding: 90px 20px 40px;
+  overflow: auto;
+  background: rgba(10, 10, 12, 0.88);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.lb-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+}
+
+.lb-viewport {
+  text-align: center;
+}
+
+.lb-pop {
+  display: inline-block;
+  max-width: min(720px, 90vw);
+  transform: scale(0.85) translateY(24px);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1.2), opacity 0.3s ease;
+}
+
+.lb-overlay.open .lb-pop {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.lb-full {
+  display: block;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  cursor: grab;
+  transition: width 0.15s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+  touch-action: none;
+}
+
+.lb-full.grabbing {
+  cursor: grabbing;
+  transition: none;
+}
+
+.lb-toolbar {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(20, 20, 24, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.lb-zoom-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #111;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lb-close {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(20, 20, 24, 0.85);
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+body.lb-locked {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-overlay, .lb-pop, .lb-full { transition: none !important; }
+}

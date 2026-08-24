@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investment Feasibility of BIPV Across High-Rise Clusters in Kunming</title>
+<link rel="stylesheet" href="thesis.css">
+<link rel="stylesheet" href="lightbox.css">
+</head>
+<body>
+
+<div class="page">
+  <div class="col">
+    <a class="back" href="projects.html">&larr; all projects</a>
+
+    <div class="eyebrow">MASTER'S THESIS</div>
+    <h1 class="title">Investment Feasibility of BIPV Across High-Rise Clusters in Kunming</h1>
+    <p class="tagline">Does building-integrated solar actually pay off? It depends on one variable most people ignore.</p>
+    <p class="role-line">Project designer &amp; lead researcher (independent) · Dec 2025 – Jul 2026</p>
+
+    <div class="squiggle"></div>
+  </div>
+
+  <figure class="side-fig video left">
+    <video src="../项目4_硕士论文/建模gif图/wanda.mp4" muted loop autoplay playsinline preload="none"></video>
+    <figcaption>Radiation simulation · Wanda cluster</figcaption>
+  </figure>
+
+  <div class="col">
+    <article>
+      <h2>Background</h2>
+      <p>This was my master's thesis. Building-integrated photovoltaics (BIPV) is often pitched as the answer for decarbonising dense cities, but nobody had systematically quantified what happens to the investment case when tall buildings sit close together and shade each other. That's exactly the situation in Kunming's high-rise office clusters.</p>
+
+      <h2>What I did</h2>
+      <ol>
+        <li>Modelled four real high-rise clusters in central Kunming (including Hanglong, Qicai, Tongde and Wanda) in 3D and ran solar-radiation simulations to find out how much light each building actually receives once mutual shading from its neighbours is accounted for, not just the light it would get standing alone.</li>
+      </ol>
+    </article>
+  </div>
+
+  <figure class="side-fig video">
+    <video src="../项目4_硕士论文/建模gif图/hanglong.mp4" muted loop autoplay playsinline preload="none"></video>
+    <figcaption>Radiation simulation · Hanglong cluster</figcaption>
+  </figure>
+
+  <div class="col">
+    <article>
+      <ol start="2">
+        <li>Built a financial model (DCF/NPV) comparing two deployment strategies (covering every available roof surface versus only the best-lit sections) across 24+ urban-form scenarios, so the numbers reflect real cluster geometry rather than a single idealised building.</li>
+      </ol>
+    </article>
+  </div>
+
+  <figure class="side-fig video left">
+    <video src="../项目4_硕士论文/建模gif图/tongde.mp4" muted loop autoplay playsinline preload="none"></video>
+    <figcaption>Radiation simulation · Tongde cluster</figcaption>
+  </figure>
+
+  <div class="col">
+    <article>
+      <ol start="3">
+        <li>Ran a Monte Carlo simulation to quantify investment risk, plus a subsidy-threshold sensitivity analysis to find the tipping point where each scenario turns profitable.</li>
+      </ol>
+
+      <div class="pull-stat">
+        <span class="big hand">The "sweet spot" flips it.</span>
+        <span class="small">Only deploying panels where they actually pay off turns most loss-making scenarios into profitable ones, and roof-utilisation ends up mattering more than which PV panels get chosen.</span>
+      </div>
+
+      <h2>Result</h2>
+      <p>Treating the radiation cutoff itself as something to optimise, deploying panels only where they actually pay off, flips most scenarios from a loss into a profit. The analysis also shows that roof-utilisation is a bigger driver of investment risk than the choice of PV technology itself, meaning decisions made at the architectural-design stage matter more than which panels get installed later.</p>
+    </article>
+  </div>
+
+  <figure class="side-fig video">
+    <video src="../项目4_硕士论文/建模gif图/qicai.mp4" muted loop autoplay playsinline preload="none"></video>
+    <figcaption>Radiation simulation · Qicai cluster</figcaption>
+  </figure>
+
+  <figure class="side-fig chart left">
+    <img class="lightbox-img" src="../项目4_硕士论文/论文的图/Fig_T1_SweetSpot_GradientDot_2x2_Darker.png" alt="The sweet-spot deployment strategy compared across scenarios" loading="lazy">
+    <figcaption>The "sweet-spot" strategy compared across four clusters</figcaption>
+  </figure>
+
+  <div class="col">
+    <article>
+      <p>In practical terms, this means BIPV investment decisions can't be separated from the massing decisions made earlier in the design process: how tall, how close, how oriented. A financially attractive design in isolation can become a losing one once its neighbours are added to the model, and vice versa. That's the part urban planning and green-building policy tend to overlook when they treat solar potential building-by-building instead of cluster-by-cluster.</p>
+    </article>
+  </div>
+
+  <figure class="side-fig chart">
+    <img class="lightbox-img" src="../项目4_硕士论文/论文的图/Fig_NPV_per_m2_TwoTone.png" alt="Net present value per m² under each strategy" loading="lazy">
+    <figcaption>Net present value per m² under each strategy</figcaption>
+  </figure>
+
+  <div class="col">
+    <article>
+      <p>The subsidy-sensitivity analysis shows how close some scenarios sit to the break-even line. A small shift in incentive policy is enough to flip several borderline cases from viable to not, which is exactly the kind of threshold effect that's easy to miss when it's only ever assessed one building at a time.</p>
+
+      <h2>Methods &amp; tools</h2>
+      <p class="tech-line">Rhino / Grasshopper / Ladybug &middot; DCF/NPV modelling &middot; Monte Carlo simulation &middot; R</p>
+    </article>
+  </div>
+
+  <figure class="side-fig chart left">
+    <img class="lightbox-img" src="../项目4_硕士论文/论文的图/Fig_Subsidy_Sensitivity_Pro.png" alt="Subsidy-threshold sensitivity analysis" loading="lazy">
+    <figcaption>Subsidy-threshold sensitivity analysis</figcaption>
+  </figure>
+
+</div>
+
+<script src="lightbox.js"></script>
+</body>
+</html>
