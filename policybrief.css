@@ -192,9 +192,10 @@ article ol li {
    column at a size that reads clearly. */
 .side-fig.cutout {
   float: none;
-  width: 100%;
-  max-width: 640px;
-  margin: 20px auto 32px;
+  width: min(92vw, 860px);
+  max-width: none;
+  margin: 24px 0 38px 50%;
+  transform: translateX(-50%);
 }
 
 .side-fig.cutout img {
@@ -216,6 +217,14 @@ article ol li {
   .side-fig.left:not(.cutout) {
     float: left;
     clear: left;
+  }
+}
+
+@media (max-width: 720px) {
+  .side-fig.cutout {
+    width: 100%;
+    margin: 20px auto 32px;
+    transform: none;
   }
 }
 

@@ -51,8 +51,15 @@
 
   document.addEventListener('click', function (e) {
     const target = e.target.closest('img.lightbox-img');
-    if (!target) return;
-    openWith(target.currentSrc || target.src, target.alt);
+    if (target) { openWith(target.currentSrc || target.src, target.alt); return; }
+
+    // for triggers that shouldn't ever have the full-size image sitting
+    // in the page (e.g. a poster thumbnail): the src only gets used,
+    // never loaded into the DOM, until this click actually happens
+    const trigger = e.target.closest('[data-lightbox-src]');
+    if (trigger) {
+      openWith(trigger.getAttribute('data-lightbox-src'), trigger.getAttribute('data-lightbox-alt') || '');
+    }
   });
 
   closeBtn.addEventListener('click', close);

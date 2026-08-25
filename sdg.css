@@ -156,14 +156,24 @@ article ol li {
 
 .poster-thumb {
   margin: 30px 0;
-  max-width: 260px;
+  width: 220px;
 }
 
-.poster-thumb img {
-  width: 100%;
+/* a fixed-size background-image thumbnail, on purpose: the full-size
+   poster only ever gets loaded into the page when this is clicked and
+   the lightbox opens it, so there's nothing here that could ever
+   render at full size on its own */
+.poster-thumb-visual {
   display: block;
+  width: 220px;
+  height: 300px;
+  padding: 0;
   border-radius: 14px;
   border: 2px solid var(--black);
+  background-size: cover;
+  background-position: top center;
+  background-color: var(--paper);
+  cursor: pointer;
 }
 
 .poster-thumb figcaption {
