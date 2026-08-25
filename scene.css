@@ -242,6 +242,68 @@ body.stage-grown .replay-intro {
   pointer-events: auto;
 }
 
+/* ---------- Musing bubble: random little thoughts ---------- */
+
+.musing {
+  position: fixed;
+  top: 10%;
+  left: 6%;
+  z-index: 12;
+  max-width: 250px;
+  padding: 14px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(238, 242, 248, 0.8);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13.5px;
+  font-style: italic;
+  line-height: 1.55;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+body.stage-grown .musing {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.musing::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 22px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.musing-text {
+  display: inline-block;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.musing-text.fading {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .musing {
+    top: auto;
+    bottom: 70px;
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+}
+
 .replay-intro:hover {
   color: rgba(238, 242, 248, 0.8);
 }

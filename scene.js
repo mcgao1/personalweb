@@ -12,6 +12,8 @@
   const tooltip = document.getElementById('tooltip');
   const replayBtn = document.getElementById('replay-intro');
   const tagMaster = document.getElementById('tag-master');
+  const musing = document.getElementById('musing');
+  const musingText = document.getElementById('musing-text');
 
   let visitorName = '';
   let greetLines = [];
@@ -82,7 +84,7 @@
   // Name input -> build the greeting, then wait for "advance"
   nameForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    visitorName = nameInput.value.trim() || 'friend';
+    visitorName = nameInput.value.trim() || 'X';
     localStorage.setItem('visitorName_v2', visitorName);
 
     greetLines = [
@@ -246,5 +248,42 @@
     t.el.addEventListener('mouseleave', function () {
       tooltip.classList.remove('visible');
     });
+  });
+
+  // ---------- Musing bubble: little unprompted thoughts ----------
+  const MUSINGS = [
+    'Robert once said: ambition is good, but be real, be independent, be valuable.',
+    'Kunming has so much potential. It just needs better policy and economic support.',
+    'Thoughts are what the fourth space is made of.',
+    'Missing Doudou so much right now.'
+  ];
+
+  let musingIndex = Math.floor(Math.random() * MUSINGS.length);
+  let musingTimer = null;
+
+  function showMusing(i) {
+    musingText.classList.add('fading');
+    setTimeout(function () {
+      musingText.textContent = MUSINGS[i];
+      musingText.classList.remove('fading');
+    }, 350);
+  }
+
+  function nextMusing() {
+    musingIndex = (musingIndex + 1) % MUSINGS.length;
+    showMusing(musingIndex);
+  }
+
+  function restartMusingTimer() {
+    clearInterval(musingTimer);
+    musingTimer = setInterval(nextMusing, 8000);
+  }
+
+  showMusing(musingIndex);
+  restartMusingTimer();
+
+  musing.addEventListener('click', function () {
+    nextMusing();
+    restartMusingTimer();
   });
 })();
