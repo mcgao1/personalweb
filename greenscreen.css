@@ -229,35 +229,48 @@ article ol li {
   }
 }
 
-/* ---------- Poster thumbnail (opens in the shared lightbox) ---------- */
+/* ---------- Poster button (icon + label, opens the shared lightbox) ----------
+   Deliberately NOT a preview of the poster itself: an icon-only
+   trigger reads unambiguously as "click me", where even a small
+   preview of the real content can look like it's already open. */
 
-.poster-thumb {
+.poster-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 200px;
   margin: 30px 0;
-  width: 230px;
-}
-
-/* a fixed-size background-image thumbnail, on purpose: the full-size
-   poster only ever gets loaded into the page when this is clicked and
-   the lightbox opens it, so there's nothing here that could ever
-   render at full size on its own */
-.poster-thumb-visual {
-  display: block;
-  width: 230px;
-  height: 300px;
-  padding: 0;
-  border: 4px solid var(--black);
-  box-shadow: 6px 6px 0 var(--red);
-  background-size: cover;
-  background-position: top center;
-  background-color: var(--paper);
+  padding: 26px 16px 20px;
+  background: var(--black);
+  color: var(--yellow);
+  border: 3px solid var(--black);
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 6px 6px 0 var(--red);
 }
 
-.poster-thumb figcaption {
+.poster-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--red);
+}
+
+.poster-btn-icon {
+  font-size: 40px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.poster-btn-label {
   font-family: 'Anton', sans-serif;
-  font-size: 13px;
-  text-transform: uppercase;
-  margin-top: 10px;
+  font-size: 17px;
+  letter-spacing: 0.03em;
+}
+
+.poster-btn-sub {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  opacity: 0.75;
 }
 
 @media (prefers-reduced-motion: reduce) {
