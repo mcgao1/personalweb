@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --paper: #f7f2e6;
+  --paper-deep: #efe6d1;
+  --ink: #24291f;
+  --leaf: #6a9b4f;
+  --leaf-deep: #4c7536;
+  --amber: #d98c3d;
+  --sky: #6ea8c9;
+  --muted: #726d5c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.75;
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 100px;
+}
+
+.back {
+  display: inline-block;
+  color: var(--ink);
+  opacity: 0.55;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 28px 0 0;
+}
+.back:hover { opacity: 1; }
+
+/* ---------- Header with One Health venn mark ---------- */
+
+.header {
+  padding: 10px 0 30px;
+  text-align: center;
+}
+
+.venn {
+  width: 96px;
+  height: 76px;
+  margin: 20px auto 6px;
+}
+
+.venn circle {
+  transform-origin: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
+}
+
+h1.title {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: clamp(28px, 5.5vw, 44px);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.lead {
+  max-width: 46ch;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 15.5px;
+}
+
+/* ---------- Section ---------- */
+
+section.club-section {
+  padding: 54px 0;
+  border-top: 1px solid rgba(36, 41, 31, 0.12);
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--leaf-deep);
+  margin-bottom: 12px;
+}
+
+.section-tag .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--leaf);
+}
+
+.club-section h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: clamp(22px, 4vw, 30px);
+  margin-bottom: 16px;
+}
+
+.club-section p {
+  font-size: 15.5px;
+  color: rgba(36, 41, 31, 0.9);
+  margin-bottom: 14px;
+}
+
+.club-section ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+}
+.club-section li {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+/* ---------- Photo gallery ---------- */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.gallery img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: zoom-in;
+  display: block;
+}
+
+.gallery .wide {
+  grid-column: span 2;
+  aspect-ratio: auto;
+}
+
+@media (max-width: 560px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .gallery .wide { grid-column: span 2; }
+}
+
+figure.single-photo {
+  margin: 20px 0;
+  max-width: 420px;
+}
+
+figure.single-photo img {
+  width: 100%;
+  border-radius: 12px;
+  cursor: zoom-in;
+  display: block;
+}
+
+figure.single-photo figcaption {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ---------- Certificate links ---------- */
+
+.cert-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.cert-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper-deep);
+  border-radius: 12px;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.15s ease;
+}
+
+.cert-link:hover { transform: translateY(-2px); }
+
+.cert-link .icon { font-size: 20px; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

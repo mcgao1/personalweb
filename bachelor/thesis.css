@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --paper: #f7f2e6;
+  --paper-deep: #efe6d1;
+  --ink: #24291f;
+  --leaf: #6a9b4f;
+  --leaf-deep: #4c7536;
+  --soil: #8a5a34;
+  --muted: #726d5c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 100px;
+}
+
+.back {
+  display: inline-block;
+  color: var(--ink);
+  opacity: 0.55;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 28px 0 0;
+}
+.back:hover { opacity: 1; }
+
+/* ---------- Header, with a soil-layer stripe ---------- */
+
+.soil-strip {
+  position: relative;
+  height: 10px;
+  margin: 30px 0 34px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--soil), var(--leaf-deep), var(--soil));
+  background-size: 200% 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--soil);
+  border: 1.5px solid var(--soil);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+h1.title {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(26px, 5vw, 40px);
+  line-height: 1.25;
+  margin-bottom: 18px;
+}
+
+.tagline {
+  font-size: 17px;
+  color: var(--muted);
+  border-left: 3px solid var(--leaf);
+  padding-left: 16px;
+  margin-bottom: 16px;
+}
+
+.role-line {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* ---------- Divider ---------- */
+
+.divider {
+  height: 1px;
+  background: rgba(36, 41, 31, 0.15);
+  margin: 44px 0 34px;
+}
+
+/* ---------- Body ---------- */
+
+article h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 21px;
+  margin: 10px 0 14px;
+}
+
+article p, article li {
+  font-size: 16px;
+  color: rgba(36, 41, 31, 0.92);
+}
+
+article ul, article ol {
+  padding-left: 22px;
+  margin-bottom: 14px;
+}
+
+article li { margin-bottom: 8px; }
+
+/* ---------- Stat counters ---------- */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 30px 0;
+}
+
+.stat-box {
+  background: var(--paper-deep);
+  border-radius: 12px;
+  padding: 16px 10px;
+  text-align: center;
+}
+
+.stat-box .num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--leaf-deep);
+  display: block;
+}
+
+.stat-box .label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 560px) {
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Figures with a wipe reveal ---------- */
+
+.fig-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 30px 0;
+}
+
+@media (max-width: 640px) {
+  .fig-grid { grid-template-columns: 1fr; }
+}
+
+figure.chart {
+  background: var(--paper-deep);
+  border-radius: 12px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+figure.chart .clip {
+  overflow: hidden;
+  clip-path: inset(100% 0 0 0);
+}
+
+figure.chart img {
+  width: 100%;
+  display: block;
+  border-radius: 6px;
+  cursor: zoom-in;
+  background: #fff;
+}
+
+figure.chart figcaption {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 8px 4px 2px;
+  text-align: center;
+}
+
+/* ---------- Method steps ---------- */
+
+.method-step {
+  display: flex;
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.method-num {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--leaf);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.method-body p { margin: 0; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
