@@ -46,13 +46,47 @@ body {
 }
 .back:hover { opacity: 1; }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero: a genuine 16:9 widescreen opening, not a
+   centered column ---------- */
 
-.hero {
-  max-width: 760px;
+.hero-16-9 {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 460px;
+  max-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 24px;
+  padding: 0 48px;
+}
+
+@media (max-width: 860px) {
+  .hero-16-9 {
+    aspect-ratio: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    padding: 110px 24px 20px;
+    text-align: center;
+    gap: 8px;
+  }
+  .hero-art { display: none; }
+}
+
+.hero-text {
+  max-width: 560px;
+}
+
+@media (max-width: 860px) {
+  .hero-text { max-width: 100%; margin: 0 auto; }
+}
+
+.hero-art svg {
+  width: 100%;
+  height: auto;
+  max-width: 380px;
   margin: 0 auto;
-  padding: 100px 24px 40px;
-  text-align: center;
+  display: block;
 }
 
 .eyebrow {
@@ -69,33 +103,61 @@ body {
   opacity: 0;
 }
 
-.hero h1 {
+.hero-text h1 {
   font-family: 'Fraunces', serif;
   font-weight: 600;
-  font-size: clamp(32px, 6vw, 54px);
+  font-size: clamp(30px, 4.6vw, 50px);
   line-height: 1.2;
   margin-bottom: 18px;
 }
 
-.hero h1 .line {
+.hero-text h1 .line {
   display: block;
   overflow: hidden;
 }
 
-.hero h1 .line span {
+.hero-text h1 .line span {
   display: inline-block;
   transform: translateY(110%);
 }
 
-.hero .lead {
-  max-width: 52ch;
-  margin: 0 auto;
+.hero-text .lead {
+  max-width: 48ch;
   color: var(--muted);
   font-size: 17px;
   opacity: 0;
 }
 
+@media (max-width: 860px) {
+  .hero-text .lead { margin: 0 auto; }
+}
+
 /* ---------- Growth timeline ---------- */
+
+.timeline-section {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 24px 0;
+}
+
+.deco-leaf {
+  position: absolute;
+  width: 60px;
+  height: 33px;
+  border-radius: 0 100% 0 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.deco-1 { top: 6%; left: 4%; background: #d9a03d; transform: rotate(-20deg); }
+.deco-2 { top: 38%; left: 8%; background: #6a9b4f; width: 44px; height: 24px; transform: rotate(35deg); }
+.deco-3 { top: 20%; right: 6%; background: #e6b85c; transform: rotate(50deg); }
+.deco-4 { top: 62%; right: 3%; background: #8bb96e; width: 48px; height: 26px; transform: rotate(-30deg); }
+
+@media (max-width: 900px) {
+  .deco-leaf { display: none; }
+}
 
 .timeline {
   position: relative;
@@ -207,7 +269,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .node, .hero .lead, .eyebrow, .hero h1 .line span {
+  .node, .hero-text .lead, .eyebrow, .hero-text h1 .line span, .deco-leaf {
     opacity: 1 !important;
     transform: none !important;
   }
