@@ -1,13 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --paper: #f7f2e6;
-  --paper-deep: #efe6d1;
-  --ink: #24291f;
-  --leaf: #6a9b4f;
-  --leaf-deep: #4c7536;
-  --soil: #8a5a34;
-  --muted: #726d5c;
+  --green: #7cc82e;
+  --green-deep: #4c8a1a;
+  --yellow: #f0c93a;
+  --yellow-deep: #d9ad12;
+  --ink: #1a1a1a;
+  --paper: #fbfbf6;
+  --paper-deep: #f1f3df;
+  --muted: #5c5a4d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,9 +22,15 @@ body {
 }
 
 .wrap {
-  max-width: 720px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 24px 100px;
+  position: relative;
+}
+
+.col {
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .back {
@@ -45,7 +52,7 @@ body {
   margin: 30px 0 34px;
   border-radius: 6px;
   overflow: hidden;
-  background: linear-gradient(90deg, var(--soil), var(--leaf-deep), var(--soil));
+  background: linear-gradient(90deg, var(--green-deep), var(--yellow), var(--green));
   background-size: 200% 100%;
   transform: scaleX(0);
   transform-origin: left;
@@ -56,26 +63,26 @@ body {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
   letter-spacing: 0.05em;
-  color: var(--soil);
-  border: 1.5px solid var(--soil);
+  color: var(--green-deep);
+  border: 1.5px solid var(--green-deep);
   padding: 4px 12px;
   border-radius: 999px;
   margin-bottom: 20px;
 }
 
 h1.title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Caveat', cursive;
   font-weight: 700;
-  font-style: italic;
-  font-size: clamp(26px, 5vw, 40px);
-  line-height: 1.25;
-  margin-bottom: 18px;
+  font-size: clamp(34px, 6.5vw, 54px);
+  line-height: 1.2;
+  color: var(--green-deep);
+  margin-bottom: 14px;
 }
 
 .tagline {
   font-size: 17px;
   color: var(--muted);
-  border-left: 3px solid var(--leaf);
+  border-left: 3px solid var(--yellow-deep);
   padding-left: 16px;
   margin-bottom: 16px;
 }
@@ -90,22 +97,23 @@ h1.title {
 
 .divider {
   height: 1px;
-  background: rgba(36, 41, 31, 0.15);
+  background: rgba(26, 26, 26, 0.12);
   margin: 44px 0 34px;
 }
 
 /* ---------- Body ---------- */
 
 article h2 {
-  font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-size: 21px;
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--green-deep);
   margin: 10px 0 14px;
 }
 
 article p, article li {
   font-size: 16px;
-  color: rgba(36, 41, 31, 0.92);
+  color: rgba(26, 26, 26, 0.92);
 }
 
 article ul, article ol {
@@ -126,6 +134,7 @@ article li { margin-bottom: 8px; }
 
 .stat-box {
   background: var(--paper-deep);
+  border: 1.5px solid rgba(76, 138, 26, 0.25);
   border-radius: 12px;
   padding: 16px 10px;
   text-align: center;
@@ -135,7 +144,7 @@ article li { margin-bottom: 8px; }
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 600;
   font-size: clamp(18px, 3vw, 24px);
-  color: var(--leaf-deep);
+  color: var(--green-deep);
   display: block;
 }
 
@@ -163,7 +172,8 @@ article li { margin-bottom: 8px; }
 }
 
 figure.chart {
-  background: var(--paper-deep);
+  background: #ffffff;
+  border: 1.5px solid rgba(26, 26, 26, 0.1);
   border-radius: 12px;
   padding: 10px;
   overflow: hidden;
@@ -203,8 +213,8 @@ figure.chart figcaption {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: var(--leaf);
-  color: var(--paper);
+  background: var(--green);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -214,6 +224,47 @@ figure.chart figcaption {
 }
 
 .method-body p { margin: 0; }
+
+/* ---------- Side-floated photos, echoing the estrogens page ---------- */
+
+.side-fig {
+  width: 260px;
+  margin: 10px 0 30px;
+}
+
+.side-fig .frame {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 5px 5px 0 var(--yellow);
+  padding: 6px;
+  overflow: hidden;
+}
+
+.side-fig img {
+  width: 100%;
+  display: block;
+  cursor: zoom-in;
+}
+
+.side-fig figcaption {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  color: var(--muted);
+  padding: 8px 4px 0;
+  text-align: center;
+}
+
+@media (min-width: 1280px) {
+  .side-fig:not(.left) {
+    float: right;
+    clear: right;
+  }
+  .side-fig.left {
+    float: left;
+    clear: left;
+  }
+}
 
 .reveal {
   opacity: 0;
