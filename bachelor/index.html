@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bachelor Years</title>
+<link rel="stylesheet" href="bachelor.css">
+</head>
+<body>
+
+<div class="grain"></div>
+<a class="back" href="../index.html">&larr; back to the planet</a>
+
+<div class="hero">
+  <div class="eyebrow" id="eyebrow">NANJING AGRICULTURAL UNIVERSITY, 2020&ndash;2024</div>
+  <h1>
+    <span class="line"><span>Before the Master's,</span></span>
+    <span class="line"><span>there was the Bachelor's.</span></span>
+  </h1>
+  <p class="lead" id="lead">Four years of ecology coursework, a thesis on earthworms, a club built around One Health, and a few things that had nothing to do with any of that. Here's the outline, pick a stop.</p>
+</div>
+
+<div class="timeline">
+  <div class="timeline-line">
+    <svg viewBox="0 0 3 100" preserveAspectRatio="none">
+      <path id="growLine" d="M1.5 0 L1.5 100" stroke="#6a9b4f" stroke-width="3" fill="none" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
+    </svg>
+  </div>
+
+  <a class="node featured" id="node-1" href="project-estrogens.html">
+    <span class="node-dot"></span>
+    <div class="node-card">
+      <div class="node-tag">One Health Club &middot; First Place, 2023</div>
+      <div class="node-title">Destigmatizing "Environmental Estrogen"</div>
+      <p class="node-desc">Led a 5-person team through a research-and-outreach challenge on gender bias in toxicology: consulted a scholar in the field, surveyed 100+ students, made two science videos, and won first place.</p>
+    </div>
+  </a>
+
+  <a class="node" id="node-2" href="project-thesis.html">
+    <span class="node-dot"></span>
+    <div class="node-card">
+      <div class="node-tag">Bachelor's thesis &middot; 2024</div>
+      <div class="node-title">What Sweeteners Do to Earthworms</div>
+      <p class="node-desc">An ecotoxicology thesis on how aspartame and acesulfame potassium affect earthworm survival and antioxidant enzyme activity.</p>
+    </div>
+  </a>
+
+  <a class="node" id="node-3" href="onehealthclub.html">
+    <span class="node-dot"></span>
+    <div class="node-card">
+      <div class="node-tag">One Health Club &middot; 2021&ndash;2023</div>
+      <div class="node-title">Everything Else in the Club</div>
+      <p class="node-desc">A global food-energy-water debate course, a World Rabies Day campaign she helped organize, and two international online exchange programs.</p>
+      <p class="node-sections">Course 4880 &middot; Rabies Day campaign &middot; Wageningen &amp; Wisconsin exchanges</p>
+    </div>
+  </a>
+
+  <a class="node" id="node-4" href="undergrad-life.html">
+    <span class="node-dot"></span>
+    <div class="node-card">
+      <div class="node-tag">Life outside the lab</div>
+      <div class="node-title">Undergrad Life</div>
+      <p class="node-desc">Basketball, a favorite essay on why same-sex behavior persists in evolution, and two field practicums: biomass energy near Nanjing, and ecology across Shanghai, Dafeng and Sihong.</p>
+      <p class="node-sections">Basketball &middot; a favorite paper &middot; two field internships</p>
+    </div>
+  </a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion && window.gsap) {
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    tl.to('#eyebrow', { opacity: 1, duration: 0.5 })
+      .to('.hero h1 .line span', { y: '0%', duration: 0.7, stagger: 0.12 }, '-=0.2')
+      .to('.hero .lead', { opacity: 1, duration: 0.6 }, '-=0.3')
+      .to('#growLine', { strokeDashoffset: 0, duration: 1.6, ease: 'power2.inOut' }, '-=0.1')
+      .to('.node', { opacity: 1, y: 0, duration: 0.6, stagger: 0.28 }, '-=1.5');
+  } else {
+    document.querySelectorAll('.eyebrow, .hero .lead, .node, .hero h1 .line span')
+      .forEach(function (el) { el.style.opacity = 1; el.style.transform = 'none'; });
+    const line = document.getElementById('growLine');
+    if (line) line.style.strokeDashoffset = 0;
+  }
+</script>
+</body>
+</html>

@@ -192,17 +192,23 @@ body.stage-grown .tag {
   transform: translateY(0);
 }
 
-body.stage-grown .tag-master {
+body.stage-grown .tag-master,
+body.stage-grown .tag-bachelor {
   pointer-events: auto;
 }
 
 .tag-bachelor {
   top: 2%;
   left: 30%;
-  background: rgba(140, 145, 138, 0.25);
-  color: #b7bcb2;
-  border: 1px solid rgba(183, 188, 178, 0.4);
+  background: rgba(217, 160, 61, 0.18);
+  color: #f0c987;
+  border: 1px solid rgba(240, 201, 135, 0.55);
+  cursor: pointer;
   transition-delay: 0.9s;
+}
+
+.tag-bachelor:hover {
+  background: rgba(217, 160, 61, 0.32);
 }
 
 .tag-master {

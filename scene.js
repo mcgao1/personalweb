@@ -12,6 +12,7 @@
   const tooltip = document.getElementById('tooltip');
   const replayBtn = document.getElementById('replay-intro');
   const tagMaster = document.getElementById('tag-master');
+  const tagBachelor = document.getElementById('tag-bachelor');
   const musing = document.getElementById('musing');
   const musingText = document.getElementById('musing-text');
 
@@ -133,78 +134,88 @@
     location.reload();
   });
 
-  // ---------- Leaves: Master leaks leaves on hover, bursts into a
-  // pile of them on click, then carries through to the thicket page ----------
-  const LEAF_COLORS = ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'];
+  // ---------- Leaves: both branch tags leak leaves on hover and burst
+  // into a pile of them on click, then carry through to wherever they
+  // link. Master leaks green leaves, Bachelor leaks amber ones. ----------
+  const LEAF_COLORS = {
+    master: ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'],
+    bachelor: ['#8a5a17', '#b3791f', '#d9a03d', '#e6b85c', '#f0c987', '#f7dba8']
+  };
 
-  function spawnLeaf(x, y, size) {
+  function spawnLeaf(x, y, size, palette) {
     const el = document.createElement('div');
     el.className = 'leaf-particle';
     el.style.width = size + 'px';
     el.style.height = (size * 0.55) + 'px';
     el.style.left = x + 'px';
     el.style.top = y + 'px';
-    el.style.background = LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)];
+    el.style.background = palette[Math.floor(Math.random() * palette.length)];
     document.body.appendChild(el);
     return el;
   }
 
-  let leakTimer = null;
+  function wireLeafTag(tag, paletteKey) {
+    const palette = LEAF_COLORS[paletteKey];
+    let leakTimer = null;
 
-  function startLeak() {
-    if (!body.classList.contains('stage-grown')) return;
-    if (leakTimer) return;
-    leakTimer = setInterval(function () {
-      const rect = tagMaster.getBoundingClientRect();
-      const x = rect.left + rect.width * Math.random();
-      const y = rect.top + rect.height * Math.random();
-      const el = spawnLeaf(x, y, 12 + Math.random() * 12);
-      const dx = Math.random() * 46 - 23;
-      const dy = -(36 + Math.random() * 46);
-      const rot = Math.random() * 280 - 140;
-      const anim = el.animate([
-        { transform: 'translate(0,0) rotate(0deg)', opacity: 0.9 },
-        { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', opacity: 0 }
-      ], { duration: 850, easing: 'ease-out' });
-      anim.onfinish = function () { el.remove(); };
-    }, 150);
-  }
-
-  function stopLeak() {
-    clearInterval(leakTimer);
-    leakTimer = null;
-  }
-
-  tagMaster.addEventListener('mouseenter', startLeak);
-  tagMaster.addEventListener('mouseleave', stopLeak);
-
-  tagMaster.addEventListener('click', function (e) {
-    e.preventDefault();
-    stopLeak();
-    const dest = tagMaster.getAttribute('href');
-    const rect = tagMaster.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-
-    for (let i = 0; i < 44; i++) {
-      const el = spawnLeaf(cx, cy, 14 + Math.random() * 22);
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 220 + Math.random() * 560;
-      const dx = Math.cos(angle) * dist;
-      const dy = Math.sin(angle) * dist - 120;
-      const rot = Math.random() * 720 - 360;
-      const scale = 0.6 + Math.random() * 0.9;
-      const anim = el.animate([
-        { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
-        { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) scale(' + scale + ')', opacity: 0 }
-      ], { duration: 700 + Math.random() * 320, easing: 'cubic-bezier(0.2,0.7,0.3,1)' });
-      anim.onfinish = function () { el.remove(); };
+    function startLeak() {
+      if (!body.classList.contains('stage-grown')) return;
+      if (leakTimer) return;
+      leakTimer = setInterval(function () {
+        const rect = tag.getBoundingClientRect();
+        const x = rect.left + rect.width * Math.random();
+        const y = rect.top + rect.height * Math.random();
+        const el = spawnLeaf(x, y, 12 + Math.random() * 12, palette);
+        const dx = Math.random() * 46 - 23;
+        const dy = -(36 + Math.random() * 46);
+        const rot = Math.random() * 280 - 140;
+        const anim = el.animate([
+          { transform: 'translate(0,0) rotate(0deg)', opacity: 0.9 },
+          { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', opacity: 0 }
+        ], { duration: 850, easing: 'ease-out' });
+        anim.onfinish = function () { el.remove(); };
+      }, 150);
     }
 
-    setTimeout(function () {
-      window.location.href = dest;
-    }, 620);
-  });
+    function stopLeak() {
+      clearInterval(leakTimer);
+      leakTimer = null;
+    }
+
+    tag.addEventListener('mouseenter', startLeak);
+    tag.addEventListener('mouseleave', stopLeak);
+
+    tag.addEventListener('click', function (e) {
+      e.preventDefault();
+      stopLeak();
+      const dest = tag.getAttribute('href');
+      const rect = tag.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 44; i++) {
+        const el = spawnLeaf(cx, cy, 14 + Math.random() * 22, palette);
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 220 + Math.random() * 560;
+        const dx = Math.cos(angle) * dist;
+        const dy = Math.sin(angle) * dist - 120;
+        const rot = Math.random() * 720 - 360;
+        const scale = 0.6 + Math.random() * 0.9;
+        const anim = el.animate([
+          { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
+          { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) scale(' + scale + ')', opacity: 0 }
+        ], { duration: 700 + Math.random() * 320, easing: 'cubic-bezier(0.2,0.7,0.3,1)' });
+        anim.onfinish = function () { el.remove(); };
+      }
+
+      setTimeout(function () {
+        window.location.href = dest;
+      }, 620);
+    });
+  }
+
+  wireLeafTag(tagMaster, 'master');
+  wireLeafTag(tagBachelor, 'bachelor');
 
   // ---------- Space / Enter mirrors the generic advance action ----------
   document.addEventListener('keydown', function (e) {
