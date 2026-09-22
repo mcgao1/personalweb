@@ -1,27 +1,41 @@
 (function () {
   const body = document.body;
-  const figure = document.getElementById('figure');
-  const chair = document.getElementById('chair');
-  const planet = document.getElementById('planet');
   const universe = document.getElementById('universe');
+  const planetSurface = document.getElementById('planet-surface');
+  const mainCharacter = document.getElementById('main-character');
   const hint = document.getElementById('hint');
-  const dialogLines = document.getElementById('dialog-lines');
-  const nameForm = document.getElementById('name-form');
-  const nameInput = document.getElementById('name-input');
-  const okBtn = document.getElementById('ok-btn');
   const tooltip = document.getElementById('tooltip');
   const replayBtn = document.getElementById('replay-intro');
-  const tagMaster = document.getElementById('tag-master');
-  const tagBachelor = document.getElementById('tag-bachelor');
-  const musing = document.getElementById('musing');
-  const musingText = document.getElementById('musing-text');
+  const note = document.getElementById('monster-note');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let visitorName = '';
-  let greetLines = [];
-  let greetIndex = 0;
+  const notes = [
+    'Some Things Are Still Unnamed.',
+    'Two Flowers Are Awake.',
+    'The Ground Is Still Dreaming.',
+    'More Will Grow Here.'
+  ];
+
+  const hoverNotes = {
+    bachelor: 'old notes grew a flower.',
+    master: 'this one keeps wandering.',
+    ghost: 'not yet.'
+  };
+
+  const leafColors = {
+    bachelor: ['#8a5a17', '#b3791f', '#ff7a2b', '#ff9a3d', '#ffd45b', '#ffe19a'],
+    master: ['#0d5462', '#128995', '#1eb5c5', '#47d2cd', '#148f43', '#7edc68']
+  };
+
+  let noteIndex = 0;
+  let noteWriteTimer = null;
+  let noteAutoTimer = null;
+  let wheelDelta = 0;
+
+  if (reduceMotion) body.classList.add('no-motion');
 
   function setStage(stage) {
-    body.className = 'stage-' + stage;
+    body.className = reduceMotion ? stage + ' no-motion' : stage;
   }
 
   function setHint(text) {
@@ -29,118 +43,89 @@
     hint.classList.toggle('visible', !!text);
   }
 
-  // ---------- Returning visitor: skip straight to explore mode ----------
-  const savedName = localStorage.getItem('visitorName_v2');
-  if (savedName) {
-    visitorName = savedName;
-    body.classList.add('no-anim');
-    setStage('grown');
-    setHint('');
-    // let the browser paint once with transitions off, then re-enable them
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        body.classList.remove('no-anim');
-      });
-    });
-  } else {
-    setHint('Click on whatever catches your eye');
+  function enterClose() {
+    if (body.classList.contains('stage-close')) return;
+    setStage('stage-close');
+    setHint('pick a flower');
+    note.tabIndex = 0;
+    startNotes(true);
   }
 
-  // ---------- The one "advance" action for the current stage ----------
-  // Used by click, and mirrored by Space/Enter so a visitor never has to
-  // reach for the mouse just to move the story forward. Clicking a
-  // *specific* part of the scene (the chair, later: the necklace, the
-  // head…) is a separate, deliberate choice and stays mouse-only —
-  // this is only the generic "continue" step.
-  function advance() {
-    if (body.classList.contains('stage-wide')) {
-      setStage('zoomed');
-      setHint('Click the planet');
-    } else if (body.classList.contains('stage-zoomed')) {
-      setStage('naming');
-      setHint('');
-      nameInput.focus();
-    } else if (body.classList.contains('stage-greeting')) {
-      if (body.classList.contains('ok-ready')) {
-        setStage('grown');
-      } else {
-        revealNextLine();
-      }
+  function resetHome() {
+    setStage('stage-distant');
+    setHint('come closer');
+    hideTooltip();
+    stopNotes();
+    note.textContent = notes[0];
+    note.classList.remove('is-writing', 'is-settled');
+    note.tabIndex = -1;
+    noteIndex = 0;
+  }
+
+  function startNotes(rewrite) {
+    stopNotes();
+    writeNote(notes[noteIndex], rewrite);
+    if (!reduceMotion) {
+      noteAutoTimer = window.setInterval(function () {
+        nextNote(false);
+      }, 7200);
     }
   }
 
-  universe.addEventListener('click', function () {
-    if (body.classList.contains('stage-wide')) advance();
-  });
-
-  function wake(e) {
-    if (!body.classList.contains('stage-zoomed')) return;
-    e.stopPropagation();
-    advance();
-  }
-  figure.addEventListener('click', wake);
-  chair.addEventListener('click', wake);
-  planet.addEventListener('click', wake);
-
-  // Name input -> build the greeting, then wait for "advance"
-  nameForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    visitorName = nameInput.value.trim() || 'X';
-    localStorage.setItem('visitorName_v2', visitorName);
-
-    greetLines = [
-      visitorName + ', how are you today?',
-      "I've been waiting for you for a long time.",
-      'Are you ready?'
-    ];
-    greetIndex = 0;
-
-    setStage('greeting');
-    setHint('Click on the person, or press space');
-  });
-
-  function revealNextLine() {
-    dialogLines.classList.remove('show');
-    setTimeout(function () {
-      dialogLines.textContent = greetLines[greetIndex];
-      dialogLines.classList.add('show');
-      greetIndex++;
-
-      if (greetIndex >= greetLines.length) {
-        setHint('');
-        body.classList.add('ok-ready');
-      } else {
-        setHint('Click on the person, or press space');
-      }
-    }, 150);
+  function stopNotes() {
+    clearTimeout(noteWriteTimer);
+    clearInterval(noteAutoTimer);
+    noteWriteTimer = null;
+    noteAutoTimer = null;
   }
 
-  function advanceGreeting(e) {
-    if (!body.classList.contains('stage-greeting')) return;
-    if (body.classList.contains('ok-ready')) return;
-    e.stopPropagation();
-    advance();
+  function writeNote(text, rewrite) {
+    note.textContent = text;
+    note.classList.remove('is-settled', 'is-writing');
+
+    if (reduceMotion || !rewrite) {
+      note.classList.add('is-settled');
+      return;
+    }
+
+    void note.offsetWidth;
+    note.classList.add('is-writing');
+    clearTimeout(noteWriteTimer);
+    noteWriteTimer = window.setTimeout(function () {
+      note.classList.remove('is-writing');
+      note.classList.add('is-settled');
+    }, 3500);
   }
-  figure.addEventListener('click', advanceGreeting);
-  chair.addEventListener('click', advanceGreeting);
-  planet.addEventListener('click', advanceGreeting);
 
-  okBtn.addEventListener('click', function () {
-    setStage('grown');
-  });
+  function nextNote(resetAutoplay) {
+    if (!body.classList.contains('stage-close')) return;
+    if (resetAutoplay !== false) {
+      clearInterval(noteAutoTimer);
+      noteAutoTimer = null;
+    }
+    noteIndex = (noteIndex + 1) % notes.length;
+    writeNote(notes[noteIndex], true);
+    if (resetAutoplay !== false && !reduceMotion) {
+      noteAutoTimer = window.setInterval(function () {
+        nextNote(false);
+      }, 7200);
+    }
+  }
 
-  replayBtn.addEventListener('click', function () {
-    localStorage.removeItem('visitorName_v2');
-    location.reload();
-  });
+  function showTooltip(text, x, y) {
+    tooltip.textContent = text;
+    tooltip.style.left = x + 16 + 'px';
+    tooltip.style.top = y - 8 + 'px';
+    tooltip.classList.add('visible');
+  }
 
-  // ---------- Leaves: both branch tags leak leaves on hover and burst
-  // into a pile of them on click, then carry through to wherever they
-  // link. Master leaks green leaves, Bachelor leaks amber ones. ----------
-  const LEAF_COLORS = {
-    master: ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'],
-    bachelor: ['#8a5a17', '#b3791f', '#d9a03d', '#e6b85c', '#f0c987', '#f7dba8']
-  };
+  function hideTooltip() {
+    tooltip.classList.remove('visible');
+  }
+
+  function setTemporaryNote() {
+    window.clearTimeout(setTemporaryNote.timer);
+  }
 
   function spawnLeaf(x, y, size, palette) {
     const el = document.createElement('div');
@@ -154,147 +139,137 @@
     return el;
   }
 
-  function wireLeafTag(tag, paletteKey) {
-    const palette = LEAF_COLORS[paletteKey];
-    let leakTimer = null;
+  function burstFrom(el, palette) {
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height * 0.28;
 
-    function startLeak() {
-      if (!body.classList.contains('stage-grown')) return;
-      if (leakTimer) return;
-      leakTimer = setInterval(function () {
-        const rect = tag.getBoundingClientRect();
-        const x = rect.left + rect.width * Math.random();
-        const y = rect.top + rect.height * Math.random();
-        const el = spawnLeaf(x, y, 12 + Math.random() * 12, palette);
-        const dx = Math.random() * 46 - 23;
-        const dy = -(36 + Math.random() * 46);
-        const rot = Math.random() * 280 - 140;
-        const anim = el.animate([
-          { transform: 'translate(0,0) rotate(0deg)', opacity: 0.9 },
-          { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', opacity: 0 }
-        ], { duration: 850, easing: 'ease-out' });
-        anim.onfinish = function () { el.remove(); };
-      }, 150);
+    for (let i = 0; i < 44; i++) {
+      const leaf = spawnLeaf(cx, cy, 11 + Math.random() * 19, palette);
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 140 + Math.random() * 390;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist - 80;
+      const rot = Math.random() * 700 - 350;
+      const scale = 0.6 + Math.random() * 0.9;
+      const anim = leaf.animate([
+        { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
+        { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) scale(' + scale + ')', opacity: 0 }
+      ], { duration: 620 + Math.random() * 280, easing: 'cubic-bezier(0.2,0.7,0.3,1)' });
+      anim.onfinish = function () { leaf.remove(); };
     }
+  }
 
-    function stopLeak() {
-      clearInterval(leakTimer);
-      leakTimer = null;
-    }
+  function wireTooltip(el, noteText) {
+    el.addEventListener('pointerenter', function (event) {
+      if (!body.classList.contains('stage-close')) return;
+      showTooltip(el.dataset.label || '', event.clientX, event.clientY);
+      setTemporaryNote(noteText);
+    });
 
-    tag.addEventListener('mouseenter', startLeak);
-    tag.addEventListener('mouseleave', stopLeak);
+    el.addEventListener('pointermove', function (event) {
+      if (!body.classList.contains('stage-close')) return;
+      showTooltip(el.dataset.label || '', event.clientX, event.clientY);
+    });
 
-    tag.addEventListener('click', function (e) {
-      e.preventDefault();
-      stopLeak();
-      const dest = tag.getAttribute('href');
-      const rect = tag.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
+    el.addEventListener('pointerleave', hideTooltip);
+  }
 
-      for (let i = 0; i < 44; i++) {
-        const el = spawnLeaf(cx, cy, 14 + Math.random() * 22, palette);
-        const angle = Math.random() * Math.PI * 2;
-        const dist = 220 + Math.random() * 560;
-        const dx = Math.cos(angle) * dist;
-        const dy = Math.sin(angle) * dist - 120;
-        const rot = Math.random() * 720 - 360;
-        const scale = 0.6 + Math.random() * 0.9;
-        const anim = el.animate([
-          { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
-          { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) scale(' + scale + ')', opacity: 0 }
-        ], { duration: 700 + Math.random() * 320, easing: 'cubic-bezier(0.2,0.7,0.3,1)' });
-        anim.onfinish = function () { el.remove(); };
+  function wireEntry(el, paletteName, noteText) {
+    wireTooltip(el, noteText);
+
+    el.addEventListener('click', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!body.classList.contains('stage-close')) {
+        enterClose();
+        return;
       }
 
-      setTimeout(function () {
+      const dest = el.getAttribute('href');
+
+      if (reduceMotion) {
         window.location.href = dest;
-      }, 620);
+        return;
+      }
+
+      el.classList.add('is-popping');
+      burstFrom(el, leafColors[paletteName]);
+      window.setTimeout(function () {
+        el.classList.remove('is-popping');
+        window.location.href = dest;
+      }, 560);
     });
   }
 
-  wireLeafTag(tagMaster, 'master');
-  wireLeafTag(tagBachelor, 'bachelor');
-
-  // ---------- Space / Enter mirrors the generic advance action ----------
-  document.addEventListener('keydown', function (e) {
-    if (e.key !== ' ' && e.key !== 'Enter') return;
-    if (body.classList.contains('stage-naming')) return; // let typing behave normally
-    e.preventDefault();
-    advance();
+  universe.addEventListener('click', function () {
+    if (body.classList.contains('stage-distant')) enterClose();
   });
 
-  // ---------- Hover tooltip: per-element, follows the cursor ----------
-  const tooltipLabels = {
-    wide: { figure: 'click me', planet: 'click me', chair: 'click me' },
-    zoomed: { figure: 'wake me up', planet: 'click the planet', chair: 'wake me up' },
-    greeting: { figure: 'go on…', planet: 'go on…', chair: 'go on…' }
-  };
+  planetSurface.addEventListener('click', function (event) {
+    if (event.target.closest('.garden-entry') || event.target.closest('.planet-region')) return;
+    event.stopPropagation();
+    enterClose();
+  });
 
-  function currentStageKey() {
-    if (body.classList.contains('stage-wide')) return 'wide';
-    if (body.classList.contains('stage-zoomed')) return 'zoomed';
-    if (body.classList.contains('stage-greeting') && !body.classList.contains('ok-ready')) return 'greeting';
-    return null;
-  }
+  mainCharacter.addEventListener('click', function (event) {
+    event.stopPropagation();
+    enterClose();
+  });
 
-  const hoverTargets = [
-    { el: figure, key: 'figure' },
-    { el: planet, key: 'planet' },
-    { el: chair, key: 'chair' }
-  ];
+  document.querySelectorAll('.flower-entry').forEach(function (el) {
+    const paletteName = el.classList.contains('flower-bachelor') ? 'bachelor' : 'master';
+    const noteText = paletteName === 'bachelor' ? hoverNotes.bachelor : hoverNotes.master;
+    wireEntry(el, paletteName, noteText);
+  });
 
-  hoverTargets.forEach(function (t) {
-    t.el.addEventListener('mouseenter', function () {
-      const stageKey = currentStageKey();
-      if (!stageKey) return;
-      tooltip.textContent = tooltipLabels[stageKey][t.key];
-      tooltip.classList.add('visible');
-    });
-    t.el.addEventListener('mousemove', function (e) {
-      tooltip.style.left = e.clientX + 16 + 'px';
-      tooltip.style.top = e.clientY - 8 + 'px';
-    });
-    t.el.addEventListener('mouseleave', function () {
-      tooltip.classList.remove('visible');
+  document.querySelectorAll('.planet-region').forEach(function (el) {
+    wireTooltip(el, hoverNotes.ghost);
+    el.addEventListener('click', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!body.classList.contains('stage-close')) {
+        enterClose();
+        return;
+      }
+      setTemporaryNote(hoverNotes.ghost);
     });
   });
 
-  // ---------- Musing bubble: little unprompted thoughts ----------
-  const MUSINGS = [
-    'Robert once said: ambition is good, but be real, be independent, be valuable.',
-    'Kunming has so much potential. It just needs better policy and economic support.',
-    'Thoughts are what the fourth space is made of.',
-    'Missing Doudou so much right now.'
-  ];
-
-  let musingIndex = Math.floor(Math.random() * MUSINGS.length);
-  let musingTimer = null;
-
-  function showMusing(i) {
-    musingText.classList.add('fading');
-    setTimeout(function () {
-      musingText.textContent = MUSINGS[i];
-      musingText.classList.remove('fading');
-    }, 350);
-  }
-
-  function nextMusing() {
-    musingIndex = (musingIndex + 1) % MUSINGS.length;
-    showMusing(musingIndex);
-  }
-
-  function restartMusingTimer() {
-    clearInterval(musingTimer);
-    musingTimer = setInterval(nextMusing, 8000);
-  }
-
-  showMusing(musingIndex);
-  restartMusingTimer();
-
-  musing.addEventListener('click', function () {
-    nextMusing();
-    restartMusingTimer();
+  replayBtn.addEventListener('click', function () {
+    resetHome();
   });
+
+  note.addEventListener('click', function (event) {
+    event.stopPropagation();
+    nextNote(true);
+  });
+
+  note.addEventListener('keydown', function (event) {
+    if (event.key !== ' ' && event.key !== 'Enter') return;
+    event.preventDefault();
+    nextNote(true);
+  });
+
+  window.addEventListener('wheel', function (event) {
+    wheelDelta += event.deltaY;
+
+    if (wheelDelta < -45) {
+      wheelDelta = 0;
+      enterClose();
+    } else if (wheelDelta > 45 && body.classList.contains('stage-close')) {
+      wheelDelta = 0;
+      resetHome();
+    }
+  }, { passive: true });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== ' ' && event.key !== 'Enter') return;
+    if (!body.classList.contains('stage-distant')) return;
+    event.preventDefault();
+    enterClose();
+  });
+
+  resetHome();
 })();

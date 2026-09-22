@@ -3,132 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hello, I'm here</title>
-<link rel="stylesheet" href="scene.css?v=5">
+<title>Manchen Gao</title>
+<link rel="stylesheet" href="scene.css?v=24">
 </head>
-<body class="stage-wide">
+<body class="stage-distant">
 
 <div class="sky" id="sky"></div>
+<div class="monster-note" id="monster-note" role="button" tabindex="0" aria-label="Next background note">Some Things Are Still Unnamed.</div>
 
-<div class="universe" id="universe">
-  <svg id="scene-svg" viewBox="0 0 400 400" width="400" height="400">
+<main class="universe" id="universe" aria-label="A small monster planet">
+  <section class="planet-world" id="planet-world" aria-label="Site map planet">
+    <div class="planet-surface" id="planet-surface">
+      <div class="planet-texture texture-one"></div>
+      <div class="planet-texture texture-two"></div>
+      <div class="planet-texture texture-three"></div>
 
-    <!-- planet -->
-    <g id="planet">
-      <circle cx="200" cy="330" r="150" fill="#123a52"/>
-      <ellipse cx="200" cy="330" rx="150" ry="150" fill="url(#planetShade)"/>
-      <ellipse cx="150" cy="270" rx="30" ry="10" fill="#0f2f42" opacity="0.6"/>
-      <ellipse cx="260" cy="300" rx="22" ry="8" fill="#0f2f42" opacity="0.5"/>
-    </g>
+      <button class="planet-region region-memories" type="button" data-label="not yet" aria-label="Memories, not yet">
+        <span class="region-mark"></span>
+      </button>
+      <button class="planet-region region-people" type="button" data-label="not yet" aria-label="People, not yet">
+        <span class="region-mark"></span>
+      </button>
+      <button class="planet-region region-scraps" type="button" data-label="not yet" aria-label="Scraps, not yet">
+        <span class="region-mark"></span>
+      </button>
 
-    <!-- bamboo chair -->
-    <g id="chair" stroke="#a9773f" stroke-width="4" stroke-linecap="round" fill="none">
-      <line x1="150" y1="270" x2="150" y2="210"/>
-      <line x1="250" y1="270" x2="250" y2="210"/>
-      <line x1="150" y1="240" x2="250" y2="240"/>
-      <line x1="150" y1="270" x2="180" y2="270"/>
-      <line x1="220" y1="270" x2="250" y2="270"/>
-      <path d="M150 210 Q145 190 165 185" />
-      <path d="M250 210 Q255 190 235 185" />
-    </g>
+      <a class="garden-entry flower-entry flower-bachelor" href="bachelor/index.html" data-label="Bachelor" aria-label="Bachelor">
+        <img class="flower-art" src="assets/flower-bachelor-orange.png" alt="" aria-hidden="true">
+        <span class="flower-hit" aria-hidden="true"></span>
+      </a>
 
-    <!-- figure -->
-    <g id="figure">
-      <!-- body -->
-      <path d="M165 260 Q160 210 200 205 Q240 210 235 260 Z" fill="#1f7fd6"/>
-      <!-- necklace (decorative, no interaction yet) -->
-      <circle cx="200" cy="248" r="5" fill="#ffd76a" id="necklace"/>
-      <!-- head -->
-      <path d="M160 165
-               C158 130, 175 95, 200 92
-               C228 90, 248 118, 246 150
-               C248 165, 240 178, 228 186
-               C222 196, 205 202, 195 200
-               C178 199, 164 190, 160 175
-               Z" fill="#2E90E0" stroke="#123a52" stroke-width="2"/>
+      <a class="garden-entry flower-entry flower-master" href="master/projects.html" data-label="Master" aria-label="Master">
+        <img class="flower-art" src="assets/flower-master-blue.png" alt="" aria-hidden="true">
+        <span class="flower-hit" aria-hidden="true"></span>
+      </a>
+    </div>
+  </section>
 
-      <!-- eyes closed -->
-      <g id="eyes-closed">
-        <path d="M177 152 Q184 158 191 152" stroke="#123a52" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M207 150 Q215 156 223 150" stroke="#123a52" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      </g>
-
-      <!-- eyes open -->
-      <g id="eyes-open" opacity="0">
-        <circle cx="184" cy="153" r="4" fill="#0c2230"/>
-        <circle cx="215" cy="151" r="4" fill="#0c2230"/>
-      </g>
-
-      <!-- brows -->
-      <path d="M172 138 Q184 130 196 137" stroke="#123a52" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
-      <path d="M204 135 Q216 127 228 133" stroke="#123a52" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
-
-      <!-- mouth -->
-      <path d="M186 176 Q200 182 214 175" stroke="#123a52" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-
-      <!-- rising arrows: shown while asleep, above the head -->
-      <g id="arrows-rising">
-        <path class="rising-arrow a1" d="M172,80 L178,70 L184,80" stroke="#dfe8f5" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="rising-arrow a2" d="M194,63 L200,53 L206,63" stroke="#dfe8f5" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="rising-arrow a3" d="M216,78 L222,68 L228,78" stroke="#dfe8f5" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </g>
-
-      <!-- twinkling stars: shown once awake, replaces the rising arrows -->
-      <g id="stars-twinkle">
-        <g class="twinkle-star s1">
-          <line x1="178" y1="66" x2="178" y2="78" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
-          <line x1="172" y1="72" x2="184" y2="72" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <g class="twinkle-star s2">
-          <line x1="200" y1="50" x2="200" y2="60" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
-          <line x1="195" y1="55" x2="205" y2="55" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
-        </g>
-        <g class="twinkle-star s3">
-          <line x1="222" y1="64" x2="222" y2="76" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
-          <line x1="216" y1="70" x2="228" y2="70" stroke="#ffe6a3" stroke-width="2" stroke-linecap="round"/>
-        </g>
-      </g>
-
-      <!-- grass sprouts (hidden until grown) -->
-      <g id="grass" opacity="0">
-        <path id="blade-1" d="M188 95 Q182 60 170 30" stroke="#d9a03d" stroke-width="4" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-        <path id="blade-2" d="M212 93 Q222 55 236 24" stroke="#3fae5c" stroke-width="4" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-      </g>
-    </g>
-
-    <defs>
-      <radialGradient id="planetShade" cx="35%" cy="30%" r="75%">
-        <stop offset="0%" stop-color="#2f6f8f" stop-opacity="0.55"/>
-        <stop offset="100%" stop-color="#0b2333" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-  </svg>
-
-  <a class="tag tag-bachelor" id="tag-bachelor" href="bachelor/index.html">Bachelor</a>
-  <a class="tag tag-master" id="tag-master" href="master/projects.html">Master</a>
-
-  <div class="musing" id="musing">
-    <span class="musing-text" id="musing-text"></span>
+  <div class="main-character" id="main-character" aria-label="Main character" role="img">
+    <img src="assets/main-character.png" alt="">
+    <span class="monster-lid monster-lid-left"></span>
+    <span class="monster-lid monster-lid-right"></span>
   </div>
-</div>
+</main>
 
-<button class="replay-intro" id="replay-intro" type="button">&#8634; replay intro</button>
+<button class="replay-intro" id="replay-intro" type="button">far away</button>
 
 <div class="hint" id="hint"></div>
 <div class="tooltip" id="tooltip"></div>
 
-<div class="dialog" id="dialog">
-  <div class="dialog-lines" id="dialog-lines"></div>
-
-  <form class="name-form" id="name-form">
-    <label for="name-input">What should I call you?</label>
-    <input id="name-input" type="text" maxlength="20" autocomplete="off" placeholder="your name">
-    <button type="submit">→</button>
-  </form>
-
-  <button class="ok-btn" id="ok-btn">OK</button>
-</div>
-
-<script src="scene.js?v=5"></script>
+<script src="scene.js?v=18"></script>
 </body>
 </html>
