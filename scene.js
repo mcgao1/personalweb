@@ -176,8 +176,6 @@
   }
 
   function wireEntry(el, paletteName, noteText) {
-    wireTooltip(el, noteText);
-
     el.addEventListener('click', function (event) {
       event.preventDefault();
       event.stopPropagation();
@@ -188,18 +186,7 @@
       }
 
       const dest = el.getAttribute('href');
-
-      if (reduceMotion) {
-        window.location.href = dest;
-        return;
-      }
-
-      el.classList.add('is-popping');
-      burstFrom(el, leafColors[paletteName]);
-      window.setTimeout(function () {
-        el.classList.remove('is-popping');
-        window.location.href = dest;
-      }, 560);
+      window.location.href = dest;
     });
   }
 
@@ -252,15 +239,47 @@
     nextNote(true);
   });
 
+  const memoryStage = document.getElementById('memory-stage');
+  const bubble = document.getElementById('memory-bubble');
+  const cubeLines = {
+    hill: 'Hold on tight. That slope was steep.',
+    future: 'Reading driver file: 2002. Not yet.',
+    exit: 'See that EXIT? Almost through.',
+    sweet: 'Shh. Sweet memories, not yet.'
+  };
+
+  function setMemory(open) {
+    body.classList.toggle('memory-open', open);
+    if (!open) { memoryStage.removeAttribute('data-active'); bubble.classList.remove('visible'); }
+  }
+
+  document.querySelectorAll('.cube').forEach(function (cube) {
+    const key = cube.dataset.cube;
+    function on() {
+      memoryStage.setAttribute('data-active', key);
+      bubble.textContent = cubeLines[key];
+      bubble.classList.add('visible');
+    }
+    function off() {
+      memoryStage.removeAttribute('data-active');
+      bubble.classList.remove('visible');
+    }
+    cube.addEventListener('pointerenter', on);
+    cube.addEventListener('focus', on);
+    cube.addEventListener('pointerleave', off);
+    cube.addEventListener('blur', off);
+  });
+
   window.addEventListener('wheel', function (event) {
     wheelDelta += event.deltaY;
 
     if (wheelDelta < -45) {
       wheelDelta = 0;
-      enterClose();
+      if (body.classList.contains('memory-open')) setMemory(false);
+      else enterClose();
     } else if (wheelDelta > 45 && body.classList.contains('stage-close')) {
       wheelDelta = 0;
-      resetHome();
+      setMemory(true);
     }
   }, { passive: true });
 
