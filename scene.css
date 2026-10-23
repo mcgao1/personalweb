@@ -238,55 +238,140 @@ body.stage-close .planet-region {
   border-radius: 999px;
 }
 
-.flower-bachelor {
-  left: 238px;
-  top: -29px;
-  width: 78px;
-  height: 78px;
-  transform: none;
-}
-
 .flower-master {
-  left: 181px;
-  top: -194px;
-  width: 127px;
-  height: 112px;
-  transform: none;
+  left: 165px;
+  top: -220px;
+  width: 160px;
+  height: 262px;
 }
 
-.flower-entry::before {
-  content: none;
+.flower-bachelor {
+  left: 225px;
+  top: -70px;
+  width: 120px;
+  height: 152px;
 }
 
-.flower-hit {
+body.stage-close .flower-entry {
+  pointer-events: none;
+}
+
+body.stage-close .main-character {
+  pointer-events: none;
+}
+
+.flower-svg {
   display: block;
   width: 100%;
   height: 100%;
-}
-
-.flower-combo-art {
-  position: absolute;
-  left: 129px;
-  top: -221px;
-  z-index: 9;
-  display: block;
-  width: 210px;
-  height: auto;
-  opacity: 0;
+  overflow: visible;
   pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  transform: translateY(12px);
-  filter: drop-shadow(0 9px 12px rgba(0, 0, 0, 0.16));
+  --fs: 1;
+  opacity: 0;
+  transform-origin: 37.5% 98.5%;
+  filter: drop-shadow(0 9px 12px rgba(0, 0, 0, 0.22));
 }
 
-body.stage-close .flower-combo-art {
-  animation: flowerComboGrow 0.75s 0.18s ease-out both;
+.flower-bachelor .flower-svg {
+  transform-origin: 25% 97%;
 }
 
-.flower-entry:hover,
-.flower-entry:focus-visible {
-  filter: none;
+body.stage-close .flower-paint {
+  pointer-events: visiblePainted;
+  cursor: pointer;
+}
+
+body.stage-close .flower-svg {
+  opacity: 1;
+}
+
+body.stage-close .flower-entry {
+  animation: flowerRise 0.9s 0.18s cubic-bezier(0.16, 0.82, 0.22, 1) both;
+}
+
+body.stage-close .flower-bachelor {
+  animation-delay: 0.42s;
+}
+
+body.stage-close .flower-entry:hover .flower-svg,
+body.stage-close .flower-entry:focus-visible .flower-svg {
+  animation: flowerWiggle 0.7s ease-in-out;
+}
+
+.flower-tag {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 6px 12px 7px;
+  border: 2px solid #2b1d07;
+  border-radius: 12px 14px 12px 4px;
+  background: #fff6b2;
+  color: #2b1d07;
+  font-family: 'Segoe Print', 'Comic Sans MS', 'Gaegu', sans-serif;
+  line-height: 1.05;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.85) rotate(var(--tilt, -3deg));
+  transform-origin: 0% 100%;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.flower-tag::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  bottom: 8px;
+  width: 16px;
+  height: 2px;
+  background: #fff6b2;
+  box-shadow: 0 0 0 1px rgba(43, 29, 7, 0.6);
+  transform: rotate(-18deg);
+  transform-origin: 100% 50%;
+}
+
+.flower-tag .tag-kicker {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.flower-tag b {
+  font-size: 19px;
+}
+
+.flower-tag .tag-sub {
+  margin-top: 2px;
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.tag-master {
+  left: 150px;
+  top: 34px;
+  --tilt: -4deg;
+}
+
+.tag-bachelor {
+  left: 112px;
+  top: 40px;
+  --tilt: 3deg;
+  background: #ffd9c2;
+}
+
+.tag-bachelor::before {
+  background: #ffd9c2;
+}
+
+body.stage-close.tags-peek .flower-tag,
+body.stage-close .flower-entry:hover .flower-tag,
+body.stage-close .flower-entry:focus-visible .flower-tag {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(var(--tilt, -3deg));
 }
 
 .planet-region {
@@ -515,16 +600,9 @@ body.stage-close .replay-intro {
   }
 }
 
-@keyframes flowerComboGrow {
-  0% {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes flowerRise {
+  0% { opacity: 0; transform: translateY(16px) scale(0.96); }
+  100% { opacity: 1; transform: none; }
 }
 
 @keyframes flowerWiggle {
@@ -578,13 +656,14 @@ body.no-motion .main-character,
 body.no-motion .monster-lid,
 body.no-motion .monster-note,
 body.no-motion .hint,
-body.no-motion .flower-combo-art {
+body.no-motion .flower-svg,
+body.no-motion .flower-entry {
   animation: none !important;
 }
 
-body.no-motion.stage-close .flower-combo-art {
+body.no-motion.stage-close .flower-svg {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 body.no-motion.stage-close .monster-note {
@@ -619,30 +698,27 @@ body.no-motion.stage-close .monster-note {
     transform: translate(-50%, -48%) scale(0.92);
   }
 
-  .flower-master {
-    left: 167px;
-    top: -174px;
-    width: 102px;
-    height: 92px;
-  }
-
-  .flower-bachelor {
-    left: 219px;
-    top: -8px;
-    width: 61px;
-    height: 61px;
-  }
-
-  .flower-combo-art {
-    left: 124px;
-    top: -193px;
-    width: 174px;
-  }
 
   .monster-note {
     top: 6vh;
     font-size: clamp(46px, 16vw, 92px);
     color: rgba(205, 235, 255, 0.085);
+  }
+}
+
+@media (max-width: 700px) {
+  .tag-master {
+    left: 40px;
+    top: -52px;
+  }
+
+  .tag-bachelor {
+    left: -10px;
+    top: 150px;
+  }
+
+  .flower-tag::before {
+    content: none;
   }
 }
 
@@ -660,9 +736,15 @@ body.no-motion.stage-close .monster-note {
     animation: none !important;
   }
 
-  body.stage-close .flower-combo-art {
+  body.stage-close .flower-svg {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+  }
+
+  .flower-entry:hover .flower-tag,
+  .flower-entry:focus-visible .flower-tag {
+    opacity: 1;
+    transform: none;
   }
 
 }

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manchen Gao</title>
-<link rel="stylesheet" href="scene.css?v=31">
+<link rel="stylesheet" href="scene.css?v=34">
 <link rel="stylesheet" href="cockpit.css?v=1">
 </head>
 <body class="stage-distant">
@@ -29,14 +29,79 @@
         <span class="region-mark"></span>
       </button>
 
-      <img class="flower-combo-art" src="assets/flower-d-vector.svg" alt="" aria-hidden="true">
-
-      <a class="garden-entry flower-entry flower-bachelor" href="bachelor/index.html" data-label="Bachelor" aria-label="Bachelor">
-        <span class="flower-hit" aria-hidden="true"></span>
+      <a class="garden-entry flower-entry flower-master" href="master/projects.html" aria-label="Master's work: open my master's projects">
+        <svg class="flower-svg" viewBox="0 0 160 262" aria-hidden="true">
+          <defs>
+            <filter id="crayon-m" x="-15%" y="-15%" width="130%" height="130%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="4" result="wobble"/>
+              <feDisplacementMap in="SourceGraphic" in2="wobble" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="edge"/>
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" seed="9" result="grain"/>
+              <feColorMatrix in="grain" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.7 0 0 0 -0.32" result="speck"/>
+              <feComposite in="speck" in2="edge" operator="in" result="speckIn"/>
+              <feMerge><feMergeNode in="edge"/><feMergeNode in="speckIn"/></feMerge>
+            </filter>
+          </defs>
+          <g class="flower-paint" filter="url(#crayon-m)">
+            <path d="M60 258 C52 222 76 204 66 172 S56 124 78 102 S96 80 95 68" fill="none" stroke="#ef7aa1" stroke-width="6.5" stroke-linecap="round"/>
+            <path d="M58 250 C52 222 73 204 64 174" fill="none" stroke="#ffb7cd" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
+            <g fill="#5b8fd8">
+              <ellipse cx="95" cy="98" rx="10" ry="33" transform="rotate(-68 95 62)"/>
+              <ellipse cx="95" cy="98" rx="10" ry="33" transform="rotate(-29 95 62)"/>
+              <ellipse cx="95" cy="98" rx="10" ry="33" transform="rotate(9 95 62)"/>
+              <ellipse cx="95" cy="98" rx="10" ry="33" transform="rotate(47 95 62)"/>
+              <ellipse cx="95" cy="98" rx="10" ry="33" transform="rotate(84 95 62)"/>
+            </g>
+            <g fill="#7fb0f0">
+              <ellipse cx="95" cy="96" rx="11" ry="32" transform="rotate(-86 95 62)"/>
+              <ellipse cx="95" cy="99" rx="11.5" ry="35" transform="rotate(-48 95 62)"/>
+              <ellipse cx="95" cy="100" rx="12" ry="36" transform="rotate(-10 95 62)"/>
+              <ellipse cx="95" cy="100" rx="12" ry="36" transform="rotate(28 95 62)"/>
+              <ellipse cx="95" cy="98" rx="11.5" ry="34" transform="rotate(66 95 62)"/>
+            </g>
+            <path d="M84 50 L78 30 M95 48 L96 23 M106 50 L114 31" stroke="#d6a020" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="78" cy="28" r="4.6" fill="#f3c53c"/>
+            <circle cx="96" cy="21" r="4.6" fill="#f3c53c"/>
+            <circle cx="115" cy="29" r="4.6" fill="#f3c53c"/>
+            <path d="M70 64 C72 46 118 44 120 64 C110 70 80 70 70 64Z" fill="#ee5a2b"/>
+            <circle cx="86" cy="58" r="1.6" fill="#ffa36a"/>
+            <circle cx="98" cy="54" r="1.4" fill="#ffa36a"/>
+            <circle cx="106" cy="60" r="1.6" fill="#ffa36a"/>
+            <circle class="flower-hitzone" cx="95" cy="72" r="48" fill="transparent"/>
+            <rect class="flower-hitzone" x="50" y="100" width="34" height="160" fill="transparent"/>
+          </g>
+        </svg>
+        <span class="flower-tag tag-master" aria-hidden="true"><span class="tag-kicker">my work</span><b>Master's</b><span class="tag-sub">6 projects &middot; open &rarr;</span></span>
       </a>
 
-      <a class="garden-entry flower-entry flower-master" href="master/projects.html" data-label="Master" aria-label="Master">
-        <span class="flower-hit" aria-hidden="true"></span>
+      <a class="garden-entry flower-entry flower-bachelor" href="bachelor/index.html" aria-label="Bachelor's years: open my bachelor's study and life">
+        <svg class="flower-svg" viewBox="0 0 120 152" aria-hidden="true">
+          <defs>
+            <filter id="crayon-b" x="-15%" y="-15%" width="130%" height="130%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="12" result="wobble"/>
+              <feDisplacementMap in="SourceGraphic" in2="wobble" scale="3" xChannelSelector="R" yChannelSelector="G" result="edge"/>
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" seed="2" result="grain"/>
+              <feColorMatrix in="grain" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.7 0 0 0 -0.32" result="speck"/>
+              <feComposite in="speck" in2="edge" operator="in" result="speckIn"/>
+              <feMerge><feMergeNode in="edge"/><feMergeNode in="speckIn"/></feMerge>
+            </filter>
+          </defs>
+          <g class="flower-paint" filter="url(#crayon-b)">
+            <path d="M30 148 C34 120 44 102 56 90 S72 64 76 54" fill="none" stroke="#9cbf4a" stroke-width="5.5" stroke-linecap="round"/>
+            <path d="M46 112 C36 100 26 104 22 96 C34 92 44 98 46 112Z" fill="#9cbf4a"/>
+            <g fill="#f0702a">
+              <ellipse cx="56" cy="33" rx="19" ry="23" transform="rotate(-38 56 33)"/>
+              <ellipse cx="97" cy="31" rx="19" ry="23" transform="rotate(34 97 31)"/>
+              <ellipse cx="58" cy="70" rx="16" ry="20" transform="rotate(36 58 70)"/>
+              <ellipse cx="96" cy="69" rx="16" ry="20" transform="rotate(-32 96 69)"/>
+            </g>
+            <path d="M48 24 C54 30 58 36 62 42 M104 22 C99 29 94 35 90 41" stroke="#d6541b" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".7"/>
+            <circle cx="77" cy="51" r="9.5" fill="#7cc79b"/>
+            <circle cx="74" cy="48" r="2.4" fill="#b7e8c9"/>
+            <circle class="flower-hitzone" cx="77" cy="51" r="44" fill="transparent"/>
+            <rect class="flower-hitzone" x="24" y="88" width="34" height="62" fill="transparent"/>
+          </g>
+        </svg>
+        <span class="flower-tag tag-bachelor" aria-hidden="true"><span class="tag-kicker">my years</span><b>Bachelor's</b><span class="tag-sub">study &amp; life &middot; open &rarr;</span></span>
       </a>
     </div>
   </section>
@@ -132,7 +197,7 @@
 <div class="hint" id="hint"></div>
 <div class="tooltip" id="tooltip"></div>
 
-<script src="scene.js?v=20"></script>
+<script src="scene.js?v=22"></script>
 <script src="cockpit.js?v=1"></script>
 </body>
 </html>

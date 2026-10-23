@@ -46,7 +46,10 @@
   function enterClose() {
     if (body.classList.contains('stage-close')) return;
     setStage('stage-close');
-    setHint('pick a flower');
+    setHint('pick a flower to open my work');
+    body.classList.add('tags-peek');
+    clearTimeout(enterClose.peekTimer);
+    enterClose.peekTimer = setTimeout(function () { body.classList.remove('tags-peek'); }, 4200);
     note.tabIndex = 0;
     startNotes(true);
   }
