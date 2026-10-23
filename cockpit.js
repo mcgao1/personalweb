@@ -22,6 +22,7 @@
     exit: 'See that EXIT? Click it and we fly home to the planet.',
     sweet: 'Shh. Sweet memories live here. Not open yet.',
     radio: 'SPACE FM is on. The apple knows every word.',
+    apple: 'Bleh. Do not poke the singer.',
     fish: 'Blub. The fish is my co-pilot. It is watching you.',
     danger1: 'I said do not press it.',
     danger2: 'That was twice. The bottle is starting to wobble.',
@@ -135,6 +136,7 @@
           if (fishLookX) { fishLookX.value = 0; fishLookY.value = 0; }
         }
       } catch (e) { fishLookX = fishLookY = null; }
+      startFishCopy();
     });
     makeRig('fridge', 'cv-fridge', 'fridge-reject.riv', { autoplay: false }, function (r) {
       fridgeAnim = r.animationNames && r.animationNames[0];
@@ -143,6 +145,41 @@
     setTimeout(function () {
       Object.keys(rigs).forEach(function (k) { crisp(rigs[k].r, rigs[k].canvas); });
     }, 1200);
+  }
+
+  // the fish artwork comes on a pink plate; draw each Rive frame onto a second canvas
+  // and drop the plate's pink fill and outline (bottom part of the artboard only), so
+  // just the fish sits in the bowl
+  let fishLoop = null;
+  function startFishCopy() {
+    const src = document.getElementById('cv-fish');
+    const out = document.getElementById('cv-fish-out');
+    if (!src || !out || fishLoop) return;
+    const ctx = out.getContext('2d', { willReadFrequently: true });
+    let last = 0;
+    function tick(now) {
+      fishLoop = requestAnimationFrame(tick);
+      if (!body.classList.contains('cockpit-open') || now - last < 33) return;
+      last = now;
+      const w = src.width;
+      const h = src.height;
+      if (!w || !h) return;
+      if (out.width !== w || out.height !== h) { out.width = w; out.height = h; }
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(src, 0, 0);
+      const y0 = Math.floor(h * 0.57);
+      const img = ctx.getImageData(0, y0, w, h - y0);
+      const d = img.data;
+      for (let i = 0; i < d.length; i += 4) {
+        if (!d[i + 3]) continue;
+        const r = d[i], g = d[i + 1], b = d[i + 2];
+        const pinkish = r > 90 && r - g > 40 && r - b > 20;
+        const inky = r < 75 && g < 75 && b < 75 && g - r < 18;
+        if (pinkish || inky) d[i + 3] = 0;
+      }
+      ctx.putImageData(img, 0, y0);
+    }
+    fishLoop = requestAnimationFrame(tick);
   }
 
   function shutFridge() {
@@ -362,12 +399,18 @@
       if (type === 'danger') { pressDanger(); return; }
       if (busy) return;
       say(copy[type]);
-      if (type === 'radio') {
-        show('apple', 'appleReveal');
-        clearTimeout(prop.appleTimer);
-        prop.appleTimer = setTimeout(function () { show('apple', 'appleIdle'); }, 2800);
-      }
     });
+  });
+
+  // poke the apple: tongue out for 3 s, then back to its idle song
+  const appleHit = cockpit.querySelector('.apple-hit');
+  let appleTimer = null;
+  if (appleHit) appleHit.addEventListener('click', function () {
+    if (busy) return;
+    say(copy.apple);
+    show('apple', 'appleReveal');
+    clearTimeout(appleTimer);
+    appleTimer = setTimeout(function () { show('apple', 'appleIdle'); }, 3000);
   });
 
   bubble.addEventListener('click', function () {

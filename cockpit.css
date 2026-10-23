@@ -947,3 +947,214 @@ body.cockpit-open .monster-note { pointer-events: none; }
   color: rgba(42, 32, 48, 0.55);
 }
 #cockpit .apple-slot { left: -44px; }
+
+/* ---------- apple sits on top of SPACE FM (measured: the apple fills x 38–77%, y 55–98% of its artboard) ---------- */
+#cockpit .apple-slot {
+  left: -96px;
+  bottom: 60px;
+  width: 270px;
+  height: 183px;
+  z-index: 2;
+}
+#cockpit .apple-hit {
+  position: absolute;
+  left: 38%;
+  top: 46%;
+  width: 40%;
+  height: 54%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+}
+#cockpit .apple-hit:focus-visible { outline: 2px dashed #1b1720; outline-offset: 2px; }
+
+/* ---------- fish without its plate, scaled up to fill the bowl ---------- */
+#cockpit .fish-src,
+#cockpit .fish-out {
+  position: absolute;
+  left: -28px;
+  top: -4px;
+  width: 216px;
+  height: 163px;
+  pointer-events: none;
+}
+#cockpit .fish-src { opacity: 0; }
+#cockpit .fish-out { z-index: 1; }
+#cockpit .fish-prop { overflow: visible; }
+
+/* ---------- hand-drawn pass: windshield, views, photo cards, seat ---------- */
+#cockpit .window-frame {
+  border: 16px solid #e6cde6;
+  box-shadow:
+    inset 0 0 0 4px #1b1720,
+    inset 0 0 0 10px #fff4e0,
+    inset 0 0 0 13px #1b1720,
+    0 14px 0 rgba(27, 23, 32, 0.9);
+  filter: url(#ck-crayon);
+}
+#cockpit .window-frame::before,
+#cockpit .window-frame::after {
+  border: 4px solid #1b1720;
+  background: #f9d7c4;
+  box-shadow: inset 0 0 0 7px #fff4e0;
+}
+
+#cockpit .window-world {
+  background: #fff4e0;
+  box-shadow: inset 0 0 30px rgba(27, 23, 32, 0.25);
+  filter: url(#ck-crayon);
+}
+
+#cockpit .scene-default {
+  background:
+    radial-gradient(circle at 48% 43%, #ffe07a 0 68px, #1b1720 69px 72px, transparent 73px),
+    linear-gradient(to bottom, #ffc6a1 0 30%, #ffad86 48%, #1b1720 48% 49%, #9edbe1 49% 100%);
+}
+#cockpit .scene-default::before {
+  background:
+    repeating-linear-gradient(174deg, transparent 0 16px, rgba(27, 23, 32, 0.55) 16px 18px, transparent 18px 38px);
+}
+#cockpit .scene-default::after {
+  background:
+    radial-gradient(ellipse at 19% 52%, #6f9f9a 0 8%, transparent 8.4%),
+    radial-gradient(ellipse at 35% 50%, #6f9f9a 0 6%, transparent 6.5%),
+    radial-gradient(ellipse at 78% 50%, #6f9f9a 0 8%, transparent 8.4%),
+    radial-gradient(ellipse at 90% 46%, #6f9f9a 0 5%, transparent 5.5%),
+    radial-gradient(ellipse at 16% 23%, #fff8ea 0 8%, transparent 8.5%),
+    radial-gradient(ellipse at 30% 20%, #fff8ea 0 7%, transparent 7.5%),
+    radial-gradient(ellipse at 70% 18%, #fff8ea 0 8%, transparent 8.5%),
+    radial-gradient(ellipse at 84% 24%, #fff8ea 0 7%, transparent 7.5%);
+  filter: drop-shadow(3px 3px 0 #1b1720);
+}
+
+#cockpit .scene-hill {
+  background:
+    linear-gradient(154deg, transparent 0 38%, rgba(27, 23, 32, 0.6) 39% 40.5%, transparent 41.5%),
+    repeating-linear-gradient(-21deg, #a9d48c 0 22px, #c3e3a6 23px 44px);
+  background-size: 100% 100%, 180px 120px;
+}
+#cockpit .scene-hill::before {
+  background:
+    radial-gradient(circle at 80% 18%, #ffe07a 0 40px, #1b1720 41px 43px, transparent 44px),
+    linear-gradient(to bottom, #bfe6f0, #d8f0dd 58%, transparent 59%);
+  mix-blend-mode: normal;
+  opacity: 0.9;
+}
+
+#cockpit .scene-future {
+  background:
+    repeating-linear-gradient(0deg, rgba(27, 23, 32, 0.08) 0 1px, transparent 1px 8px),
+    radial-gradient(circle at 50% 50%, rgba(255, 246, 178, 0.7), transparent 40%),
+    #cdb7e8;
+}
+#cockpit .scene-future::before {
+  color: #fff6b2;
+  -webkit-text-stroke: 3px #1b1720;
+  text-shadow: 6px 6px 0 #1b1720;
+}
+
+#cockpit .scene-exit {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), transparent 40%),
+    linear-gradient(to bottom, #c8f0cf, #a6e2b4);
+}
+#cockpit .scene-exit::before {
+  border: 4px solid #1b1720;
+  border-radius: 14px 10px 16px 12px;
+  background: #8fe6a1;
+  color: #1b1720;
+  box-shadow: 6px 6px 0 #1b1720;
+}
+
+#cockpit .scene-sweet {
+  background:
+    radial-gradient(circle at 28% 35%, rgba(255, 170, 210, 0.95), transparent 22%),
+    radial-gradient(circle at 74% 60%, rgba(160, 225, 245, 0.95), transparent 24%),
+    linear-gradient(140deg, #ffd6e8, #cdeaf6);
+}
+#cockpit .scene-sweet::before,
+#cockpit .scene-sweet::after {
+  border: 7px solid #fff8ea;
+  outline: 3px solid #1b1720;
+  box-shadow: 6px 6px 0 #1b1720;
+}
+
+#cockpit .specimen {
+  border: 3px solid #1b1720;
+  border-radius: 4px 6px 5px 3px;
+  padding: 9px 9px 24px;
+  background: #fff8ea;
+  box-shadow: 5px 6px 0 rgba(27, 23, 32, 0.85);
+  filter: url(#ck-crayon);
+}
+#cockpit .specimen::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -11px;
+  width: 54px;
+  height: 18px;
+  translate: -50% 0;
+  rotate: -4deg;
+  background: rgba(255, 186, 206, 0.85);
+  border: 1.5px solid rgba(27, 23, 32, 0.35);
+}
+#cockpit .future-cube::before { background: rgba(255, 224, 122, 0.85); }
+#cockpit .exit-cube::before { background: rgba(160, 230, 175, 0.85); }
+#cockpit .sweet-cube::before { background: rgba(170, 220, 245, 0.85); }
+#cockpit .specimen svg {
+  background: linear-gradient(#ffc6a1 0 42%, #9edbe1 43% 100%);
+  border: 3px solid #1b1720;
+}
+#cockpit .ui-layer .specimen:hover,
+#cockpit .ui-layer .specimen:focus-visible,
+#cockpit .ui-layer .specimen.is-locked {
+  border-color: #1b1720;
+  box-shadow: 7px 9px 0 rgba(27, 23, 32, 0.9), 0 0 0 5px rgba(255, 246, 178, 0.75);
+}
+#cockpit .tag {
+  border-width: 2px;
+  background: #fff6b2;
+  font-family: 'Segoe Print', 'Comic Sans MS', 'Gaegu', sans-serif;
+}
+
+#cockpit .seat,
+#cockpit .seat::after {
+  border: 4px solid #1b1720;
+  background: #f4b9c9;
+}
+#cockpit .seat {
+  filter: url(#ck-crayon) drop-shadow(5px 6px 0 #1b1720);
+}
+#cockpit .fish-src,
+#cockpit .fish-out {
+  left: -10px;
+  top: 4px;
+  width: 182px;
+  height: 137px;
+}
+#cockpit .fish-prop::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  left: 9px;
+  right: 9px;
+  bottom: 4px;
+  height: 34px;
+  border-top: 3px solid #1b1720;
+  border-radius: 46% 52% 44% 48% / 38% 30% 62% 70%;
+  background:
+    radial-gradient(circle at 18% 55%, #e6b980 0 4px, transparent 5px),
+    radial-gradient(circle at 42% 70%, #f2c9d6 0 3px, transparent 4px),
+    radial-gradient(circle at 66% 50%, #e6b980 0 5px, transparent 6px),
+    radial-gradient(circle at 84% 72%, #b9e3d6 0 3px, transparent 4px),
+    #f7e1b5;
+  filter: url(#ck-crayon);
+  pointer-events: none;
+}
+#cockpit .fish-src,
+#cockpit .fish-out { top: -6px; }
+#cockpit .fish-prop::after { height: 26px; bottom: 3px; }
