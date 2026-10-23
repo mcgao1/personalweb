@@ -64,11 +64,21 @@
     try { r.resizeDrawingSurfaceToCanvas(ratio); } catch (e) { try { r.resizeDrawingSurfaceToCanvas(); } catch (e2) {} }
   }
 
+  function rivBuffer(file) {
+    const b64 = window.RIVE_DATA && window.RIVE_DATA[file.replace(/\.riv$/, '')];
+    if (!b64) return null;
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes.buffer;
+  }
+
   function makeRig(key, canvasId, file, cfg, onLoad) {
     const canvas = document.getElementById(canvasId);
-    if (!canvas || !window.rive) return;
+    const buffer = rivBuffer(file);
+    if (!canvas || !window.rive || !buffer) return;
     const r = new window.rive.Rive(Object.assign({
-      src: 'assets/rive/' + file,
+      buffer: buffer,
       canvas: canvas,
       autoplay: true,
       layout: new window.rive.Layout({ fit: window.rive.Fit.Contain, alignment: window.rive.Alignment.Center }),
@@ -80,8 +90,30 @@
     rigs[key] = { r: r, canvas: canvas, cfg: cfg };
   }
 
+  // the runtime (wasm bundled in) and the .riv files are local scripts, so this also
+  // works offline and when index.html is opened straight from disk
+  let riveLoading = null;
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      const tag = document.createElement('script');
+      tag.src = src;
+      tag.onload = resolve;
+      tag.onerror = reject;
+      document.head.appendChild(tag);
+    });
+  }
+
   function startRive() {
-    if (riveStarted || !window.rive) return;
+    if (riveStarted) return;
+    if (!window.rive || !window.RIVE_DATA) {
+      if (!riveLoading) {
+        riveLoading = Promise.all([
+          window.rive ? null : loadScript('assets/vendor/rive-canvas-single.js'),
+          window.RIVE_DATA ? null : loadScript('assets/rive/rive-data.js?v=1')
+        ]).then(startRive, function () { riveLoading = null; });
+      }
+      return;
+    }
     riveStarted = true;
     const SM = { stateMachines: 'State Machine 1' };
     makeRig('appleIdle', 'cv-apple-idle', 'apple-idle.riv', SM);

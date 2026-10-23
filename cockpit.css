@@ -831,3 +831,21 @@ body.cockpit-open .monster-note { pointer-events: none; }
   width: 180px;
   height: 186px;
 }
+
+/* bigger, so the Rive props actually read as characters */
+#cockpit .apple-slot {
+  left: -40px;
+  bottom: 30px;
+  width: 210px;
+  height: 152px;
+}
+#cockpit .fish-prop {
+  width: 168px;
+  height: 116px;
+}
+#cockpit .bottle-slot {
+  left: -70px;
+  bottom: 40px;
+  width: 230px;
+  height: 238px;
+}
