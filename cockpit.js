@@ -212,7 +212,12 @@
     void cockpit.offsetHeight;
     requestAnimationFrame(function () { requestAnimationFrame(function () { cockpit.style.transition = ''; }); });
     const fade = flash.animate([{ opacity: 1 }, { opacity: 0 }], { duration: fadeMs, easing: 'ease-out', fill: 'forwards' });
-    function clearFlash() { flash.style.opacity = '0'; fade.cancel(); }
+    function clearFlash() {
+      flash.getAnimations().forEach(function (a) { a.cancel(); });
+      flash.style.opacity = '0';
+      flash.className = 'ck-flash';
+      document.querySelectorAll('.ck-debris').forEach(function (d) { d.remove(); });
+    }
     fade.onfinish = clearFlash;
     setTimeout(clearFlash, fadeMs + 150);
   }
@@ -223,14 +228,14 @@
     lockedScene = 'exit';
     setScene('exit');
     say(copy.exiting);
-    if (RM) { flash.className = 'ck-flash exit-light'; flash.style.opacity = '1'; landOnPlanet(1); return; }
+    if (RM) { flash.className = 'ck-flash on exit-light'; flash.style.opacity = '1'; landOnPlanet(1); return; }
     cockpit.classList.add('exiting');
     setTimeout(function () {
       const rig = rigs.fridge;
       if (rig && fridgeAnim) { try { rig.r.play(fridgeAnim); } catch (e) {} }
     }, 520);
     setTimeout(function () {
-      flash.className = 'ck-flash exit-light';
+      flash.className = 'ck-flash on exit-light';
       flash.getAnimations().forEach(function (a) { a.cancel(); });
       flash.animate([
         { opacity: 1, clipPath: 'circle(0% at 50% 31%)' },
@@ -275,7 +280,7 @@
     const b = dangerBtn.getBoundingClientRect();
     const cx = b.left + b.width / 2;
     const cy = b.top + b.height / 2;
-    flash.className = 'ck-flash boom-light';
+    flash.className = 'ck-flash on boom-light';
     flash.style.setProperty('--bx', cx + 'px');
     flash.style.setProperty('--by', cy + 'px');
     flash.getAnimations().forEach(function (a) { a.cancel(); });
@@ -324,7 +329,7 @@
     setTimeout(function () {
       cockpit.classList.remove('shake-hard');
       flash.getAnimations().forEach(function (a) { a.cancel(); });
-      flash.className = 'ck-flash blackout';
+      flash.className = 'ck-flash on blackout';
       flash.animate([{ opacity: 0.85 }, { opacity: 1 }], { duration: 300, fill: 'forwards' });
     }, 1250);
 
