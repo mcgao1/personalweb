@@ -239,47 +239,16 @@
     nextNote(true);
   });
 
-  const memoryStage = document.getElementById('memory-stage');
-  const bubble = document.getElementById('memory-bubble');
-  const cubeLines = {
-    hill: 'Hold on tight. That slope was steep.',
-    future: 'Reading driver file: 2002. Not yet.',
-    exit: 'See that EXIT? Almost through.',
-    sweet: 'Shh. Sweet memories, not yet.'
-  };
-
-  function setMemory(open) {
-    body.classList.toggle('memory-open', open);
-    if (!open) { memoryStage.removeAttribute('data-active'); bubble.classList.remove('visible'); }
-  }
-
-  document.querySelectorAll('.cube').forEach(function (cube) {
-    const key = cube.dataset.cube;
-    function on() {
-      memoryStage.setAttribute('data-active', key);
-      bubble.textContent = cubeLines[key];
-      bubble.classList.add('visible');
-    }
-    function off() {
-      memoryStage.removeAttribute('data-active');
-      bubble.classList.remove('visible');
-    }
-    cube.addEventListener('pointerenter', on);
-    cube.addEventListener('focus', on);
-    cube.addEventListener('pointerleave', off);
-    cube.addEventListener('blur', off);
-  });
-
   window.addEventListener('wheel', function (event) {
     wheelDelta += event.deltaY;
 
     if (wheelDelta < -45) {
       wheelDelta = 0;
-      if (body.classList.contains('memory-open')) setMemory(false);
+      if (body.classList.contains('cockpit-open')) body.classList.remove('cockpit-open');
       else enterClose();
     } else if (wheelDelta > 45 && body.classList.contains('stage-close')) {
       wheelDelta = 0;
-      setMemory(true);
+      body.classList.add('cockpit-open');
     }
   }, { passive: true });
 
