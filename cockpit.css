@@ -709,3 +709,125 @@ body.cockpit-open .monster-note { pointer-events: none; }
   font: inherit; font-size: 12px; cursor: pointer; letter-spacing: 0.08em;
 }
 #cockpit .ck-back:hover { color: #f7f2df; }
+
+/* ---------- Rive props (apple on the radio, fish co-pilot, dark-matter bottle) ---------- */
+#cockpit .radio-wrap,
+#cockpit .danger-wrap {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+#cockpit .rive-slot {
+  position: absolute;
+  pointer-events: none;
+}
+#cockpit .rive-cv {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+#cockpit .rive-cv.is-on { opacity: 1; }
+#cockpit .apple-slot {
+  left: 6px;
+  bottom: 52px;
+  width: 112px;
+  height: 78px;
+}
+#cockpit .fish-prop {
+  position: relative;
+  width: 132px;
+  height: 92px;
+  padding: 0;
+  border-radius: 46px 46px 16px 16px;
+  background: radial-gradient(ellipse at 50% 85%, rgba(121, 221, 255, 0.28), transparent 65%), #11141c;
+  overflow: hidden;
+}
+#cockpit .danger-wrap { gap: 6px; }
+#cockpit .bottle-slot {
+  left: -6px;
+  bottom: 70px;
+  width: 92px;
+  height: 96px;
+}
+#cockpit .danger-wrap.p1 .danger::before { background: #ff6a2b; }
+#cockpit .danger-wrap.p2 .danger::before { background: #ffd23a; animation: ck-dangerPulse 0.4s steps(2) infinite; }
+@keyframes ck-dangerPulse { 50% { filter: brightness(1.8); } }
+
+/* ---------- Exit portal: the fridge door opens and pours light ---------- */
+#cockpit .ck-portal {
+  position: absolute;
+  left: 50%;
+  top: 31%;
+  z-index: 4;
+  width: min(30vw, 300px);
+  aspect-ratio: 431 / 419;
+  translate: -50% -50%;
+  opacity: 0;
+  transform: scale(0.2) rotate(-14deg);
+  pointer-events: none;
+}
+#cockpit .ck-portal canvas { width: 100%; height: 100%; display: block; }
+#cockpit.exiting .ck-portal {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  transition: transform 0.55s cubic-bezier(0.2, 1.5, 0.4, 1), opacity 0.2s ease;
+}
+
+.ck-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0;
+}
+.ck-flash.exit-light {
+  background: radial-gradient(circle at 50% 34%, #ffffff 0 18%, #eaffd8 38%, #7dff5a 70%, #2b7a2b);
+}
+.ck-flash.boom-light {
+  background: radial-gradient(circle at var(--bx, 50%) var(--by, 80%), #fff 0 10%, #ffe45e 26%, #ff7b26 48%, #2a0606 82%);
+}
+.ck-flash.blackout { background: #05070f; }
+
+.ck-debris {
+  position: fixed;
+  z-index: 91;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+#cockpit.shake-hard .stage { animation: ck-shakeHard 90ms steps(2) infinite; }
+@keyframes ck-shakeHard {
+  25% { transform: translate(-14px, 8px) rotate(-1.2deg); }
+  75% { transform: translate(14px, -8px) rotate(1.2deg); }
+}
+
+@media (max-width: 860px) {
+  #cockpit .fish-prop { width: 104px; height: 74px; }
+  #cockpit .apple-slot { width: 96px; height: 66px; bottom: 50px; }
+}
+
+@media (min-width: 861px) {
+  #cockpit .future-cube { left: 1.5%; bottom: 5%; }
+  #cockpit .props { left: 36.8%; }
+}
+#cockpit .bottle-slot {
+  left: -26px;
+  bottom: 62px;
+  width: 128px;
+  height: 132px;
+}
+#cockpit .apple-slot {
+  left: -14px;
+  bottom: 34px;
+  width: 160px;
+  height: 116px;
+}
+#cockpit .bottle-slot {
+  left: -50px;
+  bottom: 44px;
+  width: 180px;
+  height: 186px;
+}
