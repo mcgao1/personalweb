@@ -14,31 +14,67 @@
   let alertTimer = null;
   let busy = false;
   let presses = 0;
+  let noteIndex = 0;
+  let noteTimer = null;
+  let fishBubbleTimer = null;
+
+  const notes = [
+    SiteLanguage.text('The fish insisted on coming.', "那条鱼坚持要跟来。"),
+    SiteLanguage.text('Somewhere between here and whatever comes next.', "在这里和下一站之间。"),
+    SiteLanguage.text('We packed a few things. Mostly memories.', "带了几样东西。大多是回忆。"),
+    SiteLanguage.text('No arrival time yet.', "还没定什么时候到。")
+  ];
 
   const copy = {
-    none: 'Hover a floating photo. The windshield changes its weather.',
-    hill: 'Hold on tight. That slope up ahead is a big one. Click to climb it.',
-    future: 'Loading driver file: 2002. The future is still being written.',
-    exit: 'See that EXIT? Click it and we fly home to the planet.',
-    sweet: 'Shh. Sweet memories live here. Not open yet.',
-    radio: 'SPACE FM is on. The apple knows every word.',
-    apple: 'Bleh. Do not poke the singer.',
-    fish: 'Blub. The fish is my co-pilot. It is watching you.',
-    danger1: 'I said do not press it.',
-    danger2: 'That was twice. The bottle is starting to wobble.',
-    danger3: 'BOOM.',
-    exiting: 'Exit found. Hold on to something.'
+    hill: SiteLanguage.text('I remember it being steeper.', "记得那个坡更陡来着。"),
+    future: SiteLanguage.text('Still figuring this one out.', "这件事还在想。"),
+    exit: SiteLanguage.text('A way out. Or a way into something else.', "一个出口。也可能是别处的入口。"),
+    sweet: SiteLanguage.text('Keeping these for no particular reason.', "这些东西，就这么留着了。"),
+    radio: SiteLanguage.text('Same song. Again.', "又是同一首歌。"),
+    apple: SiteLanguage.text('You interrupted the good part.', "你刚好打断了最精彩的地方。"),
+    fish: SiteLanguage.text('It has strong opinions about the route.', "它对路线很有意见。"),
+    fishClick: SiteLanguage.text('Fine. You navigate.', "好吧。你来导航。"),
+    bottle: SiteLanguage.text('Probably best left unopened.', "这瓶还是别开了。"),
+    danger1: SiteLanguage.text('That was definitely a button.', "那确实是个按钮。"),
+    danger2: SiteLanguage.text('The fish would like to leave.', "那条鱼想下船了。"),
+    danger3: SiteLanguage.text('Well.', "嗯……"),
+    exiting: SiteLanguage.text('A way out. Or a way into something else.', "一个出口。也可能是别处的入口。")
   };
 
   const flash = document.createElement('div');
   flash.className = 'ck-flash';
   document.body.appendChild(flash);
 
-  function say(text) { bubble.textContent = text; }
+  function scheduleNote() {
+    clearTimeout(noteTimer);
+    if (!body.classList.contains('cockpit-open') || document.hidden || busy) return;
+    noteTimer = setTimeout(function () {
+      const occupied = cockpit.querySelector('.specimen:hover, .specimen:focus-visible, .prop:hover, .prop:focus-visible, .apple-hit:hover, .apple-hit:focus-visible, .bottle-slot:hover');
+      if (lockedScene || occupied) { scheduleNote(); return; }
+      nextNote();
+    }, 11000);
+  }
+
+  function say(text) {
+    if (bubble.textContent !== text) {
+      bubble.textContent = text;
+      bubble.getAnimations().forEach(function (a) { a.cancel(); });
+      if (!RM) bubble.animate([
+        { opacity: 0, transform: 'translateY(4px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ], { duration: 650, easing: 'ease-out' });
+    }
+    scheduleNote();
+  }
+
+  function nextNote() {
+    noteIndex = (noteIndex + 1) % notes.length;
+    say(notes[noteIndex]);
+  }
 
   function setScene(name) {
     cockpit.dataset.active = name || 'none';
-    say(copy[name] || copy.none);
+    say(copy[name] || notes[noteIndex]);
     specimens.forEach(function (item) {
       item.classList.toggle('is-locked', item.dataset.scene === name && lockedScene === name);
     });
@@ -48,7 +84,7 @@
   }
 
   function clearScene() {
-    if (!lockedScene && !busy) setScene('none');
+    if (!busy) setScene(lockedScene || 'none');
   }
 
   /* ---------- Rive props, created the first time the cockpit opens ---------- */
@@ -206,13 +242,13 @@
   }
 
   new MutationObserver(function () {
-    if (body.classList.contains('cockpit-open')) startRive();
+    if (body.classList.contains('cockpit-open')) { startRive(); scheduleNote(); }
     else resetCockpit();
   }).observe(body, { attributes: true, attributeFilter: ['class'] });
 
   window.addEventListener('pointermove', function (e) {
     if (!fishLookX || !body.classList.contains('cockpit-open')) return;
-    const box = document.getElementById('cv-fish').getBoundingClientRect();
+    const box = document.getElementById('cv-fish-out').getBoundingClientRect();
     if (!box.width) return;
     const ex = box.left + box.width * 0.335;
     const ey = box.top + box.height * 0.29;
@@ -231,6 +267,10 @@
     busy = false;
     presses = 0;
     lockedScene = null;
+    clearTimeout(noteTimer);
+    clearTimeout(fishBubbleTimer);
+    const fish = cockpit.querySelector('.fish-prop');
+    if (fish) fish.classList.remove('is-bubbling');
     cockpit.classList.remove('exiting', 'shake-hard', 'alerting');
     if (dangerWrap) dangerWrap.classList.remove('p1', 'p2');
     show('bottle', 'bottleIdle');
@@ -349,7 +389,7 @@
 
     setTimeout(function () {
       flash.animate([{ opacity: 0 }, { opacity: 1 }, { opacity: 0.85 }], { duration: 420, fill: 'forwards' });
-      const parts = cockpit.querySelectorAll('.window-world, .window-frame, .dashboard, .seat, .monster, .props, .specimen, .title-scribble, .bubble, .tap-note, .ck-back');
+      const parts = cockpit.querySelectorAll('.window-world, .window-frame, .dashboard, .seat, .monster, .props, .specimen, .title-scribble, .bubble, .ck-back');
       parts.forEach(function (el) {
         const base = getComputedStyle(el).transform;
         const from = base === 'none' ? '' : base;
@@ -387,20 +427,41 @@
     item.addEventListener('click', function () {
       if (busy) return;
       if (name === 'exit') { exitHome(); return; }
-      if (links[name]) { window.location.href = links[name]; return; }
+      if (links[name]) { window.location.href = SiteLanguage.url(links[name]); return; }
       lockedScene = lockedScene === name ? null : name;
       setScene(lockedScene || name);
     });
   });
 
+  function describeProp(el, text) {
+    function describe() { if (!busy) say(text); }
+    el.addEventListener('pointerenter', describe);
+    el.addEventListener('focus', describe);
+    el.addEventListener('pointerleave', scheduleNote);
+    el.addEventListener('blur', scheduleNote);
+  }
+
   cockpit.querySelectorAll('.prop').forEach(function (prop) {
+    const type = prop.dataset.prop;
+    if (copy[type]) describeProp(prop, copy[type]);
     prop.addEventListener('click', function () {
-      const type = prop.dataset.prop;
       if (type === 'danger') { pressDanger(); return; }
       if (busy) return;
+      if (type === 'fish') {
+        say(copy.fishClick);
+        prop.classList.remove('is-bubbling');
+        void prop.offsetWidth;
+        prop.classList.add('is-bubbling');
+        clearTimeout(fishBubbleTimer);
+        fishBubbleTimer = setTimeout(function () { prop.classList.remove('is-bubbling'); }, 2200);
+        return;
+      }
       say(copy[type]);
     });
   });
+
+  const bottle = cockpit.querySelector('.bottle-slot');
+  if (bottle) describeProp(bottle, copy.bottle);
 
   // poke the apple: tongue out for 3 s, then back to its idle song
   const appleHit = cockpit.querySelector('.apple-hit');
@@ -415,16 +476,15 @@
 
   bubble.addEventListener('click', function () {
     if (busy) return;
-    const order = ['hill', 'future', 'exit', 'sweet'];
-    const next = order[(order.indexOf(cockpit.dataset.active) + 1) % order.length] || 'hill';
-    lockedScene = next;
-    setScene(next);
+    nextNote();
   });
+
+  document.addEventListener('visibilitychange', scheduleNote);
 
   const back = cockpit.querySelector('#ck-back');
   if (back) back.addEventListener('click', function () {
     body.classList.remove('cockpit-open');
   });
 
-  if (body.classList.contains('cockpit-open')) startRive();
+  if (body.classList.contains('cockpit-open')) { startRive(); scheduleNote(); }
 })();
