@@ -3,125 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bachelor Years</title>
-<link rel="stylesheet" href="bachelor.css">
+<title data-zh="本科那几年">Bachelor Years</title>
+<link rel="stylesheet" href="../poster-lettering.css?v=1">
+<link rel="stylesheet" href="bachelor.css?v=4">
+<script src="../poster-lettering.js?v=1" defer></script>
+<script src="project-sparks.js?v=2" defer></script>
+
+<link rel="stylesheet" href="../site-language.css?v=1">
+<script src="../site-language.js?v=1"></script>
 </head>
 <body>
 
-<div class="grain"></div>
-<a class="back" href="../index.html">&larr; back to the planet</a>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="poster-ink" x="-7%" y="-7%" width="114%" height="114%">
+    <feTurbulence type="fractalNoise" baseFrequency=".064" numOctaves="2" seed="12" result="edge-noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="edge-noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<div class="bachelor-sky" aria-hidden="true">
+  <span class="bachelor-orbit"></span>
+  <span class="bachelor-spark" style="--x:17%;--y:20%;--size:17px;--spark:var(--lime);--tilt:-12deg"></span>
+  <span class="bachelor-spark" style="--x:87%;--y:16%;--size:27px;--tilt:18deg"></span>
+  <span class="bachelor-spark" style="--x:92%;--y:64%;--size:14px;--spark:var(--lime)"></span>
+  <span class="bachelor-spark" style="--x:12%;--y:77%;--size:21px;--tilt:-7deg"></span>
+  <span class="bachelor-spark" style="--x:75%;--y:87%;--size:12px"></span>
+</div>
+<a class="back" href="../index.html" data-poster-lettering data-zh="← 回到星球">&larr; back to the planet</a>
 
 <div class="hero-16-9">
   <div class="hero-text">
-    <div class="eyebrow" id="eyebrow">NANJING AGRICULTURAL UNIVERSITY, 2020&ndash;2024</div>
+    <div class="eyebrow" data-poster-lettering data-zh="南京农业大学，2020–2024">NANJING AGRICULTURAL UNIVERSITY, 2020&ndash;2024</div>
     <h1>
-      <span class="line"><span>Before the Master's,</span></span>
-      <span class="line"><span>there was the Bachelor's.</span></span>
+      <span class="line" data-poster-lettering data-zh="在读硕士之前，">Before the Master's,</span>
+      <span class="line" data-poster-lettering data-zh="还有本科那几年。">there was the Bachelor's.</span>
     </h1>
-    <p class="lead" id="lead">Four years of ecology coursework, a thesis on earthworms, a club built around One Health, and a few things that had nothing to do with any of that.</p>
+    <p class="lead" data-zh="四年的生态学课程、一篇关于蚯蚓的论文、一个以「同一健康」为主题的社团，还有一些与这些全都无关的事。">Four years of ecology coursework, a thesis on earthworms, a club built around One Health, and a few things that had nothing to do with any of that.</p>
   </div>
-  <div class="hero-art" aria-hidden="true">
-    <svg viewBox="0 0 320 320">
-      <circle cx="160" cy="160" r="150" fill="none" stroke="#d9a03d" stroke-width="1.5" opacity="0.3"/>
-      <circle cx="160" cy="160" r="110" fill="none" stroke="#6a9b4f" stroke-width="1.5" opacity="0.3"/>
-      <g id="heroLeaves"></g>
-    </svg>
+  <div class="hero-art">
+    <img src="assets/earthworm-beaker-planet.webp" width="960" height="960" alt="A giant yellow earthworm and a green beaker on a little orange planet." data-zh-alt="一条黄色大蚯蚓和一个绿色烧杯站在橙色小星球上。">
   </div>
 </div>
 
 <div class="timeline-section">
-  <div class="deco-leaf deco-1"></div>
-  <div class="deco-leaf deco-2"></div>
-  <div class="deco-leaf deco-3"></div>
-  <div class="deco-leaf deco-4"></div>
-
   <div class="timeline">
-    <div class="timeline-line">
-      <svg viewBox="0 0 3 100" preserveAspectRatio="none">
-        <path id="growLine" d="M1.5 0 L1.5 100" stroke="#6a9b4f" stroke-width="3" fill="none" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
-      </svg>
-    </div>
+    <div class="timeline-line" aria-hidden="true"></div>
 
     <a class="node featured" id="node-1" href="project-estrogens.html">
       <span class="node-dot"></span>
       <div class="node-card">
-        <div class="node-tag">One Health Club &middot; First Place, 2023</div>
-        <div class="node-title">Destigmatizing "Environmental Estrogen"</div>
-        <p class="node-desc">Led a 5-person team through a research-and-outreach challenge on gender bias in toxicology: consulted a scholar in the field, surveyed 100+ students, made two science videos, and won first place.</p>
+        <div class="node-tag" data-zh="同一健康社团 · 2023 年一等奖">One Health Club &middot; First Place, 2023</div>
+        <div class="node-title" data-zh="给「环境雌激素」去污名">Destigmatizing "Environmental Estrogen"</div>
+        <p class="node-desc" data-zh="带领五人团队参加一项关于毒理学性别偏见的研究与科普挑战。团队访谈了该领域的一位学者，调查了 100 多名学生，制作了两支科普视频，并获得一等奖。">Led a 5-person team through a research-and-outreach challenge on gender bias in toxicology: consulted a scholar in the field, surveyed 100+ students, made two science videos, and won first place.</p>
       </div>
     </a>
 
     <a class="node" id="node-2" href="project-thesis.html">
       <span class="node-dot"></span>
       <div class="node-card">
-        <div class="node-tag">Bachelor's thesis &middot; 2024</div>
-        <div class="node-title">What Sweeteners Do to Earthworms</div>
-        <p class="node-desc">An ecotoxicology thesis on how aspartame and acesulfame potassium affect earthworm survival and antioxidant enzyme activity.</p>
+        <div class="node-tag" data-zh="本科毕业论文 · 2024">Bachelor's thesis &middot; 2024</div>
+        <div class="node-title" data-zh="甜味剂对蚯蚓有什么影响？">What Sweeteners Do to Earthworms</div>
+        <p class="node-desc" data-zh="一项生态毒理学研究，关注阿斯巴甜和安赛蜜如何影响蚯蚓存活及抗氧化酶活性。">An ecotoxicology thesis on how aspartame and acesulfame potassium affect earthworm survival and antioxidant enzyme activity.</p>
       </div>
     </a>
 
     <a class="node" id="node-3" href="onehealthclub.html">
       <span class="node-dot"></span>
       <div class="node-card">
-        <div class="node-tag">One Health Club &middot; 2021&ndash;2023</div>
-        <div class="node-title">Everything Else in the Club</div>
-        <p class="node-desc">A global food-energy-water debate course, a World Rabies Day campaign I helped organize, and two international online exchange programs.</p>
-        <p class="node-sections">Course 4880 &middot; Rabies Day campaign &middot; Wageningen &amp; Wisconsin exchanges</p>
+        <div class="node-tag" data-zh="同一健康社团 · 2021–2023">One Health Club &middot; 2021&ndash;2023</div>
+        <div class="node-title" data-zh="社团里的其他事">Everything Else in the Club</div>
+        <p class="node-desc" data-zh="一门讨论全球粮食、能源与水的辩论课、一场参与组织的世界狂犬病日活动，以及两次国际线上交流。">A global food-energy-water debate course, a World Rabies Day campaign I helped organize, and two international online exchange programs.</p>
+        <p class="node-sections" data-zh="4880 课程 · 狂犬病日活动 · 瓦赫宁根与威斯康星交流">Course 4880 &middot; Rabies Day campaign &middot; Wageningen &amp; Wisconsin exchanges</p>
       </div>
     </a>
 
     <a class="node" id="node-4" href="undergrad-life.html">
       <span class="node-dot"></span>
       <div class="node-card">
-        <div class="node-tag">Life outside the lab</div>
-        <div class="node-title">Undergrad Life</div>
-        <p class="node-desc">Basketball, a favorite essay on why same-sex behavior persists in evolution, and two field practicums: biomass energy near Nanjing, and ecology across Shanghai, Dafeng and Sihong.</p>
-        <p class="node-sections">Basketball &middot; a favorite paper &middot; two field internships</p>
+        <div class="node-tag" data-zh="实验室之外">Life outside the lab</div>
+        <div class="node-title" data-zh="本科生活">Undergrad Life</div>
+        <p class="node-desc" data-zh="篮球、一篇关于动物同性行为为何在演化中持续存在的文章，以及两次野外实习：南京周边的生物质能源考察，和上海、大丰、泗洪的生态实习。">Basketball, a favorite essay on why same-sex behavior persists in evolution, and two field practicums: biomass energy near Nanjing, and ecology across Shanghai, Dafeng and Sihong.</p>
+        <p class="node-sections" data-zh="篮球 · 一篇喜欢的文章 · 两次野外实习">Basketball &middot; a favorite paper &middot; two field internships</p>
       </div>
     </a>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script>
-  // a few small leaves drifting in the hero circles, matching the
-  // rest of the site's leaf vocabulary
-  const leafGroup = document.getElementById('heroLeaves');
-  const leafColors = ['#d9a03d', '#e6b85c', '#6a9b4f', '#8bb96e'];
-  for (let i = 0; i < 5; i++) {
-    const angle = (i / 5) * Math.PI * 2;
-    const r = 80 + Math.random() * 50;
-    const cx = 160 + Math.cos(angle) * r;
-    const cy = 160 + Math.sin(angle) * r;
-    const leaf = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
-    leaf.setAttribute('cx', cx);
-    leaf.setAttribute('cy', cy);
-    leaf.setAttribute('rx', 14 + Math.random() * 8);
-    leaf.setAttribute('ry', (14 + Math.random() * 8) * 0.55);
-    leaf.setAttribute('fill', leafColors[i % leafColors.length]);
-    leaf.setAttribute('opacity', '0.85');
-    leaf.setAttribute('transform', 'rotate(' + (Math.random() * 360) + ' ' + cx + ' ' + cy + ')');
-    leafGroup.appendChild(leaf);
-  }
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!reduceMotion && window.gsap) {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-    tl.to('#eyebrow', { opacity: 1, duration: 0.5 })
-      .to('.hero-text h1 .line span', { y: '0%', duration: 0.7, stagger: 0.12 }, '-=0.2')
-      .to('.hero-text .lead', { opacity: 1, duration: 0.6 }, '-=0.3')
-      .from('#heroLeaves ellipse', { scale: 0, transformOrigin: 'center', duration: 0.5, stagger: 0.08, ease: 'back.out(2)' }, '-=0.4')
-      .to('#growLine', { strokeDashoffset: 0, duration: 1.6, ease: 'power2.inOut' }, '-=0.2')
-      .to('.node', { opacity: 1, y: 0, duration: 0.6, stagger: 0.28 }, '-=1.5')
-      .to('.deco-leaf', { opacity: 1, duration: 0.8, stagger: 0.15 }, '-=1.2');
-  } else {
-    document.querySelectorAll('.eyebrow, .hero-text .lead, .node, .hero-text h1 .line span, .deco-leaf')
-      .forEach(function (el) { el.style.opacity = 1; el.style.transform = 'none'; });
-    const line = document.getElementById('growLine');
-    if (line) line.style.strokeDashoffset = 0;
-  }
-</script>
 </body>
 </html>

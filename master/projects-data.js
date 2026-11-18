@@ -1,9 +1,11 @@
 window.PROJECTS = [
   {
     id: 'thesis',
-    title: 'Investment Feasibility of BIPV Across High-Rise Clusters in Kunming',
+    title: "Why did more solar panels make for a worse investment in sunny Kunming?",
+    titleZh: "昆明阳光这么好，为什么光伏铺多了反而亏钱？",
     subtitle: "Master's thesis · Dec 2025 – Jul 2026",
-    tagline: 'Does building-integrated solar actually pay off? It depends on one variable most people ignore.',
+    tagline: "How roof exposure and deployment area changed the investment case across four office clusters.",
+    taglineZh: "在四组办公楼群里，安装面积和互相遮挡如何改变建筑光伏的投资结果？",
     background: "This was my master's thesis. Building-integrated photovoltaics (BIPV) is often pitched as the answer for decarbonising dense cities, but nobody had systematically quantified what happens to the investment case when tall buildings sit close together and shade each other. That's exactly the situation in Kunming's high-rise office clusters.",
     process: [
       'Modelled four real high-rise clusters in central Kunming (including Hanglong, Qicai, Tongde and Wanda) in 3D and ran solar-radiation simulations to find out how much light each building actually receives once mutual shading is accounted for.',
@@ -23,8 +25,10 @@ window.PROJECTS = [
   {
     id: 'greenspaces',
     title: 'Green Spaces in Eindhoven: Beyond Park Size',
+    titleZh: "埃因霍温的绿地：公园大小之外",
     subtitle: 'Course project · Nov 2025 – Feb 2026 · with Alexandra Alexiou',
     tagline: 'Everyone assumes bigger parks are more loved. The data says not really.',
+    taglineZh: "公园越大，大家就越喜欢吗？数据给出了不一样的答案。",
     background: 'A two-person project for a Data Analytics for Sustainability course. We wanted to find out what actually makes a park popular with Eindhoven residents: is it size, or something else? I led the sentiment and emotion analysis, the R pipeline, and the final report/website; Alexandra led the spatial-data side.',
     process: [
       'Scraped Dutch news coverage (2024–2026, via LexisNexis) mentioning 7 Eindhoven parks and built an R sentiment-analysis pipeline, going beyond positive/negative into finer emotion dimensions (valence, arousal, dominance).',
@@ -42,8 +46,10 @@ window.PROJECTS = [
   {
     id: 'sdg',
     title: 'SDG Challenge: Sustainable Commuting for Healthcare Staff, Eindhoven',
+    titleZh: "埃因霍温医护人员的可持续通勤",
     subtitle: 'Sep 2025 – Jan 2026 · team of 7',
     tagline: "How do you get hospital staff to actually bike or carpool? Preaching sustainability doesn't work, the incentive design has to.",
+    taglineZh: "怎样让医护人员更愿意骑车或拼车上班？从积分怎么发说起。",
     background: 'Commissioned by Brainport Bereikbaar, Archipel and Vitalis to design a scheme that would meaningfully increase green commuting among staff at two healthcare providers in Eindhoven, built to plug into the existing Trappers commuting app.',
     process: [
       'Designed a distance-tiered, CO₂-based points system (4 distance bands, 60–100% multipliers) so the reward scales with how much someone actually reduces emissions by switching.',
@@ -57,9 +63,11 @@ window.PROJECTS = [
   },
   {
     id: 'greenscreen',
-    title: 'Supplying the Dutch Media Industry with Zero Emissions',
+    title: "Should a film fleet go electric all at once?",
+    titleZh: "影视运输车队的电动化，该一步到位吗？",
     subtitle: 'GreenScreen × BFF · Mar 2025 – Jul 2025 · team of 6',
-    tagline: 'Can 92 vehicles from 9 suppliers actually hit zero-emission targets by 2035 without losing money?',
+    tagline: "A 92-vehicle model compares the costs and emissions of two electrification timelines.",
+    taglineZh: "比较 92 辆车集中换车与分批换车的排放和成本。",
     background: "A real client project for BFF (the Dutch media-industry vehicle-fleet association) and the GreenScreen sustainability initiative, assessing whether and how media-industry supplier fleets can meet Amsterdam's 2030 zero-emission zone rules.",
     process: [
       'Designed and ran a fleet survey across 9 suppliers and 92 vehicles, then cleaned and structured the resulting dataset.',
@@ -78,8 +86,10 @@ window.PROJECTS = [
   {
     id: 'policybrief',
     title: 'From Regional Strengths to National Impact',
+    titleZh: "从区域优势到全国协作",
     subtitle: 'Policy course term paper · with Fengdi Miao',
     tagline: "Why do the Netherlands' alt-protein researchers and its alt-protein market never quite talk to each other?",
+    taglineZh: "荷兰的替代蛋白研究和市场，为什么迟迟接不上？",
     background: "A term paper for a policy-analysis course, looking at the regional innovation system behind the Dutch alternative-protein industry. We found a structural gap: Gelderland concentrates most of the R&D (centred on Wageningen University), while Noord-Holland is the market and capital hub (centred on Amsterdam), but the two barely connect. That's a textbook 'valley of death' between research and commercialisation.",
     process: [
       'Used patent and publication data to quantify how the output, and the type of output, differs between the two provinces.',
@@ -97,8 +107,10 @@ window.PROJECTS = [
   {
     id: 'siu-plastics',
     title: 'Hard Plastic Waste Segregation in a Biotech Lab',
+    titleZh: "生物技术实验室的硬塑料废物分类",
     subtitle: 'Stichting Incubator Utrecht · Nov 2024 – Jan 2025',
     tagline: 'The plastic waste nobody manages in a lab turns out to hide a real, calculable saving.',
+    taglineZh: "把每天丢掉的硬塑料单独分出来，能省多少钱？",
     background: 'Stichting Incubator Utrecht (SIU), a biotech incubator at Utrecht Science Park, came to us with a problem: tenant labs use large amounts of single-use plastic under strict contamination-control rules, and some of it gets classified as hazardous waste simply for having touched toxic, biohazardous or GMO material, with no proper sorting system in place, wasting both money and recycling potential. We used Polpharma Biologics, a pharma company based at SIU, as our case study.',
     process: [
       'Interviewed SIU management to select a suitable case-study tenant, then ran two rounds of semi-structured interviews with Polpharma Biologics staff, plus a site visit to observe the lab in practice.',

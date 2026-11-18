@@ -276,3 +276,38 @@ article ol li {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+.fleet-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.fleet-header .back { margin: 0; }
+
+.fleet-chart {
+  margin: 16px 0 24px;
+  border: 2px solid var(--black);
+  background: var(--paper);
+}
+
+.fleet-chart button {
+  display: block;
+  width: 100%;
+  background: white;
+  border: 0;
+  cursor: zoom-in;
+}
+
+.fleet-chart img { display: block; width: 100%; height: auto; }
+.fleet-chart figcaption { padding: 8px 12px; font-size: 13px; }
+.side-fig { max-width: 100%; }
+
+@media (max-width: 640px) {
+  .stripe { width: 12px; }
+  .page { padding: 32px 16px 56px 26px; }
+  .side-fig { margin-inline: auto; }
+}

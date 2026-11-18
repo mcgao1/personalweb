@@ -510,15 +510,17 @@ body.stage-close .flower-entry:focus-visible .flower-tag {
 
 .monster-note {
   position: fixed;
-  z-index: 2;
-  left: 6vw;
+  z-index: 6;
+  left: 5.2vw;
   top: 15.5svh;
-  width: min(30vw, 460px);
+  width: min(49vw, 850px);
+  --note-spread: 1;
+  --note-gutter: 2.45em;
   height: 65svh;
   display: flex;
   align-items: center;
   color: #fff0d6;
-  font: 400 clamp(31px, 3.45vw, 50px)/1.2 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+  font: 400 clamp(31px, 3.45vw, 50px)/1.29 'Archivo Black', 'Arial Black', system-ui, sans-serif;
   letter-spacing: -.018em;
   opacity: 0;
   pointer-events: none;
@@ -541,21 +543,24 @@ html[lang="zh-Hans"] .monster-note {
   position: relative;
   display: block;
   width: 100%;
-  padding-right: .85em;
-  color: #ffc0e3;
+  padding-right: var(--note-gutter);
+  color: #ffb3d9;
   font-size: var(--note-size, 1em);
   overflow-wrap: anywhere;
   text-wrap: pretty;
-  rotate: -3deg;
   filter: url(#poster-ink);
   pointer-events: none;
 }
 
 .note-piece {
+  position: relative;
   display: inline-block;
   white-space: nowrap;
-  translate: var(--note-row-offset, 0) 0;
+  left: var(--note-row-offset, 0);
+  top: var(--note-piece-lift, 0);
 }
+
+.note-copy.is-measuring .note-piece { left: 0; top: 0; }
 
 .note-glyph {
   display: inline-block;
@@ -563,7 +568,7 @@ html[lang="zh-Hans"] .monster-note {
   transition: scale .16s ease-out;
   transform:
     translateY(calc(var(--cut-rise, 0em) * var(--cut-strength, 1)))
-    rotate(calc(var(--cut-tilt, 0deg) * var(--cut-strength, 1)))
+    rotate(calc(var(--cut-tilt, 0deg) * var(--cut-strength, 1) + var(--note-piece-angle, 0deg)))
     skewX(calc(var(--cut-slant, 0deg) * var(--cut-strength, 1)))
     scale(var(--cut-width, 1), var(--cut-height, 1));
 }
@@ -590,14 +595,11 @@ body.stage-close .note-hit { pointer-events: auto; }
   outline-offset: 6px;
 }
 
-@supports (background-clip: text) {
-  .note-glyph {
-    color: transparent;
-    background-image: linear-gradient(155deg, #ffd1e9 12%, #ffa2d1 58%, #ed82bd);
-    background-clip: text;
-    -webkit-text-stroke-color: transparent;
-  }
-}
+.note-glyph { -webkit-text-stroke-color: transparent; }
+.note-glyph[data-cut="1"],
+.note-glyph[data-cut="4"] { color: #ffbbde; }
+.note-glyph[data-cut="2"],
+.note-glyph[data-cut="6"] { color: #f6a9d1; }
 
 .monster-note.is-appearing .note-copy { animation: noteShine 1.35s cubic-bezier(.22,.7,.24,1) both; }
 .monster-note.is-fading .note-copy { animation: noteDim .46s ease-in both; }
@@ -660,6 +662,60 @@ body.stage-close .note-hit { pointer-events: auto; }
 .tooltip.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.flower-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 115;
+  overflow: hidden;
+  pointer-events: none;
+  --portal-rim: #ffa9ce;
+  --portal-dot: #101631;
+  --portal-light: #546de1;
+  --portal-mid: #293f9c;
+  --portal-dark: #142550;
+  --portal-night: #0a0910;
+  background: var(--portal-rim);
+  animation: openFlowerPortal .65s cubic-bezier(.64,.06,.3,1) both;
+}
+
+.flower-portal.bachelor-world {
+  --portal-rim: #ffb48b;
+  --portal-dot: #2d1720;
+  --portal-light: #f49a59;
+  --portal-mid: #ad4930;
+  --portal-dark: #50232a;
+  --portal-night: #120b13;
+}
+
+.flower-portal::before,
+.flower-portal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.flower-portal::before {
+  background:
+    radial-gradient(circle, var(--portal-dot) 0 1.2px, transparent 1.6px) 0 0 / 6px 6px,
+    radial-gradient(circle at var(--portal-x) var(--portal-y), var(--portal-light), var(--portal-mid) 48%, var(--portal-dark));
+  animation: openFlowerPortal .62s .03s cubic-bezier(.64,.06,.3,1) both;
+}
+
+.flower-portal::after {
+  background: var(--portal-night);
+  animation: darkenFlowerPortal .65s ease both;
+}
+
+@keyframes openFlowerPortal {
+  from { clip-path: circle(0 at var(--portal-x) var(--portal-y)); }
+  to { clip-path: circle(var(--portal-radius) at var(--portal-x) var(--portal-y)); }
+}
+
+@keyframes darkenFlowerPortal {
+  0%, 66% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .leaf-particle {
@@ -798,8 +854,10 @@ body.no-motion.stage-close .flower-svg {
 
   .monster-note {
     top: 15.5svh;
-    width: 36vw;
+    width: 46vw;
     height: 63svh;
+    --note-spread: .72;
+    --note-gutter: 1.65em;
     font-size: clamp(27px, 4.25vw, 39px);
   }
 
@@ -835,8 +893,11 @@ body.no-motion.stage-close .flower-svg {
 
   .monster-note {
     left: 4.5vw;
-    width: 43vw;
+    width: 47vw;
     font-size: clamp(24px, 6.35vw, 32px);
+    line-height: 1.23;
+    --note-spread: .48;
+    --note-gutter: 1.15em;
   }
 
   body.stage-close .hint { left: 61%; }
@@ -859,8 +920,10 @@ body.no-motion.stage-close .flower-svg {
   .monster-note {
     top: 13svh;
     left: 4.5vw;
+    width: 46vw;
     height: 66svh;
-    line-height: 1.12;
+    line-height: 1.19;
+    --note-gutter: 1.28em;
   }
 }
 

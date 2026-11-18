@@ -138,16 +138,30 @@
   }
 
   function staggerLines() {
-    let previousTop;
-    let row = -1;
-    const shifts = ['0em', '.42em', '.14em', '.62em', '.29em', '.52em'];
+    const rows = new Map();
+    const stripStyles = [[.06, -.16], [1.28, .12], [.42, -.07], [1.88, -.12], [.19, .15], [.94, .05], [.56, -.15]];
+    const spread = parseFloat(getComputedStyle(note).getPropertyValue('--note-spread'));
+
+    noteCopy.classList.add('is-measuring');
     for (const piece of noteCopy.children) {
-      if (piece.offsetTop !== previousTop) {
-        previousTop = piece.offsetTop;
-        row++;
-      }
-      piece.style.setProperty('--note-row-offset', shifts[row % shifts.length]);
+      const { offsetTop, offsetLeft, offsetWidth } = piece;
+      if (!rows.has(offsetTop)) rows.set(offsetTop, []);
+      rows.get(offsetTop).push({ piece, center: offsetLeft + offsetWidth / 2 });
     }
+    noteCopy.classList.remove('is-measuring');
+
+    Array.from(rows.values()).forEach(function (pieces, row) {
+      const [indent, slant] = stripStyles[row % stripStyles.length];
+      const left = pieces[0].center;
+      const span = Math.max(1, pieces.at(-1).center - left);
+      pieces.forEach(function ({ piece, center }, index) {
+        const position = pieces.length === 1 ? 0 : (center - left) / span * 2 - 1;
+        const tilt = slant * 11 + (index % 3 - 1) * .7;
+        piece.style.setProperty('--note-row-offset', indent * spread + 'em');
+        piece.style.setProperty('--note-piece-lift', (position * slant * spread) + 'em');
+        piece.style.setProperty('--note-piece-angle', (tilt * spread) + 'deg');
+      });
+    });
   }
 
   function fitNote() {
@@ -292,8 +306,31 @@
     el.addEventListener('pointerleave', hideTooltip);
   }
 
+  function openFlowerPortal(dest, flower) {
+    if (document.querySelector('.flower-portal')) return;
+
+    const { left, top, width, height } = flower.querySelector('.flower-hitzone').getBoundingClientRect();
+    const portal = document.createElement('div');
+    portal.className = 'flower-portal';
+    portal.classList.toggle('bachelor-world', flower.classList.contains('flower-bachelor'));
+    portal.setAttribute('aria-hidden', 'true');
+    const x = left + width / 2;
+    const y = top + height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) + 12;
+    portal.style.setProperty('--portal-x', x + 'px');
+    portal.style.setProperty('--portal-y', y + 'px');
+    portal.style.setProperty('--portal-radius', radius + 'px');
+    document.body.appendChild(portal);
+    window.setTimeout(function () { window.location.href = dest; }, 650);
+  }
+
+  window.addEventListener('pageshow', function () {
+    document.querySelector('.flower-portal')?.remove();
+  });
+
   function wireEntry(el, paletteName, noteText) {
     el.addEventListener('click', function (event) {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       event.stopPropagation();
 
@@ -302,8 +339,12 @@
         return;
       }
 
-      const dest = el.getAttribute('href');
-      window.location.href = SiteLanguage.url(dest);
+      const dest = SiteLanguage.url(el.getAttribute('href'));
+      if (!reduceMotion) {
+        openFlowerPortal(dest, el);
+      } else {
+        window.location.href = dest;
+      }
     });
   }
 
@@ -370,7 +411,16 @@
     nextNote();
   });
 
+  const cockpit = document.getElementById('cockpit');
+  function enterCockpit() {
+    cockpit.scrollTop = 0;
+    body.classList.add('cockpit-open');
+  }
+
+  document.querySelector('.cockpit-enter').addEventListener('click', enterCockpit);
+
   window.addEventListener('wheel', function (event) {
+    if (body.classList.contains('cockpit-open') && (event.deltaY >= 0 || cockpit.scrollTop > 1)) return;
     wheelDelta += event.deltaY;
 
     if (wheelDelta < -45) {
@@ -379,7 +429,7 @@
       else enterClose();
     } else if (wheelDelta > 45 && body.classList.contains('stage-close')) {
       wheelDelta = 0;
-      body.classList.add('cockpit-open');
+      enterCockpit();
     }
   }, { passive: true });
 

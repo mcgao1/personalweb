@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Green Spaces in Eindhoven: Beyond Park Size</title>
+<title data-zh="埃因霍温的绿地：公园大小之外">Green Spaces in Eindhoven: Beyond Park Size</title>
 <link rel="stylesheet" href="greenspaces.css?v=5">
 <link rel="stylesheet" href="../lightbox.css?v=5">
+
+<link rel="stylesheet" href="../site-language.css?v=1">
+<script src="../site-language.js?v=1"></script>
 </head>
 <body>
 
@@ -23,58 +26,58 @@
   <div class="deco deco-bench pixel-bench"></div>
 
   <div class="col">
-    <a class="back" href="projects.html">&larr; all projects</a>
+    <a class="back" href="projects.html" data-zh="← 返回全部项目">&larr; all projects</a>
 
-    <div class="eyebrow"><span class="pixel-tree" style="margin-right:8px;"></span>EINDHOVEN PARKS.EXE</div>
-    <h1 class="title">Green Spaces in Eindhoven: Beyond Park Size</h1>
-    <p class="tagline">Everyone assumes bigger parks are more loved. The data says not really.</p>
-    <p class="role-line">Sentiment/emotion analysis, R pipeline, final report and website &middot; Nov 2025 &ndash; Feb 2026 &middot; with Alexandra Alexiou</p>
+    <div class="eyebrow"><span class="pixel-tree" style="margin-right:8px;"></span><span data-zh="埃因霍温公园.EXE">EINDHOVEN PARKS.EXE</span></div>
+    <h1 class="title" data-zh="埃因霍温的绿地：公园大小之外">Green Spaces in Eindhoven: Beyond Park Size</h1>
+    <p class="tagline" data-zh="公园越大，大家就越喜欢吗？数据给出了不一样的答案。">Everyone assumes bigger parks are more loved. The data says not really.</p>
+    <p class="role-line" data-zh="情感与情绪分析、R 数据流程、报告及网站 · 2025 年 11 月至 2026 年 2 月 · 与 Alexandra Alexiou 合作">Sentiment/emotion analysis, R pipeline, final report and website &middot; Nov 2025 &ndash; Feb 2026 &middot; with Alexandra Alexiou</p>
 
-    <a class="report-link" href="项目5_Eindhoven_Greenspace/Eindhoven_Greenspace/Eindhoven_Greensapce.html" target="_blank" rel="noopener">
+    <a class="report-link" href="项目5_Eindhoven_Greenspace/Eindhoven_Greenspace/Eindhoven_Greensapce.html" target="_blank" rel="noopener" data-zh="▶ 查看完整研究报告">
       &#9654; VIEW FULL REPORT.HTML
     </a>
 
     <div class="divider"></div>
 
     <article>
-      <h2>Background</h2>
-      <p>A two-person project for a Data Analytics for Sustainability course. We wanted to find out what actually makes a park popular with Eindhoven residents: is it size, or something else? I led the sentiment and emotion analysis, the R pipeline, and the final report/website; Alexandra led the spatial-data side.</p>
+      <h2 data-zh="背景">Background</h2>
+      <p data-zh="这是可持续发展数据分析课程的双人项目。研究想知道，埃因霍温的公园受欢迎程度在多大程度上取决于面积。Manchen 负责情感与情绪分析、R 数据流程以及最终报告和网站，Alexandra 负责空间数据分析。">A two-person project for a Data Analytics for Sustainability course. We wanted to find out what actually makes a park popular with Eindhoven residents: is it size, or something else? I led the sentiment and emotion analysis, the R pipeline, and the final report/website; Alexandra led the spatial-data side.</p>
 
       <figure class="screen-fig">
         <div class="screen">
-          <img class="lightbox-img" src="项目5_Eindhoven_Greenspace/Eindhoven_Greenspace/Eindhoven_Greensapce_files/figure-html/fig-nlp-composite-1.png" alt="Sentiment analysis results across the 7 parks" loading="lazy">
+          <img class="lightbox-img" src="项目5_Eindhoven_Greenspace/Eindhoven_Greenspace/Eindhoven_Greensapce_files/figure-html/fig-nlp-composite-1.png" alt="Sentiment analysis results across the 7 parks" loading="lazy" data-zh-alt="七座公园的情感分析结果">
         </div>
-        <figcaption>sentiment across 7 parks</figcaption>
+        <figcaption data-zh="七座公园的情感得分">sentiment across 7 parks</figcaption>
       </figure>
 
-      <h2>What I did</h2>
+      <h2 data-zh="方法">What I did</h2>
       <ol>
-        <li>Scraped Dutch news coverage (2024&ndash;2026, via LexisNexis) mentioning 7 Eindhoven parks and built an R sentiment-analysis pipeline, going beyond positive/negative into finer emotion dimensions (valence, arousal, dominance).</li>
-        <li>Ran a geospatial analysis of each park's 600m walking catchment to quantify accessibility.</li>
-        <li>Regressed sentiment against accessibility, park size and other variables to see what actually drives public opinion.</li>
+        <li data-zh="从 LexisNexis 收集 2024–2026 年提及埃因霍温七座公园的荷兰语新闻，用 R 搭建情感分析流程，进一步衡量愉悦度、唤醒度和掌控感。">Scraped Dutch news coverage (2024&ndash;2026, via LexisNexis) mentioning 7 Eindhoven parks and built an R sentiment-analysis pipeline, going beyond positive/negative into finer emotion dimensions (valence, arousal, dominance).</li>
+        <li data-zh="分析每座公园 600 米步行范围内的街区，量化空间可达性。">Ran a geospatial analysis of each park's 600m walking catchment to quantify accessibility.</li>
+        <li data-zh="用回归分析探索情感得分与可达性、公园面积等变量的关系。">Regressed sentiment against accessibility, park size and other variables to see what actually drives public opinion.</li>
       </ol>
 
       <div class="pull-stat">
-        <span class="big">SMALLER + CLOSER &gt; BIGGER</span>
-        <span class="small">Park size and accessibility turned out to be negatively correlated (r&#8776;-0.44): bigger parks tend to sit on the city edge, so they're often less reachable. Accessibility and media sentiment showed a moderate positive correlation (r&#8776;0.45).</span>
+        <span class="big" data-zh="离得近的小公园也能占优势">SMALLER + CLOSER &gt; BIGGER</span>
+        <span class="small" data-zh="公园面积与可达性呈负相关（r≈−0.44）。大型公园往往位于城市边缘，步行较难到达。可达性与媒体情感得分呈中度正相关（r≈0.45）。">Park size and accessibility turned out to be negatively correlated (r&#8776;-0.44): bigger parks tend to sit on the city edge, so they're often less reachable. Accessibility and media sentiment showed a moderate positive correlation (r&#8776;0.45).</span>
       </div>
 
       <figure class="screen-fig">
         <div class="screen">
-          <img class="lightbox-img" src="项目5_Eindhoven_Greenspace/Eindhoven_Greenspace/Eindhoven_Greensapce_files/figure-html/unnamed-chunk-21-1.png" alt="Park size vs. accessibility vs. sentiment" loading="lazy">
+          <img class="lightbox-img" src="项目5_Eindhoven_Greenspace/Eindhoven_Greenspace/Eindhoven_Greensapce_files/figure-html/unnamed-chunk-21-1.png" alt="Park size vs. accessibility vs. sentiment" loading="lazy" data-zh-alt="公园面积、可达性与情感得分的关系">
         </div>
-        <figcaption>size vs. access vs. sentiment</figcaption>
+        <figcaption data-zh="面积、可达性与情感得分">size vs. access vs. sentiment</figcaption>
       </figure>
 
-      <h2>Result</h2>
-      <p>How easy a park is to reach and how well it's maintained matters more than how big it is. That's a useful nudge for how cities allocate green-space budgets, and a reminder that the obvious metric (hectares) isn't always the one that predicts how much people actually love a place.</p>
+      <h2 data-zh="结果">Result</h2>
+      <p data-zh="研究结果提示，日常步行是否方便、公园维护得怎样，都值得纳入绿地规划与预算分配的考量。只看公顷数，很难了解居民对一个地方的感受。">How easy a park is to reach and how well it's maintained matters more than how big it is. That's a useful nudge for how cities allocate green-space budgets, and a reminder that the obvious metric (hectares) isn't always the one that predicts how much people actually love a place.</p>
 
-      <h2>Methods &amp; tools</h2>
-      <p class="tech-line">R (NLP sentiment analysis, geospatial analysis) &middot; Quarto for publishing</p>
+      <h2 data-zh="工具">Methods &amp; tools</h2>
+      <p class="tech-line" data-zh="R（自然语言处理、情感分析、地理空间分析）· Quarto（报告发布）">R (NLP sentiment analysis, geospatial analysis) &middot; Quarto for publishing</p>
     </article>
   </div>
 </div>
 
-<script src="../lightbox.js?v=5"></script>
+<script src="../lightbox.js?v=6"></script>
 </body>
 </html>

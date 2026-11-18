@@ -3,22 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Master · Portfolio</title>
-<link rel="stylesheet" href="projects.css?v=5">
+<title data-zh="硕士项目">Master · Portfolio</title>
+<link rel="stylesheet" href="../poster-lettering.css?v=1">
+<link rel="stylesheet" href="projects.css?v=11">
+<script src="../poster-lettering.js?v=1" defer></script>
+
+<link rel="stylesheet" href="../site-language.css?v=1">
+<script src="../site-language.js?v=1"></script>
 </head>
 <body>
 
-<div class="sky"></div>
+<div class="sky" aria-hidden="true">
+  <span class="sky-orbit"></span>
+  <span class="sky-spark" style="--x:9%;--y:35%;--size:15px;--tilt:12deg"></span>
+  <span class="sky-spark" style="--x:27%;--y:12%;--size:24px;--ink:#f8a9bf;--tilt:-14deg"></span>
+  <span class="sky-spark" style="--x:83%;--y:22%;--size:19px;--tilt:9deg"></span>
+  <span class="sky-spark" style="--x:91%;--y:59%;--size:11px;--ink:#f8a9bf"></span>
+  <span class="sky-spark" style="--x:18%;--y:83%;--size:11px"></span>
+  <span class="sky-spark" style="--x:76%;--y:89%;--size:20px;--ink:#f8a9bf;--tilt:15deg"></span>
+</div>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="poster-ink" x="-7%" y="-7%" width="114%" height="114%">
+    <feTurbulence type="fractalNoise" baseFrequency=".064" numOctaves="2" seed="12" result="edge-noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="edge-noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 
 <div class="intro">
-  <a class="back" href="../index.html">&larr; Back to the planet</a>
-  <h1>Six signs, one dense thicket</h1>
-  <p class="lead">Not every idea makes it out of the leaves. These six did. Click a sign to see the whole thing.</p>
+  <a class="back" data-poster-lettering href="../index.html" data-zh="← 回到星球">&larr; Back to the planet</a>
+  <h1 data-poster-lettering data-zh="树丛里的六块路牌">Six signs, one dense thicket</h1>
+  <p class="lead" data-poster-lettering data-zh="有些想法留在了树叶里，这六个长成了项目。点开一块路牌看看。">Not every idea makes it out of the leaves. These six did. Click a sign to see the whole thing.</p>
 </div>
 
 <div class="thicket" id="thicket"></div>
 
-<script src="projects-data.js?v=5"></script>
+<script src="projects-data.js?v=6"></script>
 <script>
   // Each project gets its own visual identity: a small preview of the
   // full page's palette and display font, so the sign out here already
@@ -76,13 +96,150 @@
   ];
 
   const thicket = document.getElementById('thicket');
+  const edges = ['intact', 'top-right', 'bottom-left', 'intact', 'top-right', 'bottom-left'];
+  const returnKey = 'master-projects-return';
+
+  function shuffle(items) {
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    return items;
+  }
+
+  const peelCounts = shuffle([2, 3, 4, 5, 6, 7]);
+
+  function addEdgePixels(sign, count) {
+    const layer = document.createElement('div');
+    layer.className = 'sign-edge-pixels';
+    layer.setAttribute('aria-hidden', 'true');
+
+    const sides = shuffle(['top', 'right', 'bottom', 'left']);
+    const sizes = shuffle([5, 6, 8, 9, 11, 13, 14]);
+    const mask = ['linear-gradient(#000 0 0)'];
+
+    for (let i = 0; i < count; i++) {
+      const side = sides[i % sides.length];
+      const horizontal = side === 'top' || side === 'bottom';
+      // Place two chips in separate bands whenever they share an edge.
+      const start = i >= sides.length ? 58 : 24;
+      const end = i + sides.length < count ? 42 : 76;
+      const position = Math.round(start + Math.random() * (end - start));
+      const size = sizes[i];
+      const normal = (9 + Math.random() * 18) * (side === 'top' || side === 'left' ? -1 : 1);
+      const tangent = (Math.random() - .5) * 34;
+      const x = horizontal ? tangent : normal;
+      const y = horizontal ? normal : tangent;
+
+      const chip = document.createElement('span');
+      chip.className = 'sign-edge-pixel';
+      chip.style.width = size + 'px';
+      chip.style.height = size + 'px';
+      chip.style[side] = '0';
+      chip.style[horizontal ? 'left' : 'top'] = 'calc(' + position + '% - ' + (size * position / 100) + 'px)';
+      chip.style.transitionDelay = Math.round(Math.random() * 80) + 'ms';
+      chip.style.setProperty('--peel-offset',
+        'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + (Math.random() * 26 - 13).toFixed(1) + 'deg)');
+      layer.appendChild(chip);
+
+      const anchor = horizontal ? position + '% ' + side : side + ' ' + position + '%';
+      mask.push('linear-gradient(#000 0 0) ' + anchor + ' / ' + size + 'px ' + size + 'px no-repeat');
+    }
+
+    sign.style.setProperty('--peel-mask', mask.join(', '));
+    sign.appendChild(layer);
+  }
+
+  function consumeProjectReturn() {
+    try {
+      const pending = sessionStorage.getItem(returnKey) === '1';
+      sessionStorage.removeItem(returnKey);
+      return pending;
+    } catch {
+      return false;
+    }
+  }
+
+  const referrer = new URL(document.referrer || location.href);
+  const fromProject = Object.values(THEMES).some(function (theme) {
+    const project = new URL(theme.page, location.href);
+    return project.origin === referrer.origin && project.pathname === referrer.pathname;
+  });
+  const reloaded = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+  const skipArrival = consumeProjectReturn() || (fromProject && !reloaded);
+  document.body.classList.toggle('skip-arrival', skipArrival);
+
+  function assembleSign(sign, stagger) {
+    const layer = document.createElement('div');
+    layer.className = 'sign-pixels';
+    layer.setAttribute('aria-hidden', 'true');
+    sign.appendChild(layer);
+
+    const tileSize = 28;
+    const width = sign.clientWidth;
+    const height = sign.clientHeight;
+    const columns = Math.ceil(width / tileSize);
+    const rows = Math.ceil(height / tileSize);
+    let lastArrival = 0;
+
+    for (let row = 0; row < rows; row++) {
+      for (let column = 0; column < columns; column++) {
+        const x = column * tileSize;
+        const y = row * tileSize;
+        const tileWidth = Math.min(tileSize, width - x);
+        const tileHeight = Math.min(tileSize, height - y);
+        const pixel = document.createElement('div');
+        pixel.className = 'sign-pixel';
+        pixel.style.left = x + 'px';
+        pixel.style.top = y + 'px';
+        pixel.style.width = tileWidth + 'px';
+        pixel.style.height = tileHeight + 'px';
+        layer.appendChild(pixel);
+
+        const offsetX = (x + tileWidth / 2 - width / 2) * .9 + (Math.random() - .5) * 104;
+        const offsetY = (y + tileHeight / 2 - height / 2) * 1.3 + (Math.random() - .5) * 130;
+        const missesTop = sign.dataset.edge === 'top-right' && row === 0 && column === columns - 1;
+        const missesBottom = sign.dataset.edge === 'bottom-left' && row === rows - 1 && column === 0;
+        const misses = missesTop || missesBottom;
+        const delay = stagger + Math.random() * 220;
+        const duration = 440 + Math.random() * 260;
+        lastArrival = Math.max(lastArrival, delay + duration);
+
+        pixel.animate([
+          { opacity: 0, transform: 'translate(' + offsetX + 'px,' + offsetY + 'px) scale(.32)' },
+          { opacity: .9, offset: .21 },
+          {
+            opacity: misses ? 0 : 1,
+            transform: misses ? 'translate(' + (missesTop ? 20 : -20) + 'px,' + (missesTop ? -16 : 16) + 'px) scale(.45)' : 'none'
+          }
+        ], { duration, delay, easing: 'cubic-bezier(.23,.68,.28,1)', fill: 'both' });
+      }
+    }
+
+    const revealAt = lastArrival - 140;
+    setTimeout(function () { sign.classList.remove('is-unassembled'); }, revealAt);
+    layer.animate([{ opacity: 1 }, { opacity: 0 }], {
+      delay: revealAt + 60, duration: 180, fill: 'both'
+    }).onfinish = function () { layer.remove(); };
+  }
+
+  const signObserver = !skipArrival && matchMedia('(prefers-reduced-motion: no-preference)').matches
+    ? new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.intersectionRatio < .16) return;
+        signObserver.unobserve(entry.target);
+        assembleSign(entry.target, entry.target === thicket.firstElementChild ? 0 : 90);
+      });
+    }, { threshold: .16 })
+    : null;
 
   window.PROJECTS.forEach(function (p, i) {
     const theme = THEMES[p.id];
     const pos = LAYOUT[i];
 
     const sign = document.createElement('a');
-    sign.className = 'sign';
+    sign.className = signObserver ? 'sign is-unassembled' : 'sign';
+    sign.dataset.edge = edges[i];
     sign.href = theme.page;
     sign.style.top = pos.top;
     sign.style.left = pos.left;
@@ -93,79 +250,29 @@
     sign.style.setProperty('--font', theme.font);
     sign.innerHTML =
       '<span class="sign-index">0' + (i + 1) + '</span>' +
-      '<span class="sign-title">' + p.title + '</span>' +
-      '<span class="sign-tag">' + p.tagline + '</span>';
+      '<span class="sign-title">' + SiteLanguage.text(p.title, p.titleZh) + '</span>' +
+      '<span class="sign-tag">' + SiteLanguage.text(p.tagline, p.taglineZh) + '</span>';
+    addEdgePixels(sign, peelCounts[i]);
     thicket.appendChild(sign);
-
-    // a couple of leaves lean over each sign's corner, like it's
-    // half-tucked into the bush
-    [0, 1].forEach(function (j) {
-      const leaf = document.createElement('div');
-      leaf.className = 'leaf leaf-on-sign';
-      leaf.style.top = 'calc(' + pos.top + ' - ' + (10 + j * 14) + 'px)';
-      leaf.style.left = 'calc(' + pos.left + ' + ' + (10 + j * 40) + 'px)';
-      leaf.style.setProperty('--lrot', (Math.random() * 60 - 30) + 'deg');
-      leaf.style.setProperty('--lsize', (46 + Math.random() * 20) + 'px');
-      leaf.style.setProperty('--lcolor', ['#2d5016', '#3e7b27', '#4f9d3a'][j % 3]);
-      thicket.appendChild(leaf);
-    });
+    if (signObserver) signObserver.observe(sign);
   });
 
-  // extra bare leaf clusters with nothing behind them: the ideas that
-  // never got built, filling out the rest of the thicket densely so
-  // it reads as undergrowth, not empty space with six signs in it
-  const CLUSTER_COUNT = 90;
-  const colors = ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'];
-  for (let i = 0; i < CLUSTER_COUNT; i++) {
-    const top = Math.random() * 96 + '%';
-    const left = Math.random() * 97 + '%';
-    const size = 24 + Math.random() * 56;
-    const isBack = Math.random() < 0.45; // a back layer, dimmer and softer, for depth
-    const leaf = document.createElement('div');
-    leaf.className = 'leaf leaf-ambient' + (isBack ? ' leaf-back' : '');
-    leaf.style.top = top;
-    leaf.style.left = left;
-    leaf.style.setProperty('--lrot', (Math.random() * 360) + 'deg');
-    leaf.style.setProperty('--lsize', size + 'px');
-    leaf.style.setProperty('--lcolor', colors[Math.floor(Math.random() * colors.length)]);
-    thicket.appendChild(leaf);
-  }
+  thicket.addEventListener('click', function (event) {
+    if (!event.target.closest('.sign') || event.defaultPrevented || event.button !== 0 ||
+        event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    try { sessionStorage.setItem(returnKey, '1'); } catch {}
+  });
 
-  // a burst of leaves lands as the page opens, then the thicket
-  // (already in place underneath) fades and settles into view
-  const introBurstColors = ['#1f3d10', '#2d5016', '#3e7b27', '#4f9d3a', '#6bbf4f', '#86d465'];
-  const cx = window.innerWidth / 2;
-  const cy = window.innerHeight * 0.12;
-  for (let i = 0; i < 50; i++) {
-    const size = 14 + Math.random() * 24;
-    const el = document.createElement('div');
-    el.className = 'leaf-particle';
-    el.style.position = 'fixed';
-    el.style.zIndex = '100';
-    el.style.borderRadius = '0 100% 0 100%';
-    el.style.pointerEvents = 'none';
-    el.style.width = size + 'px';
-    el.style.height = (size * 0.55) + 'px';
-    el.style.left = cx + 'px';
-    el.style.top = cy + 'px';
-    el.style.background = introBurstColors[Math.floor(Math.random() * introBurstColors.length)];
-    document.body.appendChild(el);
-
-    const angle = Math.random() * Math.PI * 2;
-    const dist = 180 + Math.random() * 620;
-    const dx = Math.cos(angle) * dist;
-    const dy = Math.abs(Math.sin(angle)) * dist * 0.7 + 40;
-    const rot = Math.random() * 720 - 360;
-    const anim = el.animate([
-      { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
-      { transform: 'translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg)', opacity: 0 }
-    ], { duration: 750 + Math.random() * 400, easing: 'cubic-bezier(0.2,0.7,0.3,1)' });
-    anim.onfinish = function () { el.remove(); };
-  }
-
-  setTimeout(function () {
-    thicket.classList.add('revealed');
-  }, 150);
+  window.addEventListener('pageshow', function (event) {
+    if (!event.persisted) return;
+    consumeProjectReturn();
+    document.body.classList.add('skip-arrival');
+    signObserver?.disconnect();
+    thicket.querySelectorAll('.is-unassembled').forEach(function (sign) {
+      sign.classList.remove('is-unassembled');
+    });
+    thicket.querySelectorAll('.sign-pixels').forEach(function (layer) { layer.remove(); });
+  });
 </script>
 </body>
 </html>

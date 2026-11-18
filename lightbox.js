@@ -23,6 +23,12 @@
   const viewport = overlay.querySelector('.lb-viewport');
   const img = overlay.querySelector('.lb-full');
 
+  if (document.documentElement.lang === 'zh-Hans') {
+    closeBtn.setAttribute('aria-label', '关闭');
+    zoomInBtn.setAttribute('aria-label', '放大');
+    zoomOutBtn.setAttribute('aria-label', '缩小');
+  }
+
   let zoom = 1;
   let baseWidth = 640;
   const ZOOM_MIN = 0.8;

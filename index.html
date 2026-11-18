@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manchen Gao</title>
-<link rel="stylesheet" href="scene.css?v=43">
-<link rel="stylesheet" href="cockpit.css?v=16">
+<link rel="stylesheet" href="scene.css?v=46">
+<link rel="stylesheet" href="cockpit.css?v=20">
 
 <link rel="stylesheet" href="site-language.css?v=1">
 <script src="site-language.js?v=1"></script>
@@ -133,108 +133,73 @@
   </filter>
 </svg>
 <section id="cockpit" data-active="none" aria-label="Spaceship cockpit" data-zh-aria-label="飞船驾驶舱">
-  <div class="stage" aria-label="Spaceship sandwich layer preview" data-zh-aria-label="飞船驾驶舱场景">
-    <div class="layer space-layer" aria-hidden="true">
-      <div class="window-world">
-        <video id="windowVideo" muted loop playsinline></video>
-        <div class="scene scene-default is-active"></div>
-        <div class="scene scene-hill" data-scene="hill"></div>
-        <div class="scene scene-future" data-scene="future"></div>
-        <div class="scene scene-exit" data-scene="exit"></div>
-        <div class="scene scene-sweet" data-scene="sweet"></div>
+  <div class="stage">
+    <button class="ck-back" id="ck-back" type="button" data-zh="回到星球">← back to the planet</button>
+
+    <div class="title-scribble" lang="zh-Hans">曼</div>
+
+    <div class="ck-window">
+      <div class="window-world" aria-hidden="true">
+        <div class="scene scene-default ck-print is-active"></div>
+        <div class="scene ck-print" data-view="hill" data-scene="hill"></div>
+        <div class="scene ck-print" data-view="future" data-scene="future"></div>
+        <div class="scene ck-print" data-view="exit" data-scene="exit"></div>
+        <div class="scene ck-print" data-view="sweet" data-scene="sweet"></div>
+      </div>
+      <button class="window-cycle" type="button" aria-label="Change the windshield view" data-zh-aria-label="切换窗景"><span aria-hidden="true">↻</span></button>
+    </div>
+
+    <div class="monster">
+      <div class="pilot-pose">
+        <img src="assets/cockpit-lounging-pilot.webp" width="1250" height="937" alt="The blue monster lounging in its pilot seat" data-zh-alt="斜靠在驾驶座里的蓝色小怪物">
+        <span class="pilot-lid pilot-lid-left" aria-hidden="true"></span>
+        <span class="pilot-lid pilot-lid-right" aria-hidden="true"></span>
       </div>
     </div>
 
-    <div class="layer cockpit-layer" aria-hidden="true">
-      <div class="window-frame"></div>
-      <div class="dashboard"></div>
-      <div class="seat"></div>
-      <div class="monster"><img src="assets/main-character.png" alt="blue monster pilot" data-zh-alt="蓝色小怪物驾驶员"></div>
-      <div class="props" aria-hidden="false">
-        <div class="radio-wrap">
-          <button class="prop radio" type="button" data-prop="radio" aria-label="cassette radio" data-zh-aria-label="卡带收音机"></button>
-        </div>
-        <button class="prop fish-prop" type="button" data-prop="fish" aria-label="the fish co-pilot" data-zh-aria-label="鱼副驾驶">
-          <canvas class="fish-src" id="cv-fish"></canvas>
-          <span class="fish-water" aria-hidden="true"><span class="fish-swim"><canvas class="fish-out" id="cv-fish-out"></canvas></span></span>
-          <span class="fish-bubbles" aria-hidden="true"><i></i><i></i><i></i></span>
+    <button class="bubble" id="bubble" type="button" aria-label="Next cockpit thought" data-zh-aria-label="下一句驾驶舱碎碎念" data-zh="那条鱼坚持要跟来。">The fish insisted on coming.</button>
+
+    <div class="ck-photos">
+      <button class="specimen hill-cube" type="button" data-scene="hill" aria-label="The Hill" data-zh-aria-label="那个坡"><span class="ck-print" data-view="hill" aria-hidden="true"></span><span class="tag" data-zh="那个坡">The Hill</span></button>
+      <button class="specimen future-cube" type="button" data-scene="future" aria-label="2002 Write The Future" data-zh-aria-label="2002，由你写下未来"><span class="ck-print" data-view="future" aria-hidden="true"></span><span class="tag">2002</span></button>
+      <button class="specimen exit-cube" type="button" data-scene="exit" aria-label="Exit" data-zh-aria-label="出口"><span class="ck-print" data-view="exit" aria-hidden="true"></span><span class="tag" data-zh="出口">Exit</span></button>
+      <button class="specimen sweet-cube" type="button" data-scene="sweet" aria-label="Sweet Divine" data-zh-aria-label="甜蜜记忆"><span class="ck-print" data-view="sweet" aria-hidden="true"></span><span class="tag" data-zh="甜蜜记忆">SweetDivine</span></button>
+    </div>
+
+    <div class="props">
+      <div class="radio-wrap">
+        <button class="prop radio" type="button" data-prop="radio" aria-label="cassette radio" data-zh-aria-label="卡带收音机"></button>
+      </div>
+      <button class="prop fish-prop" type="button" data-prop="fish" aria-label="the fish co-pilot" data-zh-aria-label="鱼副驾驶">
+        <canvas class="fish-src" id="cv-fish"></canvas>
+        <span class="fish-water" aria-hidden="true"><span class="fish-swim"><canvas class="fish-out" id="cv-fish-out"></canvas></span></span>
+        <span class="fish-bubbles" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+      <div class="danger-wrap">
+        <button class="rive-slot bottle-slot" type="button" aria-label="Inspect the bottle" data-zh-aria-label="查看瓶子">
+          <canvas class="rive-cv is-on" id="cv-bottle-idle"></canvas>
+          <canvas class="rive-cv" id="cv-bottle-hover"></canvas>
+          <canvas class="rive-cv" id="cv-bottle-click"></canvas>
         </button>
-        <div class="danger-wrap">
-          <div class="rive-slot bottle-slot" aria-hidden="true">
-            <canvas class="rive-cv is-on" id="cv-bottle-idle"></canvas>
-            <canvas class="rive-cv" id="cv-bottle-hover"></canvas>
-            <canvas class="rive-cv" id="cv-bottle-click"></canvas>
-          </div>
-          <button class="prop danger" type="button" data-prop="danger" aria-label="do not press red button" data-zh-aria-label="请勿按下红色按钮"></button>
-        </div>
-        <div class="rive-slot apple-slot" aria-hidden="true">
-          <canvas class="rive-cv is-on" id="cv-apple-idle"></canvas>
-          <canvas class="rive-cv" id="cv-apple-reveal"></canvas>
-          <button class="apple-hit" type="button" aria-label="Poke the apple" data-zh-aria-label="戳一下苹果"></button>
-        </div>
+        <button class="prop danger" type="button" data-prop="danger" aria-label="do not press red button" data-zh-aria-label="请勿按下红色按钮"></button>
       </div>
-      <div class="ck-portal" aria-hidden="true"><canvas id="cv-fridge"></canvas></div>
-    </div>
-
-    <div class="layer ui-layer">
-      <button class="ck-back" id="ck-back" type="button" data-zh="回到星球">back to the planet</button>
-      <div class="title-scribble"><span data-zh="太空">SPACE</span><br><span data-zh="怪物">MONSTER</span><br><span data-zh="档案">ARCHIVE</span></div>
-      <button class="specimen hill-cube" type="button" data-scene="hill" aria-label="The Hill" data-zh-aria-label="那个坡">
-        <svg viewBox="0 0 150 90" aria-hidden="true">
-          <rect x="17" y="13" width="116" height="66" rx="12" fill="rgba(255,255,255,.16)" stroke="#f7f2df" stroke-width="5"/>
-          <path d="M20 64 C46 45 70 60 88 44 C104 29 119 42 132 32 L132 78 L20 78 Z" fill="#2a7b37"/>
-          <ellipse cx="74" cy="66" rx="45" ry="12" fill="#4a2d19"/>
-          <path d="M70 47 C78 29 97 23 112 22 C107 38 91 51 70 47 Z" fill="#db9d35" stroke="#131313" stroke-width="3"/>
-          <path d="M75 45 C87 41 97 34 109 24" fill="none" stroke="#131313" stroke-width="3"/>
-        </svg>
-        <span class="tag" data-zh="那个坡">The Hill</span>
-      </button>
-
-      <button class="specimen future-cube" type="button" data-scene="future" aria-label="2002 Write The Future" data-zh-aria-label="2002，由你写下未来">
-        <svg viewBox="0 0 150 90" aria-hidden="true">
-          <rect x="22" y="20" width="103" height="55" rx="14" fill="rgba(121,221,255,.45)" stroke="#f7f2df" stroke-width="5"/>
-          <rect x="37" y="31" width="67" height="32" rx="8" fill="#2b1149" stroke="#111" stroke-width="4"/>
-          <circle cx="115" cy="39" r="6" fill="#d7ff35" stroke="#111" stroke-width="3"/>
-          <circle cx="115" cy="58" r="6" fill="#ff7b26" stroke="#111" stroke-width="3"/>
-          <text x="70" y="55" text-anchor="middle" fill="#d7ff35" font-size="22" font-weight="900">2002</text>
-          <path d="M51 18 L44 4 M95 18 L108 4" stroke="#f7f2df" stroke-width="4" stroke-linecap="round"/>
-        </svg>
-        <span class="tag">2002</span>
-      </button>
-
-      <button class="specimen exit-cube" type="button" data-scene="exit" aria-label="Exit" data-zh-aria-label="出口">
-        <svg viewBox="0 0 150 90" aria-hidden="true">
-          <path d="M28 24 H122 V66 H28 Z" fill="#42ff75" stroke="#050505" stroke-width="6"/>
-          <text x="75" y="55" text-anchor="middle" fill="#061406" font-size="32" font-weight="900" data-zh="出口">EXIT</text>
-          <path d="M39 24 C38 4 24 6 24 -7 M108 24 C109 5 127 7 130 -8" fill="none" stroke="#f7f2df" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 7"/>
-          <circle cx="22" cy="-8" r="4" fill="#ff7b26"/>
-          <circle cx="132" cy="-8" r="4" fill="#ff7b26"/>
-        </svg>
-        <span class="tag" data-zh="出口">Exit</span>
-      </button>
-
-      <button class="specimen sweet-cube" type="button" data-scene="sweet" aria-label="Sweet Divine" data-zh-aria-label="甜蜜记忆">
-        <svg viewBox="0 0 150 90" aria-hidden="true">
-          <path d="M24 18 C42 9 99 7 124 19 C136 35 133 60 120 72 C94 81 51 82 28 71 C14 56 13 34 24 18 Z" fill="rgba(255,180,78,.55)" stroke="#f7f2df" stroke-width="5"/>
-          <path d="M93 24 H122 V48" fill="none" stroke="#fff8e0" stroke-width="7"/>
-          <path d="M66 31 L72 45 L87 46 L75 55 L79 70 L66 61 L53 70 L57 55 L45 46 L60 45 Z" fill="#ff71c8" stroke="#050505" stroke-width="3"/>
-          <circle cx="42" cy="34" r="7" fill="#79ddff"/>
-          <circle cx="107" cy="61" r="6" fill="#d7ff35"/>
-        </svg>
-        <span class="tag" data-zh="甜蜜记忆">SweetDivine</span>
-      </button>
-
-      <button class="bubble" id="bubble" type="button" aria-label="Next cockpit thought" data-zh-aria-label="下一句驾驶舱碎碎念" data-zh="那条鱼坚持要跟来。">The fish insisted on coming.</button>
+      <div class="rive-slot apple-slot">
+        <canvas class="rive-cv is-on" id="cv-apple-idle"></canvas>
+        <canvas class="rive-cv" id="cv-apple-reveal"></canvas>
+        <button class="apple-hit" type="button" aria-label="Poke the apple" data-zh-aria-label="戳一下苹果"></button>
+      </div>
     </div>
   </div>
 </section>
+
+<button class="cockpit-enter" type="button" data-zh="驾驶舱 ↓">Cockpit ↓</button>
 
 <button class="replay-intro" id="replay-intro" type="button" data-zh="退远一点">far away</button>
 
 <div class="hint" id="hint"></div>
 <div class="tooltip" id="tooltip"></div>
 
-<script src="scene.js?v=33"></script>
-<script src="cockpit.js?v=8" defer></script>
+<script src="scene.js?v=37"></script>
+<script src="cockpit.js?v=11" defer></script>
 </body>
 </html>

@@ -1,0 +1,40 @@
+:root {
+  --poster-font: 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+  --poster-weight: 400;
+}
+
+html[lang="zh-Hans"] {
+  --poster-font: 'Microsoft YaHei UI', 'PingFang SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+  --poster-weight: 900;
+}
+
+.intro-readable {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.intro-piece {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.intro-letter {
+  display: inline-block;
+  transform:
+    translateY(calc(var(--cut-rise, 0em) * var(--cut-strength, 1)))
+    rotate(calc(var(--cut-tilt, 0deg) * var(--cut-strength, 1)))
+    skewX(calc(var(--cut-slant, 0deg) * var(--cut-strength, 1)))
+    scale(var(--cut-width, 1), var(--cut-height, 1));
+}
+
+.intro-letter[data-cut="0"] { --cut-rise: .04em; --cut-tilt: -8deg; --cut-width: 1.03; --cut-height: 1.06; }
+.intro-letter[data-cut="1"] { --cut-rise: -.07em; --cut-tilt: 4deg; --cut-slant: -4deg; --cut-width: .97; }
+.intro-letter[data-cut="2"] { --cut-rise: .03em; --cut-tilt: -3deg; --cut-width: .94; --cut-height: .94; }
+.intro-letter[data-cut="3"] { --cut-rise: -.048em; --cut-tilt: 7deg; --cut-width: 1.07; }
+.intro-letter[data-cut="4"] { --cut-rise: .052em; --cut-tilt: 2deg; --cut-slant: 5deg; --cut-height: 1.05; }
+.intro-letter[data-cut="5"] { --cut-rise: -.04em; --cut-tilt: -6deg; --cut-width: 1.01; }
+.intro-letter[data-cut="6"] { --cut-rise: .006em; --cut-tilt: 3deg; --cut-width: .96; --cut-height: .97; }

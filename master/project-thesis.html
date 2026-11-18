@@ -3,112 +3,346 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Investment Feasibility of BIPV Across High-Rise Clusters in Kunming</title>
+<title>Why did more solar panels make for a worse investment in sunny Kunming?</title>
 <link rel="stylesheet" href="thesis.css?v=5">
 <link rel="stylesheet" href="../lightbox.css?v=5">
+<style>
+  html[lang="en"] [data-copy][lang="zh-Hans"],
+  html[lang="zh-Hans"] [data-copy][lang="en"] { display: none; }
+  [lang="zh-Hans"] { font-family: "Noto Serif CJK SC", "Songti SC", SimSun, serif; }
+  .page > header { margin-bottom: 28px; }
+  .header-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .header-tools .back { margin: 0; }
+  h1.title { text-wrap: balance; }
+  .squiggle { margin: 30px 0 24px; }
+  @media (max-width: 600px) {
+    .page { padding-top: 32px; }
+  }
+  .title [lang="zh-Hans"] { font-size: .88em; }
+  .lede::first-letter {
+    float: left;
+    font-size: 3.2em;
+    line-height: .9;
+    margin: .06em .1em 0 0;
+    color: var(--rose);
+    font-weight: 600;
+  }
+  .lede { margin-bottom: 0; }
+  .story-section {
+    display: grid;
+    grid-template-columns: minmax(0, 640px);
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .story-section > .col { width: 100%; }
+  .story-section article > h2 { margin-bottom: 8px; }
+  .story-section article > h2:first-child { margin-top: 0; }
+  .story-section article > p[data-copy] { margin-bottom: 0; }
+  .story-media { min-width: 0; }
+  .story-media .side-fig {
+    float: none;
+    width: min(100%, 330px);
+    margin: 0 auto;
+    transform: none;
+  }
+  .story-media--pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: min(100%, 560px);
+    justify-self: center;
+  }
+  .methods { padding-top: 16px; border-top: 1px solid var(--olive-soft); }
+  @media (min-width: 1240px) {
+    .story-section {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr);
+      align-items: start;
+      gap: 24px;
+    }
+    .story-section > .col { grid-row: 1; grid-column: 2; }
+    .story-media--pair { display: contents; }
+    .story-media--pair .side-fig {
+      grid-row: 1;
+      grid-column: 1;
+      width: min(100%, 290px);
+    }
+    .story-media--pair .side-fig + .side-fig { grid-column: 3; }
+  }
+  .chart-carousel { margin-bottom: 28px; }
+  .chart-header, .chart-controls { display: flex; align-items: center; gap: 8px; }
+  .chart-header { justify-content: space-between; margin-bottom: 10px; }
+  .chart-header h2 { font-size: 20px; font-weight: 600; }
+  .chart-controls button {
+    width: 44px;
+    height: 44px;
+    background: var(--panel);
+    color: var(--ink);
+    border: 1px solid var(--olive);
+    border-radius: 4px;
+    font: inherit;
+    cursor: pointer;
+  }
+  .chart-controls button[aria-disabled="true"] { opacity: .5; cursor: default; }
+  .chart-count { min-width: 3ch; text-align: center; font-size: 14px; white-space: nowrap; }
+  .chart-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--olive-soft) transparent;
+    padding-bottom: 6px;
+  }
+  .chart-track .side-fig.chart {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    transform: none;
+    scroll-snap-align: start;
+    box-shadow: none;
+  }
+  .chart-zoom { display: block; width: 100%; border: 0; background: #fff; cursor: zoom-in; }
+  .chart-zoom img { aspect-ratio: 16 / 9; max-height: 310px; object-fit: contain; }
+</style>
+
+<link rel="stylesheet" href="../site-language.css?v=1">
+<script src="../site-language.js?v=1"></script>
 </head>
 <body>
 
-<div class="page">
-  <div class="col">
-    <a class="back" href="projects.html">&larr; all projects</a>
+<main class="page">
+  <header class="col">
+    <div class="header-tools">
+      <a class="back" href="projects.html">&larr; <span data-copy lang="en">All projects</span><span data-copy lang="zh-Hans">全部项目</span></a>
+      <div data-language-picker></div>
+    </div>
 
-    <div class="eyebrow">MASTER'S THESIS</div>
-    <h1 class="title">Investment Feasibility of BIPV Across High-Rise Clusters in Kunming</h1>
-    <p class="tagline">Does building-integrated solar actually pay off? It depends on one variable most people ignore.</p>
-    <p class="role-line">Project designer &amp; lead researcher (independent) · Dec 2025 – Jul 2026</p>
+    <div class="eyebrow"><span data-copy lang="en">MASTER'S THESIS</span><span data-copy lang="zh-Hans">硕士论文</span></div>
+    <h1 class="title"><span data-copy lang="en">Why did more solar panels make for a worse investment in sunny Kunming?</span>
+      <span data-copy lang="zh-Hans">昆明阳光这么好，为什么光伏铺多了反而亏钱？</span>
+    </h1>
+    <p class="role-line">
+      <span data-copy lang="en">Project designer and lead researcher &middot; Dec 2025 – Jul 2026</span>
+      <span data-copy lang="zh-Hans">独立项目 · 研究设计与分析 · 2025 年 12 月至 2026 年 7 月</span>
+    </p>
 
     <div class="squiggle"></div>
-  </div>
 
-  <figure class="side-fig video left">
-    <video src="项目4_硕士论文/建模gif图/wanda.mp4" muted loop autoplay playsinline preload="none"></video>
-    <figcaption>Radiation simulation · Wanda cluster</figcaption>
-  </figure>
-
-  <div class="col">
     <article>
-      <h2>Background</h2>
-      <p>This was my master's thesis. Building-integrated photovoltaics (BIPV) is often pitched as the answer for decarbonising dense cities, but nobody had systematically quantified what happens to the investment case when tall buildings sit close together and shade each other. That's exactly the situation in Kunming's high-rise office clusters.</p>
-
-      <h2>What I did</h2>
-      <ol>
-        <li>Modelled four real high-rise clusters in central Kunming (including Hanglong, Qicai, Tongde and Wanda) in 3D and ran solar-radiation simulations to find out how much light each building actually receives once mutual shading from its neighbours is accounted for, not just the light it would get standing alone.</li>
-      </ol>
+      <p class="lede" data-copy lang="en">Kunming gets plenty of sun. Yet across four modelled office clusters, all 24 configurations lost money on average when panels went on every eligible surface above a low sunlight cutoff. The average loss ranged from RMB 9.6 million to 62.7 million in net present value. With deployment limited to sunnier surfaces, all four clusters moved into positive territory with conventional silicon rooftop panels. Switching just the podium roofs to integrated cadmium telluride (CdTe) split the results again. Wanda and Tongde stayed positive, while Hanglong and Qicai fell back below zero.</p>
+      <p class="lede" data-copy lang="zh-Hans">昆明阳光充足。但在四组办公楼群的模拟中，只用一道宽松的日照门槛来选安装位置，24 种配置的平均净现值全是负的，亏损约 960 万至 6,270 万元。把门槛提高、只留下日照更好的表面以后，采用常规晶硅屋顶方案的四组楼群都转为正值。只把裙楼屋顶换成建筑一体化碲化镉（CdTe）方案，结果又分开了：万达和同德仍为正，恒隆和七彩却重新跌到零线以下。</p>
     </article>
-  </div>
+  </header>
 
-  <figure class="side-fig video">
-    <video src="项目4_硕士论文/建模gif图/hanglong.mp4" muted loop autoplay playsinline preload="none"></video>
-    <figcaption>Radiation simulation · Hanglong cluster</figcaption>
-  </figure>
+  <section class="story-section">
+    <div class="col">
+      <article>
+        <h2><span data-copy lang="en">Wanda led in total. Tongde led per square metre.</span>
+          <span data-copy lang="zh-Hans">总收益看万达，每平方米看同德</span>
+        </h2>
+        <p data-copy lang="en">With selective deployment and conventional silicon roofs, Wanda had about RMB 4.96 million in average net present value (NPV), compared with RMB 0.91 million at Tongde. Divide by the area actually selected, though, and Wanda comes to about RMB 93 per square metre, while Tongde leads at RMB 289. Tongde reached roughly RMB 400 per square metre with the CdTe option. Its well-lit podium roof made it possible for the panels to do two jobs: generate electricity and replace part of the roof's waterproofing system.</p>
+        <p data-copy lang="zh-Hans">筛选后，在晶硅屋顶方案下，万达的平均净现值约为 496 万元，同德约为 91 万元。按实际部署面积一除，万达约为 93 元/平方米，同德却以 289 元/平方米排在第一。换用碲化镉方案后，同德约为 400 元/平方米。它的裙楼屋顶日照好，光伏组件能一边发电，一边替代部分屋面防水材料。</p>
+      </article>
+    </div>
+  </section>
 
-  <div class="col">
-    <article>
-      <ol start="2">
-        <li>Built a financial model (DCF/NPV) comparing two deployment strategies (covering every available roof surface versus only the best-lit sections) across 24+ urban-form scenarios, so the numbers reflect real cluster geometry rather than a single idealised building.</li>
-      </ol>
-    </article>
-  </div>
+  <section class="story-section">
+    <div class="col">
+      <article>
+        <h2><span data-copy lang="en">What happens when the subsidy is zero?</span>
+          <span data-copy lang="zh-Hans">把补贴设为零，会怎样？</span>
+        </h2>
+        <p data-copy lang="en">The subsidy calculation keeps the selected area and glazing transmittance (20%) fixed. With zero subsidy, the conventional silicon case still had a positive modelled NPV at all four sites. In the CdTe case, Tongde was already above zero and Wanda crossed the line as support rose. At the Shanghai benchmark used for comparison, Hanglong and Qicai were still below zero.</p>
+        <p data-copy lang="zh-Hans">这组测算固定筛选后的部署面积和 20% 的玻璃透光率，只调整补贴。在零补贴的测算中，四组楼群采用晶硅方案时，净现值仍为正。碲化镉方案下，同德在零补贴时已经高于零线，万达则随着补贴提高才达到盈亏平衡。即使补贴达到用作对照的上海基准，恒隆和七彩的净现值仍为负。</p>
+      </article>
+    </div>
+  </section>
 
-  <figure class="side-fig video left">
-    <video src="项目4_硕士论文/建模gif图/tongde.mp4" muted loop autoplay playsinline preload="none"></video>
-    <figcaption>Radiation simulation · Tongde cluster</figcaption>
-  </figure>
+  <section class="story-section">
+    <div class="col">
+      <article>
+        <h2><span data-copy lang="en">Where the shadows fall</span>
+          <span data-copy lang="zh-Hans">阴影落在了哪儿</span>
+        </h2>
+        <p data-copy lang="en">Building-integrated photovoltaics (BIPV) make part of the building envelope generate power. The study compares four layouts in Kunming: Wanda's twin towers, Hanglong's tower group, Qicai's C-shaped cluster, and Tongde's tower and podium. In Hanglong and Qicai, neighbouring towers shade some of the very roofs where panels could go. How much that remaining sunlight is worth depends on local electricity prices, installation costs and incentives.</p>
+        <p data-copy lang="zh-Hans">建筑光伏一体化（BIPV）让屋顶或外墙的一部分也能发电。研究比较了昆明四种楼群布局：万达的双塔、恒隆的塔群、七彩的 C 形围合，以及同德的单塔和裙楼。在恒隆和七彩，邻楼投下的阴影正好落到一些原本可以安装光伏的屋顶上。剩下的日照能不能换成划算的电，还要看当地的电价、安装成本和激励政策。</p>
+      </article>
+    </div>
+    <div class="story-media story-media--pair">
+      <figure class="side-fig video">
+        <video src="项目4_硕士论文/建模gif图/wanda.mp4" muted loop autoplay playsinline preload="none"></video>
+        <figcaption><span data-copy lang="en">Solar radiation simulation · Wanda</span>
+          <span data-copy lang="zh-Hans">太阳辐照模拟 · 万达</span>
+        </figcaption>
+      </figure>
+      <figure class="side-fig video">
+        <video src="项目4_硕士论文/建模gif图/hanglong.mp4" muted loop autoplay playsinline preload="none"></video>
+        <figcaption><span data-copy lang="en">Solar radiation simulation · Hanglong</span>
+          <span data-copy lang="zh-Hans">太阳辐照模拟 · 恒隆</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
 
-  <div class="col">
-    <article>
-      <ol start="3">
-        <li>Ran a Monte Carlo simulation to quantify investment risk, plus a subsidy-threshold sensitivity analysis to find the tipping point where each scenario turns profitable.</li>
-      </ol>
+  <section class="story-section">
+    <div class="col">
+      <article>
+        <h2><span data-copy lang="en">What to check on the drawing board</span>
+          <span data-copy lang="zh-Hans">图纸阶段，先看什么？</span>
+        </h2>
+        <p data-copy lang="en">Where will the next tower cast its shadow? How much roof will still be available after making room for equipment and shared spaces? The risk analysis shows why usable roof area needs a closer look. With CdTe on the podium, a larger share of usable roof area was associated with higher NPV at Tongde, but with lower NPV at Hanglong and Qicai. These are questions to ask while there is still room to change the design.</p>
+        <p data-copy lang="zh-Hans">隔壁塔楼的阴影会落在哪儿？给设备和公共空间留足位置以后，还剩多少屋顶能装光伏？风险分析显示，可用面积扩大后的结果因楼群而异。同样在裙楼屋顶采用碲化镉方案，可用于光伏的屋顶比例越高，同德的净现值往往越高，恒隆和七彩却呈现相反的关系。这些问题值得在设计还有余地调整时就摆到桌上。</p>
+      </article>
+    </div>
+  </section>
 
-      <div class="pull-stat">
-        <span class="big hand">The "sweet spot" flips it.</span>
-        <span class="small">Only deploying panels where they actually pay off turns most loss-making scenarios into profitable ones, and roof-utilisation ends up mattering more than which PV panels get chosen.</span>
+  <section class="col chart-carousel" aria-labelledby="chart-heading">
+    <div class="chart-header">
+      <h2 id="chart-heading"><span data-copy lang="en">Data charts</span><span data-copy lang="zh-Hans">数据图</span></h2>
+      <div class="chart-controls">
+        <button type="button" aria-label="Previous chart" aria-controls="chart-track" aria-disabled="true">&larr;</button>
+        <span class="chart-count" role="status">1 / 4</span>
+        <button type="button" aria-label="Next chart" aria-controls="chart-track">&rarr;</button>
       </div>
+    </div>
+    <div class="chart-track" id="chart-track" tabindex="0" role="group" aria-labelledby="chart-heading">
+      <figure class="side-fig chart">
+        <button class="chart-zoom" type="button">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_C_FullVsSweet_Density.png" alt="In four office clusters, the net present value distributions shift from mostly below break-even under full deployment to mostly above it after selecting sunnier surfaces." data-alt-zh="四组楼群的净现值分布：满铺时大多落在盈亏平衡线左侧，筛选日照较好的表面后大多移到右侧。" loading="lazy">
+        </button>
+        <figcaption><span data-copy lang="en">Full vs. selective deployment · crystalline silicon roofs (D), 20% glazing transmittance. The dashed line marks break-even.</span>
+          <span data-copy lang="zh-Hans">满铺与筛选部署对比 · 晶硅屋顶方案（D），玻璃透光率 20%。虚线为盈亏平衡线。</span>
+        </figcaption>
+      </figure>
+      <figure class="side-fig chart">
+        <button class="chart-zoom" type="button">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_NPV_per_m2_TwoTone.png" alt="Average net present value per square metre of selected deployment area, by cluster and rooftop scenario" data-alt-zh="按楼群和屋顶方案比较筛选后每平方米部署面积的平均净现值" loading="lazy">
+        </button>
+        <figcaption><span data-copy lang="en">Average NPV per m² of selected area · rooftop scenarios D and E</span>
+          <span data-copy lang="zh-Hans">筛选部署后每平方米的平均净现值 · 屋顶方案 D 与 E</span>
+        </figcaption>
+      </figure>
+      <figure class="side-fig chart">
+        <button class="chart-zoom" type="button">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_Subsidy_Sensitivity_Pro.png" alt="Modelled net present value as subsidy support changes, at fixed selective deployment and 20% glazing transmittance" data-alt-zh="固定筛选部署面积和 20% 玻璃透光率时，净现值随补贴变化的估算" loading="lazy">
+        </button>
+        <figcaption><span data-copy lang="en">Modelled NPV at fixed deployment · subsidy as a share of the Shanghai benchmark</span>
+          <span data-copy lang="zh-Hans">固定部署面积下的净现值估算 · 补贴以相对上海基准的比例表示</span>
+        </figcaption>
+      </figure>
+      <figure class="side-fig chart">
+        <button class="chart-zoom" type="button">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_T1_SweetSpot_GradientDot_2x2_Darker.png" alt="Spearman rank correlations between model inputs and net present value across the four clusters under selective deployment in Scenario D" data-alt-zh="D 方案筛选部署后，四组楼群的模型输入与净现值之间的斯皮尔曼秩相关" loading="lazy">
+        </button>
+        <figcaption><span data-copy lang="en">Which inputs track changes in NPV? · Spearman correlations, selective deployment, Scenario D</span>
+          <span data-copy lang="zh-Hans">哪些输入和净现值的变化关系最强？· D 方案筛选部署后的斯皮尔曼秩相关</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
 
-      <h2>Result</h2>
-      <p>Treating the radiation cutoff itself as something to optimise, deploying panels only where they actually pay off, flips most scenarios from a loss into a profit. The analysis also shows that roof-utilisation is a bigger driver of investment risk than the choice of PV technology itself, meaning decisions made at the architectural-design stage matter more than which panels get installed later.</p>
-    </article>
-  </div>
+  <section class="story-section">
+    <div class="col methods">
+      <article>
+        <h2><span data-copy lang="en">How</span>
+          <span data-copy lang="zh-Hans">方法</span>
+        </h2>
+        <ol>
+          <li>
+            <p data-copy lang="en"><strong>Model the shadows.</strong> The 3D models include the four clusters and their neighbours, so the annual radiation simulation can account for the shadows each building casts on nearby roofs and façades.</p>
+            <p data-copy lang="zh-Hans"><strong>模拟遮挡。</strong>三维模型纳入四组楼群和周边建筑，用于计算每块屋顶和外墙在邻楼遮挡下的全年太阳辐照量。</p>
+          </li>
+          <li>
+            <p data-copy lang="en"><strong>Find a reference cutoff.</strong> The radiation cutoff starts at 400 kWh/m² per year. A 25-year cash-flow model compares how installation area and NPV change as the cutoff rises. Under the reference configuration (conventional silicon roofs and 20% glazing transmittance), the NPV peak sets each cluster’s cutoff for comparison across the other configurations. Those reference cutoffs were 1,200 for Wanda, 1,290 for Tongde, 1,300 for Qicai and 1,350 for Hanglong, in kWh/m² per year.</p>
+            <p data-copy lang="zh-Hans"><strong>找出参考门槛。</strong>辐照门槛从每平方米每年 400 千瓦时逐步提高，用 25 年现金流模型比较部署面积和净现值的变化。以晶硅屋顶和 20% 玻璃透光率为基准，取各楼群净现值达到峰值时的门槛，再用这条线比较其他配置。万达、同德、七彩和恒隆的参考门槛分别是 1,200、1,290、1,300 和 1,350 千瓦时/平方米·年。</p>
+          </li>
+          <li>
+            <p data-copy lang="en"><strong>Test investment risk.</strong> A 10,000-run Monte Carlo simulation estimates each configuration’s chances of profitability and shows which uncertain inputs are most closely associated with NPV. Separate subsidy runs estimate how far financial support could extend the profitable deployment area.</p>
+            <p data-copy lang="zh-Hans"><strong>估算投资风险。</strong>通过 10,000 次蒙特卡洛模拟估算各配置的盈利概率，并找出与净现值变化关系最密切的不确定因素。另一组补贴测算用于估算可盈利的部署范围能扩大多少。</p>
+          </li>
+        </ol>
+        <h2><span data-copy lang="en">Tools</span><span data-copy lang="zh-Hans">工具</span></h2>
+        <p class="tech-line">Rhino / Grasshopper / Ladybug &middot; R &middot; Excel / @RISK</p>
+      </article>
+    </div>
+    <div class="story-media story-media--pair">
+      <figure class="side-fig video">
+        <video src="项目4_硕士论文/建模gif图/tongde.mp4" muted loop autoplay playsinline preload="none"></video>
+        <figcaption><span data-copy lang="en">Solar radiation simulation · Tongde</span>
+          <span data-copy lang="zh-Hans">太阳辐照模拟 · 同德</span>
+        </figcaption>
+      </figure>
+      <figure class="side-fig video">
+        <video src="项目4_硕士论文/建模gif图/qicai.mp4" muted loop autoplay playsinline preload="none"></video>
+        <figcaption><span data-copy lang="en">Solar radiation simulation · Qicai</span>
+          <span data-copy lang="zh-Hans">太阳辐照模拟 · 七彩</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
 
-  <figure class="side-fig video">
-    <video src="项目4_硕士论文/建模gif图/qicai.mp4" muted loop autoplay playsinline preload="none"></video>
-    <figcaption>Radiation simulation · Qicai cluster</figcaption>
-  </figure>
+<script src="../lightbox.js?v=6"></script>
+<script>
+  if (document.documentElement.lang === "zh-Hans") {
+    document.title = document.querySelector("h1 [lang='zh-Hans']").textContent;
+    for (const image of document.querySelectorAll("[data-alt-zh]")) {
+      image.alt = image.dataset.altZh;
+    }
+  }
+</script>
+<script>
+  const chartTrack = document.querySelector(".chart-track");
+  const chartCount = document.querySelector(".chart-count");
+  const [previousChart, nextChart] = document.querySelectorAll(".chart-controls button");
+  const chartTotal = chartTrack.children.length;
+  const chartIndex = () => Math.round(chartTrack.scrollLeft / chartTrack.clientWidth);
 
-  <figure class="side-fig chart left">
-    <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_T1_SweetSpot_GradientDot_2x2_Darker.png" alt="The sweet-spot deployment strategy compared across scenarios" loading="lazy">
-    <figcaption>The "sweet-spot" strategy compared across four clusters</figcaption>
-  </figure>
+  function showChart(index) {
+    const next = Math.max(0, Math.min(chartTotal - 1, index));
+    chartTrack.scrollLeft = next * chartTrack.clientWidth;
+  }
 
-  <div class="col">
-    <article>
-      <p>In practical terms, this means BIPV investment decisions can't be separated from the massing decisions made earlier in the design process: how tall, how close, how oriented. A financially attractive design in isolation can become a losing one once its neighbours are added to the model, and vice versa. That's the part urban planning and green-building policy tend to overlook when they treat solar potential building-by-building instead of cluster-by-cluster.</p>
-    </article>
-  </div>
+  function updateChartCount() {
+    const index = chartIndex();
+    const count = (index + 1) + " / " + chartTotal;
+    if (chartCount.textContent !== count) chartCount.textContent = count;
+    previousChart.setAttribute("aria-disabled", index === 0);
+    nextChart.setAttribute("aria-disabled", index === chartTotal - 1);
+  }
 
-  <figure class="side-fig chart">
-    <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_NPV_per_m2_TwoTone.png" alt="Net present value per m² under each strategy" loading="lazy">
-    <figcaption>Net present value per m² under each strategy</figcaption>
-  </figure>
+  previousChart.addEventListener("click", () => showChart(chartIndex() - 1));
+  nextChart.addEventListener("click", () => showChart(chartIndex() + 1));
+  chartTrack.addEventListener("scroll", updateChartCount, { passive: true });
+  chartTrack.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault();
+      showChart(chartIndex() + (event.key === "ArrowLeft" ? -1 : 1));
+    }
+  });
 
-  <div class="col">
-    <article>
-      <p>The subsidy-sensitivity analysis shows how close some scenarios sit to the break-even line. A small shift in incentive policy is enough to flip several borderline cases from viable to not, which is exactly the kind of threshold effect that's easy to miss when it's only ever assessed one building at a time.</p>
+  const chineseCharts = document.documentElement.lang === "zh-Hans";
+  if (chineseCharts) {
+    previousChart.setAttribute("aria-label", "上一张图");
+    nextChart.setAttribute("aria-label", "下一张图");
+  }
 
-      <h2>Methods &amp; tools</h2>
-      <p class="tech-line">Rhino / Grasshopper / Ladybug &middot; DCF/NPV modelling &middot; Monte Carlo simulation &middot; R</p>
-    </article>
-  </div>
-
-  <figure class="side-fig chart left">
-    <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_Subsidy_Sensitivity_Pro.png" alt="Subsidy-threshold sensitivity analysis" loading="lazy">
-    <figcaption>Subsidy-threshold sensitivity analysis</figcaption>
-  </figure>
-
-</div>
-
-<script src="../lightbox.js?v=5"></script>
+  for (const button of chartTrack.querySelectorAll(".chart-zoom")) {
+    const image = button.querySelector("img");
+    button.dataset.lightboxSrc = image.getAttribute("src");
+    button.dataset.lightboxAlt = image.alt;
+    button.setAttribute("aria-label", (chineseCharts ? "放大图表：" : "Enlarge chart: ") + image.alt);
+  }
+  updateChartCount();
+</script>
 </body>
 </html>

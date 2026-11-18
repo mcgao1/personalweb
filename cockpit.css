@@ -1,768 +1,539 @@
 #cockpit {
-      --black: #030408;
-      --ink: #f7f2df;
-      --blue: #12a5ff;
-      --lime: #d7ff35;
-      --green: #39ef6d;
-      --orange: #ff7b26;
-      --pink: #ff71c8;
-      --cyan: #79ddff;
-      --glass: rgba(255, 255, 255, 0.08);
-    }
-#cockpit, #cockpit * {
-      box-sizing: border-box;
-    }
-#cockpit .stage {
-      position: relative;
-      width: min(100vw, 1440px);
-      height: min(100vh, 900px);
-      min-height: 680px;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 13% 17%, rgba(255,255,255,0.9) 0 2px, transparent 3px),
-        radial-gradient(circle at 34% 9%, rgba(255,255,255,0.9) 0 2px, transparent 3px),
-        radial-gradient(circle at 79% 13%, rgba(255,255,255,0.75) 0 1px, transparent 2px),
-        radial-gradient(circle at 91% 24%, rgba(255,255,255,0.8) 0 2px, transparent 3px),
-        radial-gradient(circle at 69% 89%, rgba(255,255,255,0.65) 0 2px, transparent 3px),
-        radial-gradient(circle at 28% 91%, rgba(255,255,255,0.8) 0 1px, transparent 2px),
-        #05070f;
-    }
-#cockpit .stage::before, #cockpit .stage::after {
-      content: "";
-      position: absolute;
-      z-index: 0;
-      pointer-events: none;
-    }
-#cockpit .stage::before {
-      left: 50%;
-      top: 24%;
-      width: 118vw;
-      height: 210px;
-      translate: -50% 0;
-      border-top: 5px solid rgba(247,242,223,0.88);
-      border-radius: 50% 50% 0 0;
-      transform: rotate(-1deg);
-      filter: drop-shadow(0 4px 0 #000);
-      opacity: 0.75;
-    }
-#cockpit .stage::after {
-      right: 11%;
-      top: 13%;
-      width: 20px;
-      height: 20px;
-      background:
-        linear-gradient(var(--ink), var(--ink)) 50% 0 / 3px 100% no-repeat,
-        linear-gradient(90deg, var(--ink), var(--ink)) 0 50% / 100% 3px no-repeat;
-      transform: rotate(5deg);
-    }
-#cockpit .layer {
-      position: absolute;
-      inset: 0;
-    }
-#cockpit .space-layer {
-      z-index: 1;
-      display: grid;
-      place-items: center;
-      pointer-events: none;
-    }
-#cockpit .window-world {
-      position: relative;
-      width: min(78vw, 1110px);
-      height: min(38vh, 350px);
-      min-height: 280px;
-      border-radius: 24px 24px 34px 34px;
-      overflow: hidden;
-      background: #000;
-      box-shadow: inset 0 0 80px rgba(0,0,0,0.95);
-      transform: translateY(-78px);
-      clip-path: polygon(4% 11%, 96% 0, 92% 100%, 8% 100%);
-    }
-#cockpit .window-world video, #cockpit .scene {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 180ms ease;
-    }
-#cockpit .scene.is-active, #cockpit .window-world video.is-active {
-      opacity: 1;
-    }
-#cockpit .scene-default {
-      opacity: 1;
-      background:
-        radial-gradient(circle at 48% 43%, #ffe726 0 74px, transparent 75px),
-        linear-gradient(to bottom, #ff5b13 0 48%, #00a9d9 49% 100%);
-      overflow: hidden;
-    }
-#cockpit .scene-default::before {
-      content: "";
-      position: absolute;
-      inset: 50% 0 0;
-      background:
-        repeating-linear-gradient(174deg, transparent 0 14px, rgba(0,0,0,0.92) 14px 17px, transparent 17px 35px),
-        linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.28));
-      animation: ck-seaLines 5s linear infinite;
-    }
-#cockpit .scene-default::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 19% 52%, #050505 0 8%, transparent 8.4%),
-        radial-gradient(ellipse at 35% 50%, #050505 0 6%, transparent 6.5%),
-        radial-gradient(ellipse at 78% 50%, #050505 0 8%, transparent 8.4%),
-        radial-gradient(ellipse at 90% 46%, #050505 0 5%, transparent 5.5%),
-        radial-gradient(ellipse at 16% 23%, #fff9ea 0 8%, transparent 8.5%),
-        radial-gradient(ellipse at 30% 20%, #fff9ea 0 7%, transparent 7.5%),
-        radial-gradient(ellipse at 70% 18%, #fff9ea 0 8%, transparent 8.5%),
-        radial-gradient(ellipse at 84% 24%, #fff9ea 0 7%, transparent 7.5%);
-      filter: drop-shadow(4px 4px 0 #000);
-    }
-#cockpit[data-active="hill"] .scene-default, #cockpit[data-active="future"] .scene-default, #cockpit[data-active="exit"] .scene-default, #cockpit[data-active="sweet"] .scene-default {
-      opacity: 0;
-    }
-#cockpit .scene-hill {
-      background:
-        linear-gradient(154deg, transparent 0 38%, rgba(0,0,0,0.65) 39% 42%, transparent 43%),
-        repeating-linear-gradient(-21deg, #184621 0 22px, #267438 23px 44px);
-      background-size: 100% 100%, 180px 120px;
-      animation: ck-hillMove 2.8s linear infinite;
-    }
-#cockpit .scene-hill::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 80% 18%, #d7ff35 0 44px, transparent 45px),
-        linear-gradient(to bottom, #1a6cc9, #67bd8b 58%, #184621);
-      mix-blend-mode: screen;
-      opacity: 0.85;
-    }
-#cockpit .scene-future {
-      background:
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.11) 0 1px, transparent 1px 8px),
-        radial-gradient(circle at 50% 50%, rgba(215,255,53,0.35), transparent 38%),
-        #210b45;
-    }
-#cockpit .scene-future::before {
-      content: "2002";
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      color: var(--lime);
-      font-size: clamp(92px, 15vw, 190px);
-      font-weight: 900;
-      letter-spacing: 0;
-      text-shadow: 7px 7px 0 #000, -3px 3px 0 var(--orange);
-      animation: ck-pulseText 1.8s steps(2) infinite;
-    }
-#cockpit .scene-exit {
-      background:
-        radial-gradient(circle at 50% 50%, rgba(57,239,109,0.42), transparent 38%),
-        linear-gradient(to bottom, #06180a, #021105);
-    }
-#cockpit .scene-exit::before {
-      content: "EXIT";
-      position: absolute;
-      left: 50%;
-      top: 47%;
-      translate: -50% -50%;
-      padding: 22px 64px;
-      border: 7px solid #000;
-      border-radius: 8px;
-      background: #42ff75;
-      color: #011406;
-      font-size: clamp(54px, 8vw, 112px);
-      font-weight: 900;
-      box-shadow: 0 0 34px #42ff75;
-      animation: ck-exitBuzz 720ms steps(2) infinite;
-    }
-#cockpit .scene-sweet {
-      background:
-        radial-gradient(circle at 28% 35%, rgba(255,113,200,0.95), transparent 20%),
-        radial-gradient(circle at 74% 60%, rgba(121,221,255,0.9), transparent 23%),
-        linear-gradient(140deg, #1d0d32, #083454);
-    }
-#cockpit .scene-sweet::before, #cockpit .scene-sweet::after {
-      content: "";
-      position: absolute;
-      width: 180px;
-      height: 118px;
-      border: 8px solid #fff6df;
-      background: rgba(255,255,255,0.12);
-      transform: rotate(-9deg);
-      left: 18%;
-      top: 27%;
-      box-shadow: 8px 8px 0 #000;
-      animation: ck-photoDrift 4s ease-in-out infinite;
-    }
-#cockpit .scene-sweet::after {
-      left: auto;
-      right: 16%;
-      top: 44%;
-      transform: rotate(12deg);
-      animation-delay: -1.5s;
-    }
-#cockpit .cockpit-layer {
-      z-index: 2;
-      pointer-events: none;
-    }
-#cockpit .window-frame {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: min(84vw, 1220px);
-      height: min(45vh, 410px);
-      min-height: 330px;
-      translate: -50% -69%;
-      border: 20px solid #050505;
-      border-radius: 26px 26px 42px 42px;
-      clip-path: polygon(2% 6%, 98% 0, 94% 100%, 6% 100%);
-      box-shadow:
-        inset 0 0 0 6px var(--ink),
-        inset 0 0 0 12px #050505,
-        0 0 0 3px rgba(255,255,255,0.28),
-        0 18px 0 #020207;
-    }
-#cockpit .window-frame::before, #cockpit .window-frame::after {
-      content: "";
-      position: absolute;
-      pointer-events: none;
-      top: 10%;
-      width: 13%;
-      height: 82%;
-      border: 6px solid rgba(247,242,223,0.88);
-      background: rgba(255,123,38,0.22);
-      box-shadow: inset 0 0 0 10px #050505;
-      clip-path: polygon(14% 0, 92% 8%, 76% 100%, 0 86%);
-    }
-#cockpit .window-frame::before {
-      left: -10%;
-    }
-#cockpit .window-frame::after {
-      right: -10%;
-      transform: scaleX(-1);
-    }
-#cockpit .dashboard {
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      width: min(96vw, 1320px);
-      height: 310px;
-      translate: -50% 58px;
-      border-radius: 12px 12px 0 0;
-      background:
-        radial-gradient(ellipse at 27% 24%, rgba(255,123,38,0.35), transparent 7%),
-        radial-gradient(ellipse at 53% 18%, rgba(215,255,53,0.18), transparent 8%),
-        radial-gradient(ellipse at 75% 25%, rgba(121,221,255,0.22), transparent 6%),
-        linear-gradient(#151820, #050509);
-      border: 8px solid #050505;
-      border-top-width: 12px;
-      box-shadow: inset 0 0 0 4px var(--ink), 0 -10px 0 #000;
-      transform: perspective(620px) rotateX(17deg);
-      transform-origin: bottom center;
-    }
-#cockpit .dashboard::before {
-      content: "";
-      position: absolute;
-      inset: 22px 34px auto;
-      height: 10px;
-      border-radius: 999px;
-      background: repeating-linear-gradient(90deg, var(--ink) 0 18px, transparent 18px 36px);
-      opacity: 0.35;
-    }
-#cockpit .monster {
-      position: absolute;
-      left: 66%;
-      bottom: 157px;
-      width: 240px;
-      height: 270px;
-      translate: -50% 0;
-      pointer-events: none;
-      filter: drop-shadow(8px 8px 0 #000);
-      animation: ck-monsterFloat 3.6s ease-in-out infinite;
-    }
-#cockpit .seat {
-      position: absolute;
-      left: 75%;
-      bottom: 152px;
-      width: 166px;
-      height: 230px;
-      border: 8px solid var(--ink);
-      border-radius: 38px 38px 10px 10px;
-      background: #040407;
-      filter: drop-shadow(8px 8px 0 #000);
-      pointer-events: none;
-    }
-#cockpit .seat::after {
-      content: "";
-      position: absolute;
-      left: -22px;
-      bottom: -18px;
-      width: 210px;
-      height: 68px;
-      border: 7px solid var(--ink);
-      border-radius: 50% 50% 8px 8px;
-      background: #040407;
-    }
-#cockpit .monster svg {
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-    }
-#cockpit .eye-open {
-      transform-origin: center;
-      animation: ck-blink 5.4s infinite;
-    }
-#cockpit[data-active="hill"] .eye-open, #cockpit[data-active="future"] .eye-open, #cockpit[data-active="exit"] .eye-open, #cockpit[data-active="sweet"] .eye-open {
-      animation: none;
-      transform: scaleY(1.18);
-    }
-#cockpit .pupil {
-      transition: transform 120ms ease;
-    }
-#cockpit[data-active="hill"] .pupil, #cockpit[data-active="future"] .pupil, #cockpit[data-active="exit"] .pupil, #cockpit[data-active="sweet"] .pupil {
-      transform: translateY(-2px) scale(0.9);
-    }
-#cockpit .props {
-      position: absolute;
-      left: 35%;
-      bottom: 86px;
-      z-index: 3;
-      display: flex;
-      gap: 18px;
-      align-items: end;
-      translate: -50% 0;
-      pointer-events: auto;
-      transform: perspective(420px) rotateX(14deg) rotate(-2deg);
-    }
-#cockpit .prop {
-      border: 4px solid #000;
-      background: #11141c;
-      color: var(--ink);
-      box-shadow: 5px 5px 0 #000;
-      cursor: pointer;
-      transition: transform 160ms ease, filter 160ms ease;
-    }
-#cockpit .prop:hover {
-      transform: translateY(-4px) rotate(-2deg);
-      filter: brightness(1.2);
-    }
-#cockpit .radio {
-      width: 118px;
-      height: 72px;
-      border-radius: 14px;
-      padding: 10px;
-      background: var(--orange);
-    }
-#cockpit .radio::before {
-      content: "SPACE FM";
-      display: block;
-      color: #000;
-      font-size: 13px;
-      font-weight: 900;
-      margin-bottom: 8px;
-    }
-#cockpit .radio::after {
-      content: "";
-      display: block;
-      width: 72px;
-      height: 18px;
-      border-radius: 999px;
-      background: #09090c;
-      box-shadow: 82px -16px 0 -6px var(--lime);
-    }
-#cockpit .jar {
-      width: 70px;
-      height: 88px;
-      border-radius: 16px 16px 10px 10px;
-      background:
-        radial-gradient(circle at 45% 55%, var(--green) 0 6px, transparent 7px),
-        linear-gradient(to bottom, rgba(121,221,255,0.45), rgba(57,239,109,0.3));
-    }
-#cockpit .jar::before {
-      content: "";
-      display: block;
-      width: 48px;
-      height: 12px;
-      margin: -9px auto 0;
-      border: 4px solid #000;
-      border-radius: 8px;
-      background: #ced5c1;
-    }
-#cockpit .danger {
-      width: 78px;
-      height: 78px;
-      border-radius: 20px;
-      background: #39030a;
-      display: grid;
-      place-items: center;
-    }
-#cockpit .danger::before {
-      content: "";
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #ff2b38;
-      border: 5px solid #fff4d7;
-      box-shadow: 0 6px 0 #82000b;
-    }
-#cockpit .ui-layer {
-      z-index: 3;
-      pointer-events: none;
-    }
-#cockpit .specimen {
-      position: absolute;
-      width: 138px;
-      min-height: 126px;
-      padding: 8px 8px 20px;
-      border: 8px solid var(--ink);
-      border-radius: 3px;
-      background: #fff9ec;
-      box-shadow: 7px 7px 0 #000;
-      color: var(--ink);
-      cursor: pointer;
-      pointer-events: auto;
-      animation: ck-specimenFloat 5.2s ease-in-out infinite;
-      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-    }
-#cockpit .specimen:hover, #cockpit .specimen:focus-visible, #cockpit .specimen.is-locked {
-      outline: none;
-      animation-play-state: paused;
-      transform: translateY(-8px) rotate(0deg) scale(1.04);
-      z-index: 8;
-    }
-#cockpit .specimen:hover .tag, #cockpit .specimen:focus-visible .tag, #cockpit .specimen.is-locked .tag {
-      opacity: 1;
-      translate: 0 0;
-    }
-#cockpit .specimen svg {
-      width: 100%;
-      height: 84px;
-      display: block;
-      overflow: visible;
-      background: linear-gradient(#ff6f18 0 42%, #08aeea 43% 100%);
-      border: 4px solid #050505;
-    }
-#cockpit .tag {
-      position: absolute;
-      left: 50%;
-      bottom: -28px;
-      translate: -50% 6px;
-      white-space: nowrap;
-      padding: 4px 10px;
-      border: 3px solid #000;
-      border-radius: 999px;
-      background: var(--ink);
-      color: #06070c;
-      font-size: 13px;
-      font-weight: 900;
-      opacity: 0;
-      transition: opacity 140ms ease, translate 140ms ease;
-    }
-#cockpit .hill-cube {
-      left: 14%;
-      top: 7%;
-      rotate: -11deg;
-    }
-#cockpit .future-cube {
-      left: 15%;
-      bottom: 7%;
-      rotate: 9deg;
-      animation-delay: -1.7s;
-    }
-#cockpit .exit-cube {
-      right: 14%;
-      top: 9%;
-      rotate: 12deg;
-      animation-delay: -0.9s;
-    }
-#cockpit .sweet-cube {
-      right: 12%;
-      bottom: 6%;
-      rotate: -11deg;
-      animation-delay: -2.5s;
-    }
-#cockpit .hill-cube:hover, #cockpit .hill-cube.is-locked {
-      border-color: var(--green);
-      box-shadow: 0 0 28px var(--green), 8px 8px 0 #000;
-    }
-#cockpit .future-cube:hover, #cockpit .future-cube.is-locked {
-      border-color: var(--lime);
-      box-shadow: 0 0 28px var(--lime), 8px 8px 0 #000;
-    }
-#cockpit .exit-cube:hover, #cockpit .exit-cube.is-locked {
-      border-color: var(--orange);
-      box-shadow: 0 0 28px var(--orange), 8px 8px 0 #000;
-    }
-#cockpit .sweet-cube:hover, #cockpit .sweet-cube.is-locked {
-      border-color: var(--pink);
-      box-shadow: 0 0 30px var(--pink), 0 0 42px var(--cyan), 8px 8px 0 #000;
-    }
-#cockpit .bubble {
-      position: absolute;
-      left: 16%;
-      top: auto;
-      bottom: 230px;
-      width: min(31vw, 400px);
-      min-height: 82px;
-      padding: 8px 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      color: rgba(247,242,223,0.78);
-      box-shadow: none;
-      pointer-events: auto;
-      font-family: 'Segoe Print', 'Comic Sans MS', cursive;
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 1.45;
-      text-align: left;
-      overflow-wrap: anywhere;
-      cursor: pointer;
-    }
-#cockpit .bubble:focus-visible {
-      outline: 2px dashed var(--ink);
-      outline-offset: 6px;
-    }
-#cockpit .title-scribble {
-      position: absolute;
-      left: 4vw;
-      top: 5vh;
-      max-width: 210px;
-      font-size: clamp(26px, 3.6vw, 56px);
-      line-height: 0.86;
-      font-weight: 900;
-      letter-spacing: 0;
-      opacity: 0.16;
-      pointer-events: none;
-      transform: rotate(-4deg);
-    }
-#cockpit.alerting .stage {
-      animation: ck-alertShake 280ms steps(2) infinite;
-    }
-@keyframes ck-hillMove {
-      to {
-        background-position: 0 0, -180px 120px;
-      }
-    }
-@keyframes ck-seaLines {
-      to {
-        transform: translateX(-80px);
-      }
-    }
-@keyframes ck-pulseText {
-      50% {
-        transform: translateY(-4px) rotate(-1deg);
-        filter: brightness(1.25);
-      }
-    }
-@keyframes ck-exitBuzz {
-      50% {
-        opacity: 0.76;
-        transform: translate(2px, -1px);
-      }
-    }
-@keyframes ck-photoDrift {
-      50% {
-        translate: 0 -18px;
-      }
-    }
-@keyframes ck-specimenFloat {
-      50% {
-        translate: 0 -16px;
-      }
-    }
-@keyframes ck-monsterFloat {
-      50% {
-        translate: -50% -8px;
-      }
-    }
-@keyframes ck-blink {
-      0%, 92%, 100% {
-        transform: scaleY(1);
-      }
-      94%, 96% {
-        transform: scaleY(0.08);
-      }
-    }
-@keyframes ck-alertShake {
-      25% {
-        transform: translate(-8px, 4px) rotate(-0.6deg);
-      }
-      75% {
-        transform: translate(8px, -4px) rotate(0.6deg);
-      }
-    }
-@media (max-width: 860px) {
-#cockpit .stage {
-        min-height: 760px;
-      }
-#cockpit .window-world {
-        width: 92vw;
-        height: 34vh;
-        min-height: 250px;
-        transform: translateY(-92px);
-      }
-#cockpit .window-frame {
-        width: 98vw;
-        height: 38vh;
-        min-height: 285px;
-        translate: -50% -79%;
-        border-width: 12px;
-      }
-#cockpit .monster {
-        left: 66%;
-        width: 168px;
-        bottom: 188px;
-      }
-#cockpit .seat {
-        left: 76%;
-        bottom: 180px;
-        width: 116px;
-        height: 160px;
-      }
-#cockpit .dashboard {
-        width: 96vw;
-        height: 270px;
-      }
-#cockpit .props {
-        left: 36%;
-        bottom: 82px;
-        gap: 12px;
-      }
-#cockpit .radio {
-        width: 100px;
-      }
-#cockpit .specimen {
-        width: 108px;
-        min-height: 104px;
-        padding: 10px;
-        border-width: 6px;
-      }
-#cockpit .specimen svg {
-        height: 58px;
-      }
-#cockpit .hill-cube {
-        left: 6%;
-        top: 9%;
-      }
-#cockpit .future-cube {
-        left: 7%;
-        bottom: 14%;
-      }
-#cockpit .exit-cube {
-        right: 6%;
-        top: 9%;
-      }
-#cockpit .sweet-cube {
-        right: 7%;
-        bottom: 14%;
-      }
-#cockpit .bubble {
-        left: 8%;
-        bottom: 260px;
-        width: 44%;
-        font-size: 19px;
-      }
-}
-@media (prefers-reduced-motion: reduce) {
-#cockpit, #cockpit *, #cockpit *::before, #cockpit *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-}
-
-/* ---------- Cockpit screen (scroll down from the planet) ---------- */
-#cockpit {
+  --ck-ink: #f7f0d9;
+  --ck-acid: #d9ee40;
+  --ck-orange: #ff7734;
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: #05070f;
-  transform: translateY(100%);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #060606;
+  color: var(--ck-ink);
   visibility: hidden;
-  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s linear 1s;
-  display: grid;
-  place-items: center;
+  transform: translateY(100%);
+  transition: transform .85s cubic-bezier(.65,0,.35,1), visibility 0s .85s;
 }
+
 body.cockpit-open #cockpit {
   transform: translateY(0);
   visibility: visible;
-  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s;
+  transition: transform .85s cubic-bezier(.65,0,.35,1), visibility 0s;
 }
+
 body.cockpit-open .universe,
 body.cockpit-open .sky,
 body.cockpit-open .monster-note { pointer-events: none; }
-#cockpit .monster img { width: 100%; height: 100%; object-fit: contain; display: block; }
-#cockpit .ck-back {
-  pointer-events: auto;
-  position: absolute; right: 18px; top: 14px; z-index: 5;
-  background: transparent; border: 0; color: rgba(247,242,223,0.5);
-  font: inherit; font-size: 12px; cursor: pointer; letter-spacing: 0.08em;
-}
-#cockpit .ck-back:hover { color: #f7f2df; }
 
-/* ---------- Rive props (apple on the radio, fish co-pilot, dark-matter bottle) ---------- */
-#cockpit .radio-wrap,
-#cockpit .danger-wrap {
+#cockpit .stage {
   position: relative;
+  isolation: isolate;
+  width: min(100%, 1450px);
+  height: clamp(650px, 100svh, 960px);
+  margin-inline: auto;
+  background:
+    radial-gradient(circle at 37% 14%, #f7f0d9 0 1.5px, transparent 2px),
+    radial-gradient(circle at 94% 25%, #f7f0d9 0 1.1px, transparent 2px),
+    radial-gradient(circle at 21% 59%, #f7f0d9 0 1.4px, transparent 2px),
+    radial-gradient(circle at 93% 51%, #f7f0d9 0 1.4px, transparent 2px),
+    radial-gradient(circle at 23% 89%, #f7f0d9 0 1.4px, transparent 2px), #060606;
+}
+
+#cockpit .ck-back,
+#cockpit .bubble,
+#cockpit .specimen,
+#cockpit .window-cycle,
+#cockpit .prop,
+#cockpit .bottle-slot,
+#cockpit .apple-hit { cursor: pointer; }
+
+#cockpit button:focus-visible {
+  outline: 2px dashed var(--ck-acid);
+  outline-offset: 5px;
+}
+
+#cockpit .ck-back {
+  position: absolute;
+  top: 19px;
+  right: 26px;
+  z-index: 8;
+  padding: 5px 8px;
+  border: 0;
+  background: #060606;
+  color: var(--ck-ink);
+  font: 700 13px/1.3 'Inter', sans-serif;
+}
+
+#cockpit .ck-back:hover { color: var(--ck-acid); }
+
+#cockpit .title-scribble {
+  position: absolute;
+  top: 12%;
+  left: 9%;
+  z-index: 2;
+  padding: .06em .08em;
+  transform: rotate(-9deg);
+  color: var(--ck-orange);
+  font: 900 clamp(72px, 10.5vw, 154px)/.92 'Microsoft YaHei UI', 'PingFang SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+  text-shadow: .025em .022em #692d28;
+  filter: url(#poster-ink);
+}
+
+#cockpit .ck-window {
+  position: absolute;
+  left: 58%;
+  top: 19%;
+  width: 34%;
+  height: 43%;
+  z-index: 2;
+  padding: 11px;
+  transform: rotate(-4deg);
+}
+
+#cockpit .ck-window::before,
+#cockpit .specimen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 4px solid var(--ck-ink);
+  border-radius: 5% 2% 4% 3% / 8% 6% 3% 9%;
+  transform: rotate(1deg);
+  filter: url(#ck-crayon);
+  pointer-events: none;
+}
+
+#cockpit .window-world { position: absolute; inset: 10px; overflow: hidden; background: #070707; }
+
+#cockpit .ck-print {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: #090708;
+  background-size: 5px 5px, cover;
+  background-position: center;
+}
+
+#cockpit .scene {
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+#cockpit .scene.is-active { opacity: 1; }
+#cockpit .scene-default { background: url('assets/cockpit-dead-air-road.webp') center / cover no-repeat; }
+
+#cockpit [data-view="hill"] {
+  background-image: radial-gradient(#241016 0 1px, transparent 1.45px), linear-gradient(#669eda 1%, #e8df51 42%, #ff8f3f 74%);
+}
+
+#cockpit [data-view="hill"]::before,
+#cockpit [data-view="future"]::before,
+#cockpit [data-view="sweet"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+#cockpit [data-view="hill"]::before {
+  background: #090909;
+  clip-path: polygon(0 74%, 13% 58%, 28% 64%, 45% 49%, 55% 62%, 68% 57%, 86% 72%, 100% 54%, 100% 100%, 0 100%);
+}
+
+#cockpit [data-view="hill"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #c7df3b;
+  clip-path: polygon(0 94%, 31% 82%, 54% 77%, 39% 85%, 69% 89%, 87% 100%, 51% 100%, 42% 95%, 18% 97%, 8% 100%, 0 100%);
+}
+
+#cockpit [data-view="future"] {
+  background-image: radial-gradient(#110c19 0 1px, transparent 1.5px), linear-gradient(#181a4c, #4f6cd7 52%, #fb76a6 76%);
+}
+
+#cockpit [data-view="future"]::before {
+  background: #0a080f;
+  clip-path: polygon(0 75%, 11% 74%, 11% 50%, 19% 50%, 19% 65%, 31% 65%, 31% 40%, 38% 40%, 38% 68%, 67% 68%, 67% 56%, 77% 56%, 77% 39%, 85% 39%, 85% 65%, 100% 65%, 100% 100%, 0 100%);
+}
+
+#cockpit [data-view="future"]::after {
+  content: '2002';
+  position: absolute;
+  top: 11%;
+  left: 17%;
+  color: #dcf84e;
+  font: 900 clamp(18px, 4vw, 56px)/1 'Archivo Black', sans-serif;
+  letter-spacing: -.11em;
+  transform: rotate(-8deg);
+}
+
+#cockpit [data-view="exit"] {
+  background-image: radial-gradient(#12112b 0 1.2px, transparent 1.6px), linear-gradient(#102723, #283c2a 58%, #0b0b09 58%);
+}
+
+#cockpit [data-view="exit"]::before {
+  content: 'EXIT';
+  position: absolute;
+  inset: 18% 27% 12%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(74deg, #67ef48 65%, #d6f56b 65%);
+  border: 3px solid #070d0a;
+  box-shadow: 5px 4px 0 #e0f6927d;
+  color: #15150a;
+  font: 900 clamp(13px, 3.5vw, 44px)/1 'Archivo Black', sans-serif;
+  transform: skewY(-8deg);
+}
+html[lang="zh-Hans"] #cockpit [data-view="exit"]::before { content: "出口"; }
+
+#cockpit [data-view="sweet"] {
+  background-image: radial-gradient(#211025 0 1px, transparent 1.5px), linear-gradient(#38375e 0%, #7d84da 36%, #eb6e80 59%, #57b5cc 60%);
+}
+
+#cockpit [data-view="sweet"]::before {
+  background:
+    radial-gradient(circle at 67% 33%, #edf04e 0 9%, transparent 9.4%),
+    radial-gradient(circle at 56% 58%, #ff693d 0 9%, transparent 9.4%);
+}
+
+#cockpit [data-view="sweet"]::after {
+  content: '';
+  position: absolute;
+  inset: 61% -10% 0;
+  background: repeating-linear-gradient(176deg, #11142c 0 3px, transparent 3px 13px);
+  transform: skewX(15deg);
+}
+
+#cockpit .window-cycle {
+  position: absolute;
+  z-index: 1;
+  inset: 10px;
   display: flex;
   align-items: flex-end;
+  justify-content: flex-end;
+  padding: 9px;
+  border: 0;
+  background: transparent;
+  color: var(--ck-ink);
 }
-#cockpit .rive-slot {
+
+#cockpit .window-cycle span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 42px;
+  min-height: 34px;
+  padding: 3px 8px;
+  background: #080808;
+  border: 1px solid var(--ck-ink);
+  font: 700 19px/1 system-ui, sans-serif;
+}
+#cockpit .window-cycle:hover span { color: var(--ck-acid); border-color: var(--ck-acid); }
+
+#cockpit .monster {
   position: absolute;
+  z-index: 3;
+  top: 26%;
+  left: 25%;
+  width: 48%;
+  max-height: 66%;
+  aspect-ratio: 1250 / 937;
   pointer-events: none;
+}
+
+#cockpit .pilot-pose {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1250 / 937;
+  transform-origin: 45% 63%;
+  --pilot-rise: clamp(9px, 1.4vw, 21px);
+}
+
+#cockpit .pilot-pose img { display: block; width: 100%; height: 100%; }
+
+body.cockpit-open #cockpit .pilot-pose {
+  animation: ck-pilot-drift 10s ease-in-out infinite;
+}
+
+#cockpit .pilot-lid {
+  position: absolute;
+  clip-path: inset(0 0 100% 0);
+  background:
+    radial-gradient(circle, #055e924a 0 .45px, transparent .85px) 0 0 / 4px 4px,
+    linear-gradient(145deg, #148ce9, #068bf4);
+}
+
+#cockpit .pilot-lid-left {
+  left: 29.72%;
+  top: 10.54%;
+  width: 7.61%;
+  height: 9.65%;
+  border-radius: 55% 52% 55% 51%;
+}
+
+#cockpit .pilot-lid-right {
+  left: 40.45%;
+  top: 13.38%;
+  width: 5.71%;
+  height: 7.25%;
+  border-radius: 54% 54% 53% 55%;
+}
+
+#cockpit .pilot-lid::after {
+  content: '';
+  position: absolute;
+  left: 11%;
+  top: 33%;
+  width: 78%;
+  height: 26%;
+  border-bottom: clamp(1px, .18vw, 3px) solid #111c2b;
+  border-radius: 0 0 50% 54%;
+  transform: rotate(5deg);
+}
+
+body.cockpit-open #cockpit .pilot-lid {
+  animation: ck-pilot-blink 8.6s ease-in-out infinite;
+}
+
+@keyframes ck-pilot-blink {
+  0%, 34.5%, 40%, 74%, 79.5%, 100% { clip-path: inset(0 0 100% 0); }
+  36.5%, 37.5%, 76%, 77% { clip-path: inset(0); }
+}
+
+@keyframes ck-pilot-drift {
+  0%, 100% { transform: translate3d(-3px, 3px, 0) rotate(-.8deg); }
+  28% { transform: translate3d(7px, calc(-.65 * var(--pilot-rise)), 0) rotate(.55deg); }
+  55% { transform: translate3d(1px, calc(-1 * var(--pilot-rise)), 0) rotate(1.1deg); }
+  78% { transform: translate3d(-7px, calc(-.38 * var(--pilot-rise)), 0) rotate(-.1deg); }
+}
+
+#cockpit .ck-photos { display: contents; }
+#cockpit .specimen {
+  position: absolute;
+  z-index: 4;
+  width: 11%;
+  height: 19%;
+  padding: 5px;
+  border: 0;
+  background: #060606;
+  color: var(--ck-ink);
+  transform: rotate(var(--angle));
+  transition: transform .2s ease;
+}
+
+#cockpit .specimen .ck-print { inset: 4px; }
+#cockpit .specimen [data-view="future"]::after { font-size: clamp(13px, 2.4vw, 34px); }
+#cockpit .specimen [data-view="exit"]::before { inset-inline: 18%; font-size: clamp(12px, 2.1vw, 28px); }
+#cockpit .specimen::before { z-index: 1; border-width: 4px; }
+#cockpit .specimen:hover,
+#cockpit .specimen:focus-visible,
+#cockpit .specimen.is-locked {
+  z-index: 6;
+  transform: rotate(var(--angle)) translateY(-4px);
+}
+#cockpit .specimen:hover::before,
+#cockpit .specimen:focus-visible::before,
+#cockpit .specimen.is-locked::before { border-color: var(--ck-acid); }
+
+#cockpit .specimen .tag {
+  position: absolute;
+  z-index: 2;
+  left: 6px;
+  bottom: 6px;
+  max-width: calc(100% - 12px);
+  background: #080808;
+  padding: 3px 5px;
+  font: 700 10px/1.2 'Inter', sans-serif;
+  text-align: left;
+}
+
+#cockpit .hill-cube { left: 7%; top: 43%; --angle: -12deg; }
+#cockpit .future-cube { left: 8%; top: 71%; --angle: -8deg; }
+#cockpit .exit-cube { left: 42%; top: 8%; width: 10%; height: 10%; --angle: -11deg; }
+#cockpit .sweet-cube { right: 8%; top: 69%; --angle: 10deg; }
+
+#cockpit .bubble {
+  position: absolute;
+  left: 58%;
+  top: 64%;
+  width: 26%;
+  z-index: 4;
+  padding: 2px 0 2px 9px;
+  border: 0;
+  border-left: 2px solid var(--ck-orange);
+  background: #060606;
+  color: var(--ck-ink);
+  text-align: left;
+  font: 700 clamp(12px, 1.25vw, 18px)/1.28 'Gaegu', 'Segoe Print', sans-serif;
+}
+
+#cockpit .props {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+}
+
+#cockpit .radio-wrap,
+#cockpit .danger-wrap { display: contents; }
+
+#cockpit .props :is(.prop, .bottle-slot, .apple-slot) {
+  position: absolute;
+  left: var(--prop-left);
+  top: var(--prop-top);
+  translate: calc(-50% + var(--prop-x, 0px)) calc(-50% + var(--prop-y, 0px));
+  rotate: var(--prop-tilt, 0deg);
+  pointer-events: auto;
+}
+
+body.cockpit-open #cockpit .props :is(.prop, .bottle-slot, .apple-slot) {
+  animation: ck-prop-drift var(--float-period, 6s) var(--float-phase, 0s) ease-in-out infinite;
+}
+
+body.cockpit-open #cockpit .props :is(.prop, .bottle-slot, .apple-slot):is(:hover, :focus-within) {
+  animation-play-state: paused;
+}
+
+@keyframes ck-prop-drift {
+  0%, 100% { transform: translate3d(-3px, 2px, 0) rotate(-2deg); }
+  47% { transform: translate3d(4px, -8px, 0) rotate(2.5deg); }
+  73% { transform: translate3d(1px, -4px, 0) rotate(1deg); }
+}
+
+#cockpit .prop { padding: 0; border: 2px solid #171614; }
+#cockpit .prop:hover { filter: brightness(1.13); }
+#cockpit .radio {
+  width: clamp(82px, 7.1vw, 105px);
+  height: clamp(48px, 4.1vw, 60px);
+  border-radius: 13px 9px 15px 10px;
+  background: #9de6b1;
+  box-shadow: 2px 2px 0 var(--ck-ink);
+}
+#cockpit .radio::before {
+  content: 'SPACE FM';
+  font: 800 11px 'Gaegu', sans-serif;
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  color: #151913;
+}
+html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
+#cockpit .radio::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  width: 31px;
+  height: 5px;
+  border-radius: 5px;
+  background: #171614;
+  box-shadow: 27px -1px 0 -1px #ed8f45;
+}
+
+#cockpit .danger {
+  width: clamp(68px, 5.5vw, 84px);
+  height: clamp(56px, 4.65vw, 69px);
+  border-radius: 12px;
+  background: #f8dc9a;
+  box-shadow: 2px 2px 0 var(--ck-ink);
+}
+#cockpit .danger::before {
+  content: '';
+  position: absolute;
+  inset: 6px 10px 9px;
+  border-radius: 50%;
+  background: #ff4838;
+  border: 2px solid #30130a;
+  box-shadow: 0 4px 0 #7e210c;
+}
+#cockpit .danger-wrap.p1 .danger::before { background: #ff6a2b; }
+#cockpit .danger-wrap.p2 .danger::before { background: #ffd23a; }
+
+#cockpit .rive-slot {
+  position: relative;
+  border: 0;
+  padding: 0;
+  background: transparent;
 }
 #cockpit .rive-cv {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  display: block;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 160ms ease;
 }
 #cockpit .rive-cv.is-on { opacity: 1; }
-#cockpit .fish-prop {
-  position: relative;
-  width: 132px;
-  height: 92px;
-  padding: 0;
-  border-radius: 46px 46px 16px 16px;
-  background: radial-gradient(ellipse at 50% 85%, rgba(121, 221, 255, 0.28), transparent 65%), #11141c;
-  overflow: hidden;
-}
-#cockpit .danger-wrap { gap: 6px; }
-#cockpit .bottle-slot {
-  left: -6px;
-  bottom: 70px;
-  width: 92px;
-  height: 96px;
-}
-#cockpit .danger-wrap.p1 .danger::before { background: #ff6a2b; }
-#cockpit .danger-wrap.p2 .danger::before { background: #ffd23a; animation: ck-dangerPulse 0.4s steps(2) infinite; }
-@keyframes ck-dangerPulse { 50% { filter: brightness(1.8); } }
-
-/* ---------- Exit portal: the fridge door opens and pours light ---------- */
-#cockpit .ck-portal {
-  position: absolute;
+#cockpit .bottle-slot { width: 72px; height: 82px; }
+#cockpit .bottle-slot canvas {
+  width: 173px;
+  height: 176px;
   left: 50%;
-  top: 31%;
-  z-index: 4;
-  width: min(30vw, 300px);
-  aspect-ratio: 431 / 419;
-  translate: -50% -50%;
-  opacity: 0;
-  transform: scale(0.2) rotate(-14deg);
-  pointer-events: none;
+  bottom: -26px;
+  translate: -50% 0;
 }
-#cockpit .ck-portal canvas { width: 100%; height: 100%; display: block; }
-#cockpit.exiting .ck-portal {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-  transition: transform 0.55s cubic-bezier(0.2, 1.5, 0.4, 1), opacity 0.2s ease;
+#cockpit .apple-slot { width: 77px; height: 67px; }
+#cockpit .apple-slot canvas {
+  width: 177px;
+  height: 120px;
+  left: calc(50% - 15px);
+  bottom: 0;
+  translate: -50% 0;
+}
+#cockpit .apple-hit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 50%;
+}
+
+#cockpit .fish-prop {
+  width: clamp(91px, 8vw, 117px);
+  height: clamp(60px, 5.4vw, 78px);
+  border-radius: 48% 52% 44% 46% / 58% 60% 40% 42%;
+  background:
+    linear-gradient(transparent 35%, #faffff90 35% 39%, transparent 39%), #9ed8e0;
+  box-shadow: 2px 2px 0 var(--ck-ink);
+}
+#cockpit .fish-src { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+#cockpit .fish-water { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+#cockpit .fish-swim {
+  position: absolute;
+  left: -6%;
+  top: -5%;
+  width: 108%;
+  aspect-ratio: 182 / 137;
+  animation: ck-fishDrift 6s ease-in-out infinite paused;
+}
+#cockpit .fish-out { display: block; width: 100%; height: 100%; }
+body.cockpit-open #cockpit .fish-swim { animation-play-state: running; }
+#cockpit .fish-prop:hover .fish-swim,
+#cockpit .fish-prop:focus-visible .fish-swim { animation-play-state: paused; }
+#cockpit .fish-bubbles { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+#cockpit .fish-bubbles i {
+  position: absolute;
+  left: 23%;
+  bottom: 50%;
+  width: 6px;
+  height: 6px;
+  opacity: 0;
+  border: 1.5px solid #f7faff;
+  border-radius: 50%;
+}
+#cockpit .fish-bubbles i:nth-child(2) { left: 29%; }
+#cockpit .fish-bubbles i:nth-child(3) { left: 17%; }
+#cockpit .is-bubbling .fish-bubbles i { animation: ck-fishBubble 1.2s ease-out both; }
+#cockpit .is-bubbling .fish-bubbles i:nth-child(2) { animation-delay: 240ms; }
+#cockpit .is-bubbling .fish-bubbles i:nth-child(3) { animation-delay: 480ms; }
+@keyframes ck-fishDrift {
+  0%, 100% { transform: translate(0, 1px) rotate(-1deg); }
+  50% { transform: translate(2px, -4px) rotate(1deg); }
+}
+@keyframes ck-fishBubble {
+  0% { opacity: 0; transform: scale(.7); }
+  20% { opacity: .9; }
+  100% { opacity: 0; transform: translate(-6px, -32px) scale(1.15); }
 }
 
 .ck-flash {
@@ -774,9 +545,6 @@ body.cockpit-open .monster-note { pointer-events: none; }
   visibility: hidden;
 }
 .ck-flash.on { visibility: visible; }
-.ck-flash.exit-light {
-  background: radial-gradient(circle at 50% 34%, #ffffff 0 18%, #eaffd8 38%, #7dff5a 70%, #2b7a2b);
-}
 .ck-flash.boom-light {
   background: radial-gradient(circle at var(--bx, 50%) var(--by, 80%), #fff 0 10%, #ffe45e 26%, #ff7b26 48%, #2a0606 82%);
 }
@@ -795,439 +563,94 @@ body.cockpit-open .monster-note { pointer-events: none; }
   75% { transform: translate(14px, -8px) rotate(1.2deg); }
 }
 
-@media (max-width: 860px) {
-  #cockpit .fish-prop { width: 104px; height: 74px; }
+#cockpit.alerting .stage { animation: ck-alertShake 280ms steps(2) infinite; }
+@keyframes ck-alertShake {
+  25% { transform: translate(-8px, 4px) rotate(-.6deg); }
+  75% { transform: translate(8px, -4px) rotate(.6deg); }
 }
 
-@media (min-width: 861px) {
-  #cockpit .future-cube { left: 1.5%; bottom: 5%; }
-  #cockpit .props { left: 36.8%; }
-}
-#cockpit .bottle-slot {
-  left: -26px;
-  bottom: 62px;
-  width: 128px;
-  height: 132px;
-}
-#cockpit .bottle-slot {
-  left: -50px;
-  bottom: 44px;
-  width: 180px;
-  height: 186px;
-}
+@media (max-width: 810px) {
+  #cockpit .stage {
+    display: grid;
+    align-content: start;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px 10px;
+    height: auto;
+    min-height: 100svh;
+    padding: 70px 20px 28px;
+    overflow: hidden;
+  }
 
-/* bigger, so the Rive props actually read as characters */
-#cockpit .fish-prop {
-  width: 168px;
-  height: 116px;
-}
-#cockpit .bottle-slot {
-  left: -70px;
-  bottom: 40px;
-  width: 230px;
-  height: 238px;
-}
+  #cockpit .ck-back { right: 17px; top: 12px; }
+  #cockpit .title-scribble { position: relative; grid-column: 1; left: auto; top: auto; align-self: start; width: fit-content; font-size: clamp(56px, 17vw, 108px); }
+  #cockpit .ck-window { position: relative; grid-column: 1 / -1; width: 97%; height: auto; aspect-ratio: 1.49; left: auto; top: auto; justify-self: center; margin-top: 8px; }
+  #cockpit .monster { position: relative; grid-column: 2; grid-row: 1; width: 112%; height: auto; max-height: none; left: auto; top: auto; margin-left: -14%; align-self: end; }
+  #cockpit .bubble { position: relative; grid-column: 1 / -1; top: auto; left: auto; width: 100%; font-size: 17px; }
+  #cockpit .ck-photos { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding-block: 5px; }
+  #cockpit .ck-photos .specimen { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: .87; }
+  #cockpit .specimen .tag { padding: 2px 3px; font-size: 9px; }
+  #cockpit .props {
+    position: relative;
+    grid-column: 1 / -1;
+    justify-self: end;
+    inset: auto;
+    display: grid;
+    width: min(100%, 490px);
+    height: 188px;
+    margin-top: 20px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 14px 9px;
+  }
 
-/* ---------- Console restyle: hand-drawn pastel, to sit with the Rive apple / fish / fridge ---------- */
-#cockpit .dashboard {
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0 1.5px, transparent 2.5px) 0 0 / 34px 30px,
-    radial-gradient(ellipse at 24% 30%, rgba(255, 210, 120, 0.45), transparent 16%),
-    radial-gradient(ellipse at 72% 26%, rgba(150, 225, 220, 0.45), transparent 14%),
-    linear-gradient(#f1dcef, #dcbfdd 55%, #c7a7cc);
-  border: 4px solid #1b1720;
-  border-top-width: 5px;
-  border-radius: 34px 40px 0 0;
-  box-shadow:
-    inset 0 12px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -18px 0 rgba(90, 50, 100, 0.12),
-    0 -6px 0 #1b1720;
-  filter: url(#ck-crayon);
-}
-#cockpit .dashboard::before {
-  background: repeating-linear-gradient(90deg, #1b1720 0 14px, transparent 14px 30px);
-  height: 4px;
-  opacity: 0.45;
-}
-
-#cockpit .prop {
-  border: 3px solid #1b1720;
-  box-shadow: 4px 4px 0 #1b1720;
-}
-
-#cockpit .radio {
-  border-radius: 20px 14px 18px 22px;
-  background:
-    repeating-linear-gradient(90deg, rgba(27, 23, 32, 0.18) 0 3px, transparent 3px 9px) 66px 30px / 34px 22px no-repeat,
-    #9fe3cf;
-  filter: url(#ck-crayon);
-}
-#cockpit .radio::before {
-  color: #1b1720;
-  font-family: 'Segoe Print', 'Comic Sans MS', 'Gaegu', sans-serif;
-  font-weight: 700;
-}
-#cockpit .radio::after {
-  width: 54px;
-  height: 14px;
-  background: #1b1720;
-  box-shadow: 70px -14px 0 -2px #ffd23a, 70px -14px 0 1px #1b1720;
-}
-
-#cockpit .fish-prop {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  overflow: visible;
-}
-#cockpit .fish-prop::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 3px solid #1b1720;
-  border-radius: 48% 52% 44% 46% / 58% 60% 40% 42%;
-  background:
-    linear-gradient(transparent 34%, rgba(255, 255, 255, 0.55) 34% 37%, transparent 37%),
-    radial-gradient(ellipse at 50% 78%, #c9f1f2, #8fd4dc 70%);
-  box-shadow: 4px 4px 0 #1b1720;
-  filter: url(#ck-crayon);
-}
-#cockpit .fish-prop .rive-cv { z-index: 1; }
-
-#cockpit .danger {
-  border-radius: 22px 16px 24px 18px;
-  background: #fff1cf;
-  filter: url(#ck-crayon);
-}
-#cockpit .danger::before {
-  background: #ec4a3d;
-  border: 3px solid #1b1720;
-  box-shadow: 0 5px 0 #8f1f17;
-}
-
-#cockpit .bubble {
-  color: #f4e5d7;
-  text-shadow: 0 2px 2px #05070f;
-}
-
-/* The transparent artboard extends to the left of the visible apple. */
-#cockpit .props > .apple-slot {
-  left: calc(100% - 72px);
-  bottom: -4px;
-  width: 220px;
-  height: 149px;
-  z-index: 2;
-}
-#cockpit .apple-hit {
-  position: absolute;
-  left: 38%;
-  top: 46%;
-  width: 40%;
-  height: 54%;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  border-radius: 50%;
-  cursor: pointer;
-  pointer-events: auto;
-}
-#cockpit .apple-hit:focus-visible { outline: 2px dashed #1b1720; outline-offset: 2px; }
-
-/* ---------- fish without its plate, scaled up to fill the bowl ---------- */
-#cockpit .fish-src,
-#cockpit .fish-out {
-  position: absolute;
-  left: -28px;
-  top: -4px;
-  width: 216px;
-  height: 163px;
-  pointer-events: none;
-}
-#cockpit .fish-src { opacity: 0; }
-#cockpit .fish-out { z-index: 1; }
-#cockpit .fish-prop { overflow: visible; }
-
-/* ---------- hand-drawn pass: windshield, views, photo cards, seat ---------- */
-#cockpit .window-frame {
-  border: 16px solid #e6cde6;
-  box-shadow:
-    inset 0 0 0 4px #1b1720,
-    inset 0 0 0 10px #fff4e0,
-    inset 0 0 0 13px #1b1720,
-    0 14px 0 rgba(27, 23, 32, 0.9);
-  filter: url(#ck-crayon);
-}
-#cockpit .window-frame::before,
-#cockpit .window-frame::after {
-  border: 4px solid #1b1720;
-  background: #f9d7c4;
-  box-shadow: inset 0 0 0 7px #fff4e0;
-}
-
-#cockpit .window-world {
-  background: #fff4e0;
-  box-shadow: inset 0 0 30px rgba(27, 23, 32, 0.25);
-  filter: url(#ck-crayon);
-}
-
-#cockpit .scene-default {
-  background:
-    radial-gradient(circle at 48% 43%, #ffe07a 0 68px, #1b1720 69px 72px, transparent 73px),
-    linear-gradient(to bottom, #ffc6a1 0 30%, #ffad86 48%, #1b1720 48% 49%, #9edbe1 49% 100%);
-}
-#cockpit .scene-default::before {
-  background:
-    repeating-linear-gradient(174deg, transparent 0 16px, rgba(27, 23, 32, 0.55) 16px 18px, transparent 18px 38px);
-}
-#cockpit .scene-default::after {
-  background:
-    radial-gradient(ellipse at 19% 52%, #6f9f9a 0 8%, transparent 8.4%),
-    radial-gradient(ellipse at 35% 50%, #6f9f9a 0 6%, transparent 6.5%),
-    radial-gradient(ellipse at 78% 50%, #6f9f9a 0 8%, transparent 8.4%),
-    radial-gradient(ellipse at 90% 46%, #6f9f9a 0 5%, transparent 5.5%),
-    radial-gradient(ellipse at 16% 23%, #fff8ea 0 8%, transparent 8.5%),
-    radial-gradient(ellipse at 30% 20%, #fff8ea 0 7%, transparent 7.5%),
-    radial-gradient(ellipse at 70% 18%, #fff8ea 0 8%, transparent 8.5%),
-    radial-gradient(ellipse at 84% 24%, #fff8ea 0 7%, transparent 7.5%);
-  filter: drop-shadow(3px 3px 0 #1b1720);
-}
-
-#cockpit .scene-hill {
-  background:
-    linear-gradient(154deg, transparent 0 38%, rgba(27, 23, 32, 0.6) 39% 40.5%, transparent 41.5%),
-    repeating-linear-gradient(-21deg, #a9d48c 0 22px, #c3e3a6 23px 44px);
-  background-size: 100% 100%, 180px 120px;
-}
-#cockpit .scene-hill::before {
-  background:
-    radial-gradient(circle at 80% 18%, #ffe07a 0 40px, #1b1720 41px 43px, transparent 44px),
-    linear-gradient(to bottom, #bfe6f0, #d8f0dd 58%, transparent 59%);
-  mix-blend-mode: normal;
-  opacity: 0.9;
-}
-
-#cockpit .scene-future {
-  background:
-    repeating-linear-gradient(0deg, rgba(27, 23, 32, 0.08) 0 1px, transparent 1px 8px),
-    radial-gradient(circle at 50% 50%, rgba(255, 246, 178, 0.7), transparent 40%),
-    #cdb7e8;
-}
-#cockpit .scene-future::before {
-  color: #fff6b2;
-  -webkit-text-stroke: 3px #1b1720;
-  text-shadow: 6px 6px 0 #1b1720;
-}
-
-#cockpit .scene-exit {
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), transparent 40%),
-    linear-gradient(to bottom, #c8f0cf, #a6e2b4);
-}
-#cockpit .scene-exit::before {
-  border: 4px solid #1b1720;
-  border-radius: 14px 10px 16px 12px;
-  background: #8fe6a1;
-  color: #1b1720;
-  box-shadow: 6px 6px 0 #1b1720;
-}
-
-#cockpit .scene-sweet {
-  background:
-    radial-gradient(circle at 28% 35%, rgba(255, 170, 210, 0.95), transparent 22%),
-    radial-gradient(circle at 74% 60%, rgba(160, 225, 245, 0.95), transparent 24%),
-    linear-gradient(140deg, #ffd6e8, #cdeaf6);
-}
-#cockpit .scene-sweet::before,
-#cockpit .scene-sweet::after {
-  border: 7px solid #fff8ea;
-  outline: 3px solid #1b1720;
-  box-shadow: 6px 6px 0 #1b1720;
-}
-
-#cockpit .specimen {
-  border: 3px solid #1b1720;
-  border-radius: 4px 6px 5px 3px;
-  padding: 9px 9px 24px;
-  background: #fff8ea;
-  box-shadow: 5px 6px 0 rgba(27, 23, 32, 0.85);
-  filter: url(#ck-crayon);
-}
-#cockpit .specimen::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: -11px;
-  width: 54px;
-  height: 18px;
-  translate: -50% 0;
-  rotate: -4deg;
-  background: rgba(255, 186, 206, 0.85);
-  border: 1.5px solid rgba(27, 23, 32, 0.35);
-}
-#cockpit .future-cube::before { background: rgba(255, 224, 122, 0.85); }
-#cockpit .exit-cube::before { background: rgba(160, 230, 175, 0.85); }
-#cockpit .sweet-cube::before { background: rgba(170, 220, 245, 0.85); }
-#cockpit .specimen svg {
-  background: linear-gradient(#ffc6a1 0 42%, #9edbe1 43% 100%);
-  border: 3px solid #1b1720;
-}
-#cockpit .ui-layer .specimen:hover,
-#cockpit .ui-layer .specimen:focus-visible,
-#cockpit .ui-layer .specimen.is-locked {
-  border-color: #1b1720;
-  box-shadow: 7px 9px 0 rgba(27, 23, 32, 0.9), 0 0 0 5px rgba(255, 246, 178, 0.75);
-}
-#cockpit .tag {
-  border-width: 2px;
-  background: #fff6b2;
-  font-family: 'Segoe Print', 'Comic Sans MS', 'Gaegu', sans-serif;
-}
-
-#cockpit .seat,
-#cockpit .seat::after {
-  border: 4px solid #1b1720;
-  background: #f4b9c9;
-}
-#cockpit .seat {
-  filter: url(#ck-crayon) drop-shadow(5px 6px 0 #1b1720);
-}
-#cockpit .fish-src,
-#cockpit .fish-out {
-  left: -10px;
-  top: 4px;
-  width: 182px;
-  height: 137px;
-}
-#cockpit .fish-prop::after {
-  content: '';
-  position: absolute;
-  z-index: 2;
-  left: 9px;
-  right: 9px;
-  bottom: 4px;
-  height: 34px;
-  border-top: 3px solid #1b1720;
-  border-radius: 46% 52% 44% 48% / 38% 30% 62% 70%;
-  background:
-    radial-gradient(circle at 18% 55%, #e6b980 0 4px, transparent 5px),
-    radial-gradient(circle at 42% 70%, #f2c9d6 0 3px, transparent 4px),
-    radial-gradient(circle at 66% 50%, #e6b980 0 5px, transparent 6px),
-    radial-gradient(circle at 84% 72%, #b9e3d6 0 3px, transparent 4px),
-    #f7e1b5;
-  filter: url(#ck-crayon);
-  pointer-events: none;
-}
-#cockpit .fish-src,
-#cockpit .fish-out { top: -6px; }
-#cockpit .fish-prop::after { height: 26px; bottom: 3px; }
-
-/* Fish motion stays inside the glass; the bowl and its sand stay still. */
-#cockpit .fish-water {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 48% 52% 44% 46% / 58% 60% 40% 42%;
-  pointer-events: none;
-}
-#cockpit .fish-swim {
-  position: absolute;
-  left: -6%;
-  top: -5%;
-  width: 108%;
-  aspect-ratio: 182 / 137;
-  animation: ck-fishDrift 6s ease-in-out infinite;
-  animation-play-state: paused;
-  transform-origin: 50% 45%;
-}
-#cockpit .fish-swim .fish-out {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  transition: translate 850ms ease-in-out;
-}
-body.cockpit-open #cockpit .fish-swim { animation-play-state: running; }
-#cockpit .prop.fish-prop:hover,
-#cockpit .prop.fish-prop:focus-visible {
-  transform: none;
-  filter: none;
-}
-#cockpit .fish-prop:hover .fish-swim,
-#cockpit .fish-prop:focus-visible .fish-swim { animation-play-state: paused; }
-#cockpit .fish-prop:hover .fish-out,
-#cockpit .fish-prop:focus-visible .fish-out { translate: 0 -3px; }
-#cockpit .fish-bubbles {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  overflow: hidden;
-  border-radius: inherit;
-  pointer-events: none;
-}
-#cockpit .fish-bubbles i {
-  position: absolute;
-  left: 23%;
-  bottom: 50%;
-  width: 7px;
-  height: 7px;
-  opacity: 0;
-  border: 1.5px solid #f7faff;
-  border-radius: 50%;
-}
-#cockpit .fish-bubbles i:nth-child(2) { left: 28%; width: 5px; height: 5px; }
-#cockpit .fish-bubbles i:nth-child(3) { left: 20%; width: 4px; height: 4px; }
-#cockpit .is-bubbling .fish-bubbles i { animation: ck-fishBubble 1.2s ease-out both; }
-#cockpit .is-bubbling .fish-bubbles i:nth-child(2) { animation-delay: 240ms; }
-#cockpit .is-bubbling .fish-bubbles i:nth-child(3) { animation-delay: 480ms; }
-#cockpit .bottle-slot { pointer-events: auto; }
-
-@keyframes ck-fishDrift {
-  0%, 100% { transform: translate(0, 1px) rotate(-1deg); }
-  50% { transform: translate(2px, -4px) rotate(1deg); }
-}
-@keyframes ck-fishBubble {
-  0% { opacity: 0; transform: translate(0, 0) scale(.7); }
-  20% { opacity: .9; }
-  100% { opacity: 0; transform: translate(-6px, -32px) scale(1.15); }
-}
-@media (min-width: 861px) {
-  #cockpit .props { left: 38%; gap: 36px; }
-  #cockpit .monster { left: 70%; }
-  #cockpit .seat { scale: .85; transform-origin: 50% 100%; }
-}
-@media (max-width: 860px) {
-  #cockpit .props { left: 42%; bottom: 160px; gap: 16px; }
-  #cockpit .radio { width: 86px; }
-  #cockpit .fish-prop { width: 104px; height: 74px; }
-  #cockpit .danger { width: 64px; height: 68px; }
-  #cockpit .bottle-slot { left: -18px; bottom: 58px; width: 92px; height: 96px; }
-  #cockpit .seat { scale: .85; transform-origin: 50% 100%; }
-}
-@media (max-width: 540px) {
-  #cockpit .monster { left: 80%; bottom: 320px; width: 140px; height: 190px; }
-  #cockpit .seat { display: none; }
-  #cockpit .future-cube { left: 7%; bottom: 2%; }
-  #cockpit .sweet-cube { right: 7%; bottom: 2%; }
-}
-
-html[lang="zh-Hans"] #cockpit .scene-exit::before { content: "出口"; }
-html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
-
-@media (max-width: 860px) {
-  #cockpit .props > .apple-slot {
-    left: calc(100% - 47px);
-    width: 145px;
-    height: 98px;
+  #cockpit .props :is(.prop, .bottle-slot, .apple-slot) {
+    position: relative;
+    inset: auto;
+    place-self: center;
+    grid-row: var(--prop-row);
+    grid-column: var(--prop-column);
+    translate: var(--prop-x, 0px) var(--prop-y, 0px);
   }
 }
-@media (max-width: 540px) {
-  #cockpit .props > .apple-slot { bottom: -10px; }
+
+@media (max-width: 440px) {
+  #cockpit .radio { width: 73px; }
+  #cockpit .fish-prop { width: 78px; }
+  #cockpit .bottle-slot { width: 57px; height: 74px; }
+  #cockpit .apple-slot { width: 65px; }
+  #cockpit .bottle-slot canvas { width: 147px; height: 150px; }
+  #cockpit .apple-slot canvas { width: 149px; height: 101px; }
 }
-@media (max-width: 365px) {
-  #cockpit .props > .apple-slot {
-    left: calc(50% - 47px);
-    bottom: -32px;
-    width: 120px;
-    height: 81px;
+
+@media (max-width: 370px) {
+  #cockpit .stage { padding-inline: 14px; }
+  #cockpit .radio { width: 66px; }
+  #cockpit .fish-prop { width: 70px; }
+  #cockpit .bottle-slot { width: 54px; }
+  #cockpit .danger { width: 58px; }
+  #cockpit .apple-slot { width: 59px; }
+}
+
+.cockpit-enter { display: none; }
+@media (hover: none) {
+  body.stage-close:not(.cockpit-open) .cockpit-enter {
+    position: fixed;
+    z-index: 22;
+    left: 14px;
+    bottom: 14px;
+    display: block;
+    padding: 6px 9px;
+    border: 0;
+    border-bottom: 1px solid #e6aac7;
+    background: #0a0910;
+    color: #ffc0e3;
+    font: 600 12px/1.2 system-ui,sans-serif;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cockpit, #cockpit *, #cockpit *::before, #cockpit *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

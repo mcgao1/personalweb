@@ -5,7 +5,8 @@
   const body = document.body;
   const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bubble = cockpit.querySelector('#bubble');
-  const scenes = Array.from(cockpit.querySelectorAll('.scene[data-scene]'));
+  const scenes = Array.from(cockpit.querySelectorAll('.scene'));
+  const views = ['none', 'hill', 'future', 'exit', 'sweet'];
   const specimens = Array.from(cockpit.querySelectorAll('.specimen'));
   const dangerWrap = cockpit.querySelector('.danger-wrap');
   const dangerBtn = cockpit.querySelector('.danger');
@@ -37,8 +38,7 @@
     bottle: SiteLanguage.text('Probably best left unopened.', "这瓶还是别开了。"),
     danger1: SiteLanguage.text('That was definitely a button.', "那确实是个按钮。"),
     danger2: SiteLanguage.text('The fish would like to leave.', "那条鱼想下船了。"),
-    danger3: SiteLanguage.text('Well.', "嗯……"),
-    exiting: SiteLanguage.text('A way out. Or a way into something else.', "一个出口。也可能是别处的入口。")
+    danger3: SiteLanguage.text('Well.', "嗯……")
   };
 
   const flash = document.createElement('div');
@@ -49,7 +49,7 @@
     clearTimeout(noteTimer);
     if (!body.classList.contains('cockpit-open') || document.hidden || busy) return;
     noteTimer = setTimeout(function () {
-      const occupied = cockpit.querySelector('.specimen:hover, .specimen:focus-visible, .prop:hover, .prop:focus-visible, .apple-hit:hover, .apple-hit:focus-visible, .bottle-slot:hover');
+      const occupied = cockpit.querySelector('.specimen:hover, .specimen:focus-visible, .prop:hover, .prop:focus-visible, .apple-hit:hover, .apple-hit:focus-visible, .bottle-slot:hover, .window-cycle:hover, .window-cycle:focus-visible');
       if (lockedScene || occupied) { scheduleNote(); return; }
       nextNote();
     }, 11000);
@@ -79,7 +79,7 @@
       item.classList.toggle('is-locked', item.dataset.scene === name && lockedScene === name);
     });
     scenes.forEach(function (scene) {
-      scene.classList.toggle('is-active', scene.dataset.scene === name);
+      scene.classList.toggle('is-active', (scene.dataset.scene || 'none') === (name || 'none'));
     });
   }
 
@@ -92,7 +92,6 @@
   let riveStarted = false;
   let fishLookX = null;
   let fishLookY = null;
-  let fridgeAnim = null;
 
   function crisp(r, canvas) {
     const box = canvas.getBoundingClientRect();
@@ -174,10 +173,6 @@
       } catch (e) { fishLookX = fishLookY = null; }
       startFishCopy();
     });
-    makeRig('fridge', 'cv-fridge', 'fridge-reject.riv', { autoplay: false }, function (r) {
-      fridgeAnim = r.animationNames && r.animationNames[0];
-      shutFridge();
-    });
     setTimeout(function () {
       Object.keys(rigs).forEach(function (k) { crisp(rigs[k].r, rigs[k].canvas); });
     }, 1200);
@@ -218,12 +213,6 @@
     fishLoop = requestAnimationFrame(tick);
   }
 
-  function shutFridge() {
-    const rig = rigs.fridge;
-    if (!rig || !fridgeAnim) return;
-    try { rig.r.play(fridgeAnim); rig.r.pause(fridgeAnim); rig.r.scrub(fridgeAnim, 0); } catch (e) {}
-  }
-
   function replay(key) {
     const rig = rigs[key];
     if (!rig) return;
@@ -241,10 +230,49 @@
     if (key !== 'appleIdle' && key !== 'bottleIdle') replay(key);
   }
 
-  new MutationObserver(function () {
-    if (body.classList.contains('cockpit-open')) { startRive(); scheduleNote(); }
-    else resetCockpit();
-  }).observe(body, { attributes: true, attributeFilter: ['class'] });
+  const props = cockpit.querySelectorAll('.props :is(.prop, .bottle-slot, .apple-slot)');
+  const propAnchors = [[27, 91], [41, 89], [55, 91], [68, 91], [76, 75], [65, 10.25]];
+  let previousLayout = '';
+  let cockpitWasOpen = false;
+
+  function scatterProps() {
+    const slots = [0, 1, 2, 3, 4, 5];
+    for (let i = slots.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [slots[i], slots[j]] = [slots[j], slots[i]];
+    }
+
+    if (slots.join('') === previousLayout) slots.push(slots.shift());
+    previousLayout = slots.join('');
+    props.forEach(function (prop, index) {
+      const slot = slots[index];
+      const [left, top] = propAnchors[slot];
+      prop.style.setProperty('--prop-left', left + '%');
+      prop.style.setProperty('--prop-top', top + '%');
+      prop.style.setProperty('--float-period', (5.2 + Math.random() * 3.5).toFixed(2) + 's');
+      prop.style.setProperty('--float-phase', (-Math.random() * 5).toFixed(2) + 's');
+      prop.style.setProperty('--prop-row', Math.floor(slot / 3) + 1);
+      prop.style.setProperty('--prop-column', slot % 3 + 1);
+      prop.style.setProperty('--prop-x', Math.round(Math.random() * 12 - 6) + 'px');
+      prop.style.setProperty('--prop-y', Math.round(Math.random() * 10 - 5) + 'px');
+      prop.style.setProperty('--prop-tilt', Math.round(Math.random() * 12 - 6) + 'deg');
+    });
+  }
+
+  function syncCockpit() {
+    const isOpen = body.classList.contains('cockpit-open');
+    if (isOpen === cockpitWasOpen) return;
+    cockpitWasOpen = isOpen;
+    if (isOpen) {
+      scatterProps();
+      startRive();
+      scheduleNote();
+    } else {
+      resetCockpit();
+    }
+  }
+
+  new MutationObserver(syncCockpit).observe(body, { attributes: true, attributeFilter: ['class'] });
 
   window.addEventListener('pointermove', function (e) {
     if (!fishLookX || !body.classList.contains('cockpit-open')) return;
@@ -271,11 +299,10 @@
     clearTimeout(fishBubbleTimer);
     const fish = cockpit.querySelector('.fish-prop');
     if (fish) fish.classList.remove('is-bubbling');
-    cockpit.classList.remove('exiting', 'shake-hard', 'alerting');
+    cockpit.classList.remove('shake-hard', 'alerting');
     if (dangerWrap) dangerWrap.classList.remove('p1', 'p2');
     show('bottle', 'bottleIdle');
     show('apple', 'appleIdle');
-    shutFridge();
     cockpit.querySelectorAll('.stage *').forEach(function (el) {
       el.getAnimations().forEach(function (a) { if (a.id === 'ck-fly') a.cancel(); });
     });
@@ -297,33 +324,6 @@
     }
     fade.onfinish = clearFlash;
     setTimeout(clearFlash, fadeMs + 150);
-  }
-
-  function exitHome() {
-    if (busy) return;
-    busy = true;
-    lockedScene = 'exit';
-    setScene('exit');
-    say(copy.exiting);
-    if (RM) { flash.className = 'ck-flash on exit-light'; flash.style.opacity = '1'; landOnPlanet(1); return; }
-    cockpit.classList.add('exiting');
-    setTimeout(function () {
-      const rig = rigs.fridge;
-      if (rig && fridgeAnim) { try { rig.r.play(fridgeAnim); } catch (e) {} }
-    }, 520);
-    setTimeout(function () {
-      flash.className = 'ck-flash on exit-light';
-      flash.getAnimations().forEach(function (a) { a.cancel(); });
-      flash.animate([
-        { opacity: 1, clipPath: 'circle(0% at 50% 31%)' },
-        { opacity: 1, clipPath: 'circle(150% at 50% 31%)' }
-      ], { duration: 650, easing: 'cubic-bezier(0.6, 0, 0.9, 0.6)', fill: 'forwards' });
-    }, 1150);
-    setTimeout(function () {
-      flash.getAnimations().forEach(function (a) { a.cancel(); });
-      flash.style.opacity = '1';
-      landOnPlanet(900);
-    }, 1850);
   }
 
   function shake(ms) {
@@ -389,7 +389,7 @@
 
     setTimeout(function () {
       flash.animate([{ opacity: 0 }, { opacity: 1 }, { opacity: 0.85 }], { duration: 420, fill: 'forwards' });
-      const parts = cockpit.querySelectorAll('.window-world, .window-frame, .dashboard, .seat, .monster, .props, .specimen, .title-scribble, .bubble, .ck-back');
+      const parts = cockpit.querySelectorAll('.ck-window, .monster, .props, .specimen, .title-scribble, .bubble, .ck-back');
       parts.forEach(function (el) {
         const base = getComputedStyle(el).transform;
         const from = base === 'none' ? '' : base;
@@ -418,6 +418,14 @@
   }
 
   /* ---------- wiring ---------- */
+  cockpit.querySelector('.window-cycle').addEventListener('click', function () {
+    if (busy) return;
+    const current = views.indexOf(cockpit.dataset.active);
+    const next = views[(current + 1) % views.length];
+    lockedScene = next === 'none' ? null : next;
+    setScene(next);
+  });
+
   specimens.forEach(function (item) {
     const name = item.dataset.scene;
     item.addEventListener('mouseenter', function () { if (!busy) setScene(name); });
@@ -426,7 +434,10 @@
     item.addEventListener('blur', clearScene);
     item.addEventListener('click', function () {
       if (busy) return;
-      if (name === 'exit') { exitHome(); return; }
+      if (name === 'exit') {
+        body.classList.remove('cockpit-open');
+        return;
+      }
       if (links[name]) { window.location.href = SiteLanguage.url(links[name]); return; }
       lockedScene = lockedScene === name ? null : name;
       setScene(lockedScene || name);
@@ -461,7 +472,14 @@
   });
 
   const bottle = cockpit.querySelector('.bottle-slot');
-  if (bottle) describeProp(bottle, copy.bottle);
+  if (bottle) {
+    describeProp(bottle, copy.bottle);
+    bottle.addEventListener('click', function () {
+      if (busy) return;
+      say(copy.bottle);
+      show('bottle', 'bottleClick');
+    });
+  }
 
   // poke the apple: tongue out for 3 s, then back to its idle song
   const appleHit = cockpit.querySelector('.apple-hit');
@@ -486,5 +504,5 @@
     body.classList.remove('cockpit-open');
   });
 
-  if (body.classList.contains('cockpit-open')) { startRive(); scheduleNote(); }
+  syncCockpit();
 })();
