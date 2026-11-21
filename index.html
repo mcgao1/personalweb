@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manchen Gao</title>
 <link rel="stylesheet" href="scene.css?v=46">
-<link rel="stylesheet" href="cockpit.css?v=20">
+<link rel="stylesheet" href="cockpit.css?v=21">
 
 <link rel="stylesheet" href="site-language.css?v=1">
 <script src="site-language.js?v=1"></script>
@@ -136,7 +136,17 @@
   <div class="stage">
     <button class="ck-back" id="ck-back" type="button" data-zh="回到星球">← back to the planet</button>
 
-    <div class="title-scribble" lang="zh-Hans">曼</div>
+    <button class="title-scribble" type="button" aria-label="曼 Archive · unfold the name" data-zh-aria-label="曼 Archive · 展开名字" aria-pressed="false">
+      <span class="name-half name-half-top" aria-hidden="true">
+        <span class="name-cut" lang="zh-Hans">曼</span>
+        <span class="name-latin" lang="en">MAN</span>
+      </span>
+      <span class="name-half name-half-bottom" aria-hidden="true">
+        <span class="name-cut" lang="zh-Hans">曼</span>
+        <span class="name-latin" lang="en">MAN</span>
+      </span>
+      <span class="archive-label" lang="en" aria-hidden="true">ARCHIVE</span>
+    </button>
 
     <div class="ck-window">
       <div class="window-world" aria-hidden="true">
@@ -200,6 +210,6 @@
 <div class="tooltip" id="tooltip"></div>
 
 <script src="scene.js?v=37"></script>
-<script src="cockpit.js?v=11" defer></script>
+<script src="cockpit.js?v=12" defer></script>
 </body>
 </html>

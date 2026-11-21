@@ -5,6 +5,7 @@
   const body = document.body;
   const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bubble = cockpit.querySelector('#bubble');
+  const title = cockpit.querySelector('.title-scribble');
   const scenes = Array.from(cockpit.querySelectorAll('.scene'));
   const views = ['none', 'hill', 'future', 'exit', 'sweet'];
   const specimens = Array.from(cockpit.querySelectorAll('.specimen'));
@@ -292,6 +293,7 @@
 
   /* ---------- going home: shared by Exit, the explosion and the back button ---------- */
   function resetCockpit() {
+    setTitleOpen(false);
     busy = false;
     presses = 0;
     lockedScene = null;
@@ -417,7 +419,28 @@
     }, 1650);
   }
 
+  function setTitleOpen(open) {
+    title.classList.toggle('is-open', open);
+    title.setAttribute('aria-pressed', String(open));
+  }
+
   /* ---------- wiring ---------- */
+  title.addEventListener('pointerenter', function (event) {
+    if (event.pointerType === 'mouse') setTitleOpen(true);
+  });
+  title.addEventListener('pointerleave', function (event) {
+    if (event.pointerType === 'mouse') setTitleOpen(false);
+  });
+  title.addEventListener('click', function (event) {
+    if (event.detail === 0 || event.pointerType !== 'mouse') {
+      setTitleOpen(!title.classList.contains('is-open'));
+    }
+  });
+  title.addEventListener('blur', function () { setTitleOpen(false); });
+  title.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') setTitleOpen(false);
+  });
+
   cockpit.querySelector('.window-cycle').addEventListener('click', function () {
     if (busy) return;
     const current = views.indexOf(cockpit.dataset.active);

@@ -70,12 +70,84 @@ body.cockpit-open .monster-note { pointer-events: none; }
   top: 12%;
   left: 9%;
   z-index: 2;
-  padding: .06em .08em;
+  width: 1.65em;
+  height: 1.6em;
+  padding: 0;
+  border: 0;
+  background: transparent;
   transform: rotate(-9deg);
   color: var(--ck-orange);
-  font: 900 clamp(72px, 10.5vw, 154px)/.92 'Microsoft YaHei UI', 'PingFang SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+  font: 900 clamp(72px, 10.5vw, 154px)/1 'Microsoft YaHei UI', 'PingFang SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#cockpit .name-half {
+  position: absolute;
+  top: .06em;
+  left: .08em;
+  width: 1.5em;
+  height: 1.18em;
+  pointer-events: none;
+  transition: transform 800ms cubic-bezier(.22, 1, .36, 1);
+}
+
+#cockpit .name-half-bottom { transition-delay: 70ms; }
+
+#cockpit .name-cut {
+  position: absolute;
+  inset: 0;
   text-shadow: .025em .022em #692d28;
   filter: url(#poster-ink);
+  transition: opacity 280ms 100ms;
+}
+
+#cockpit .name-half-top .name-cut { clip-path: inset(0 0 50% 0); }
+#cockpit .name-half-bottom .name-cut { clip-path: inset(50% 0 0 0); }
+
+#cockpit .name-latin {
+  position: absolute;
+  top: .19em;
+  left: .02em;
+  opacity: 0;
+  transform: scale(.78) rotate(4deg);
+  transform-origin: left center;
+  font: 400 .48em/1 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+  letter-spacing: -.06em;
+  text-shadow: .035em .04em #692d28;
+  filter: url(#poster-ink);
+  transition: opacity 250ms, transform 600ms cubic-bezier(.22, 1, .36, 1);
+}
+
+#cockpit .name-half-bottom .name-latin {
+  top: 1.3em;
+  color: #ffbad5;
+  transform: scale(.78) rotate(-5deg);
+}
+
+#cockpit .title-scribble.is-open .name-half-top { transform: translate(-.02em, -.05em) rotate(-4deg); }
+#cockpit .title-scribble.is-open .name-half-bottom { transform: translate(.12em, .08em) rotate(5deg); }
+#cockpit .title-scribble.is-open .name-cut { opacity: 0; }
+#cockpit .title-scribble.is-open .name-latin {
+  opacity: 1;
+  transform: scale(1) rotate(-2deg);
+  transition-delay: 180ms;
+}
+#cockpit .title-scribble.is-open .name-half-bottom .name-latin { transition-delay: 270ms; }
+
+#cockpit .archive-label {
+  position: absolute;
+  left: .12em;
+  bottom: .05em;
+  padding: .2em .4em .24em;
+  transform: rotate(5deg);
+  background: var(--ck-ink);
+  color: #171012;
+  font: 400 .13em/1 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+  letter-spacing: .08em;
+  filter: url(#poster-ink);
+  pointer-events: none;
 }
 
 #cockpit .ck-window {
@@ -582,7 +654,7 @@ body.cockpit-open #cockpit .fish-swim { animation-play-state: running; }
   }
 
   #cockpit .ck-back { right: 17px; top: 12px; }
-  #cockpit .title-scribble { position: relative; grid-column: 1; left: auto; top: auto; align-self: start; width: fit-content; font-size: clamp(56px, 17vw, 108px); }
+  #cockpit .title-scribble { position: relative; grid-column: 1; left: auto; top: auto; align-self: start; font-size: clamp(56px, 17vw, 108px); }
   #cockpit .ck-window { position: relative; grid-column: 1 / -1; width: 97%; height: auto; aspect-ratio: 1.49; left: auto; top: auto; justify-self: center; margin-top: 8px; }
   #cockpit .monster { position: relative; grid-column: 2; grid-row: 1; width: 112%; height: auto; max-height: none; left: auto; top: auto; margin-left: -14%; align-self: end; }
   #cockpit .bubble { position: relative; grid-column: 1 / -1; top: auto; left: auto; width: 100%; font-size: 17px; }
