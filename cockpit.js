@@ -19,6 +19,7 @@
   let noteIndex = 0;
   let noteTimer = null;
   let fishBubbleTimer = null;
+  let titleCloseTimer = null;
 
   const notes = [
     SiteLanguage.text('The fish insisted on coming.', "那条鱼坚持要跟来。"),
@@ -420,6 +421,7 @@
   }
 
   function setTitleOpen(open) {
+    clearTimeout(titleCloseTimer);
     title.classList.toggle('is-open', open);
     title.setAttribute('aria-pressed', String(open));
   }
@@ -429,7 +431,9 @@
     if (event.pointerType === 'mouse') setTitleOpen(true);
   });
   title.addEventListener('pointerleave', function (event) {
-    if (event.pointerType === 'mouse') setTitleOpen(false);
+    if (event.pointerType === 'mouse') {
+      titleCloseTimer = setTimeout(function () { setTitleOpen(false); }, 3000);
+    }
   });
   title.addEventListener('click', function (event) {
     if (event.detail === 0 || event.pointerType !== 'mouse') {
