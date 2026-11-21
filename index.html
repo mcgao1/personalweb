@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manchen Gao</title>
 <link rel="stylesheet" href="scene.css?v=46">
-<link rel="stylesheet" href="cockpit.css?v=22">
+<link rel="stylesheet" href="cockpit.css?v=23">
 
 <link rel="stylesheet" href="site-language.css?v=1">
 <script src="site-language.js?v=1"></script>
@@ -137,9 +137,14 @@
     <button class="ck-back" id="ck-back" type="button" data-zh="回到星球">← back to the planet</button>
 
     <button class="title-scribble" type="button" aria-label="曼 · Manchen Archive · unfold the name" data-zh-aria-label="曼 · Manchen Archive · 展开名字" aria-pressed="false">
-      <span class="name-half name-half-left" aria-hidden="true"><span class="name-cut" lang="zh-Hans">曼</span></span>
-      <span class="name-half name-half-right" aria-hidden="true"><span class="name-cut" lang="zh-Hans">曼</span></span>
-      <span class="name-latin" lang="en" aria-hidden="true">MAN<span class="name-tail"><span style="--letter: 0">C</span><span style="--letter: 1">H</span><span style="--letter: 2">E</span><span style="--letter: 3">N</span></span></span>
+      <span class="name-half name-half-left" aria-hidden="true"><span class="name-turn"><span class="name-cut" lang="zh-Hans">曼</span></span></span>
+      <span class="name-half name-half-right" aria-hidden="true"><span class="name-turn"><span class="name-cut" lang="zh-Hans">曼</span></span></span>
+      <span class="name-tail" aria-hidden="true">
+        <svg class="name-letter" style="--letter: 0" viewBox="0 0 64 100" focusable="false"><path d="M64 0V20H21V79H64V100H0V0Z"/></svg>
+        <svg class="name-letter" style="--letter: 1" viewBox="0 0 64 100" focusable="false"><path d="M0 0H20V39H43V0H64V100H43V60H20V100H0Z"/></svg>
+        <svg class="name-letter" style="--letter: 2" viewBox="0 0 64 100" focusable="false"><path d="M0 0H64V20H21V39H56V60H21V80H64V100H0Z"/></svg>
+        <svg class="name-letter" style="--letter: 3" viewBox="0 0 64 100" focusable="false"><path d="M0 100V0H20L43 60V0H64V100H44L20 38V100Z"/></svg>
+      </span>
       <span class="archive-label" lang="en" aria-hidden="true">ARCHIVE</span>
     </button>
 
