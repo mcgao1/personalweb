@@ -528,6 +528,135 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   box-shadow: 27px -1px 0 -1px #ed8f45;
 }
 
+#cockpit .space-fm {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 16px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--ck-ink);
+  box-sizing: border-box;
+}
+
+#cockpit .space-fm[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cockpit .space-fm::backdrop { background: rgb(6 6 6 / 82%); }
+
+#cockpit .fm-panel {
+  width: min(440px, 100%);
+  max-height: calc(100svh - 32px);
+  padding: 18px;
+  overflow: auto;
+  box-sizing: border-box;
+  border: 3px solid var(--ck-ink);
+  border-radius: 7px 3px 9px 4px;
+  background: #10120f;
+  box-shadow: 6px 7px 0 #ffbad5;
+}
+
+#cockpit .fm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+#cockpit .fm-header h2 {
+  margin: 0;
+  color: #9de6b1;
+  font: 400 27px/1.1 'Archivo Black', 'Arial Black', sans-serif;
+  letter-spacing: -.04em;
+  transform: rotate(-3deg);
+}
+
+#cockpit .fm-close {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--ck-ink);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ck-ink);
+  font: 400 28px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+#cockpit .fm-close:hover { background: #31372b; }
+
+#cockpit .fm-label {
+  display: block;
+  margin-bottom: 5px;
+  font: 600 14px/1.4 'Inter', system-ui, sans-serif;
+}
+
+#cockpit #fm-playlist {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  margin-bottom: 14px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #9de6b1;
+  border-radius: 3px;
+  background: #1b241c;
+  color: var(--ck-ink);
+  font: 500 14px/1.4 'Inter', system-ui, sans-serif;
+}
+
+#cockpit .fm-player-stage { position: relative; height: 352px; }
+
+#cockpit .fm-loading {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  background: #10120f;
+  color: #9de6b1;
+  font: 500 15px/1.5 'Inter', system-ui, sans-serif;
+}
+
+#cockpit .fm-loading:not([hidden]) { display: grid; place-items: center; }
+
+#cockpit .fm-player {
+  display: block;
+  width: 100%;
+  min-width: 280px;
+  height: 352px;
+  border: 0;
+}
+
+#cockpit .fm-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  font: 500 12px/1.5 'Inter', system-ui, sans-serif;
+}
+
+#cockpit .fm-footer a { color: var(--ck-ink); }
+#cockpit .fm-footer .fm-open { color: #9de6b1; }
+#cockpit .fm-footer a:hover { color: #ffbad5; }
+
+#cockpit .fm-cookie-note {
+  margin: 8px 0 0;
+  color: #b5baa9;
+  font: 400 11px/1.5 'Inter', system-ui, sans-serif;
+}
+
+@media (max-width: 440px) {
+  #cockpit .fm-panel { padding: 8px; }
+}
+
 #cockpit .danger {
   width: clamp(68px, 5.5vw, 84px);
   height: clamp(56px, 4.65vw, 69px);

@@ -6,6 +6,12 @@
   const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bubble = cockpit.querySelector('#bubble');
   const title = cockpit.querySelector('.title-scribble');
+  const radio = cockpit.querySelector('.radio');
+  const radioDialog = cockpit.querySelector('#space-fm');
+  const radioPlaylist = radioDialog.querySelector('#fm-playlist');
+  const radioPlayer = radioDialog.querySelector('.fm-player');
+  const radioLoading = radioDialog.querySelector('.fm-loading');
+  const radioLink = radioDialog.querySelector('.fm-open');
   const scenes = Array.from(cockpit.querySelectorAll('.scene'));
   const views = ['none', 'hill', 'future', 'exit', 'sweet'];
   const specimens = Array.from(cockpit.querySelectorAll('.specimen'));
@@ -295,6 +301,7 @@
   /* ---------- going home: shared by Exit, the explosion and the back button ---------- */
   function resetCockpit() {
     setTitleOpen(false);
+    radioDialog.close();
     busy = false;
     presses = 0;
     lockedScene = null;
@@ -426,7 +433,32 @@
     title.setAttribute('aria-pressed', String(open));
   }
 
+  function loadRadioPlaylist() {
+    const id = radioPlaylist.value;
+    radioLoading.hidden = false;
+    radioPlayer.src = 'https://open.spotify.com/embed/playlist/' + id + '?utm_source=generator';
+    radioPlayer.title = 'Spotify Embed: ' + radioPlaylist.selectedOptions[0].textContent;
+    radioLink.href = 'https://open.spotify.com/playlist/' + id;
+  }
+
   /* ---------- wiring ---------- */
+  radioPlaylist.addEventListener('change', loadRadioPlaylist);
+  radioPlayer.addEventListener('load', function () { radioLoading.hidden = true; });
+  radioDialog.querySelector('.fm-close').addEventListener('click', function () {
+    radioDialog.close();
+  });
+  radioDialog.addEventListener('click', function (event) {
+    if (event.target === radioDialog) radioDialog.close();
+  });
+  radioDialog.addEventListener('wheel', function (event) {
+    event.stopPropagation();
+  }, { passive: true });
+  radioDialog.addEventListener('close', function () {
+    radioLoading.hidden = true;
+    radioPlayer.removeAttribute('src');
+    radio.setAttribute('aria-expanded', 'false');
+  });
+
   title.addEventListener('pointerenter', function (event) {
     if (event.pointerType === 'mouse') setTitleOpen(true);
   });
@@ -485,6 +517,13 @@
     prop.addEventListener('click', function () {
       if (type === 'danger') { pressDanger(); return; }
       if (busy) return;
+      if (type === 'radio') {
+        loadRadioPlaylist();
+        radioDialog.showModal();
+        radio.setAttribute('aria-expanded', 'true');
+        say(copy.radio);
+        return;
+      }
       if (type === 'fish') {
         say(copy.fishClick);
         prop.classList.remove('is-bubbling');
