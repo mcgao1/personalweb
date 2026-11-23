@@ -10,31 +10,34 @@
   const noteCopy = document.getElementById('note-copy');
   const noteHit = noteCopy.parentElement;
   const hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)');
-  const chinese = document.documentElement.lang === 'zh-Hans';
+  let chinese = document.documentElement.lang === 'zh-Hans';
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const notes = [
-    SiteLanguage.text("Sometimes I think we might have met somewhere else already. Something that flashes through your mind could be happening in another layer of space. Usually the two carry on separately. Then something sparks in your head, or a feeling comes on too strong, and they brush against each other. Maybe they overlap just enough for you to catch a sight, a sound, or a smell you can’t place.", "我有时候想，我们说不定已经在别的空间碰过面。脑子里一闪而过的事，可能正在另一层空间里发生。平时两边各过各的，偶尔脑子里啪地闪了一下，或者某种情绪来得太猛，两层空间就擦到一起。也许只重合了那么一小块，刚好够你看见一个画面，听到一点声音，或者闻到一股不知道从哪儿来的气味。"),
-    SiteLanguage.text("Nothing much happens in my imaginary golden age. I get on a tram at dusk and watch the neon lights go by. I know I’m wasting time. I still want the tram to go two more stops.", "我想象中的黄金时代，其实也没什么大事。傍晚坐上电车，霓虹灯一路闪过去。明知道在浪费时间，还是希望这车多开两站。"),
-    SiteLanguage.text("As a kid I thought blue and white tie-dye was a little boring. Then someone put a vase of yellow peonies on the table, and suddenly that cloth was beautiful. I’d love to see the moment the threads come out, when the fabric still holds all those creases.", "小时候嫌扎染只有蓝和白，后来桌上摆了一瓶黄芍药，才发现那块布原来那么好看。更想看的是拆线那一下，布上还留着刚才被扎紧的褶子。"),
-    SiteLanguage.text("Working on my thesis was the first time I’d read about Kunming so formally, in academic papers. Somewhere along the way I realised I was a little homesick.", "写论文的时候，第一次在文献里这么正式地读昆明。读着读着，才发现自己有点想家了。"),
-    SiteLanguage.text("I came across ‘tourism carrying capacity’ while studying and wondered if people have one too. How many things, how many words, and how many ‘no, it’s fine, go on’s can a person fit into one day?", "背书背到「旅游容量」，突然想知道人有没有一种类似的容量。一天能装多少事，多少话，以及多少句「没事，你继续说」。"),
-    SiteLanguage.text("The new computer is a little too clean. I went looking for one file and ended up reading something I wrote years ago. Still no file. Apparently I used to have a lot of fun writing.", "新电脑干净得有点过分。只是想找一份文件，最后翻出几年前的小作文。文件还是没找到，倒是发现那时候的我写东西挺来劲。"),
-    SiteLanguage.text("A song changes one pronoun. One line ago I was listening to somebody else’s story. Now it feels like the singer’s talking to me. A tiny word with a knack for stealing the scene.", "一首歌只换了一个代词，原来还在听别人的故事，下一句就好像唱到我这里来了。这么小一个词，挺会抢戏的。"),
-    SiteLanguage.text("Eight and a half hours. In my head it takes less than eight seconds to go by.", "八个半小时，脑子一过也仅仅是八秒不到的回忆。"),
-    SiteLanguage.text("Sometimes I wish I could borrow that easy confidence of someone who goes out in old shoes. I’ve already lost a few minutes just deciding whether to change mine.", "有时候真想借一点那种穿旧鞋出门也很自在的劲儿。我出门前光是想要不要换双鞋，就已经耽误了好几分钟。"),
-    SiteLanguage.text("At my computer, I sort through news articles and put each emotion in a column. A song comes on and I sit there staring for a while. When it’s my turn, I can’t say which column I’d go in.", "对着电脑改代码，新闻一条条地筛，情绪也一条条地分。中途听到一首歌，坐在那里愣了半天。轮到我自己的时候，倒说不出该分到哪一栏。"),
-    SiteLanguage.text("Brown leather boots, florals, checks, stripes. Each looks fairly composed on its own. Put them together and they start arguing. I stood there looking at the pile for a while and still wanted to wear all of it.", "咖色皮靴、碎花、格子、条纹。单看每一件都挺稳重，摆在一起就开始吵架。我对着这堆衣服看了半天，还是觉得都想穿。"),
-    SiteLanguage.text("The perfume is called ‘Fresh Water’. Easy enough to remember. To me, fresh is a breeze coming straight at you on a summer night. To somebody else it might be just out of the shower. So whose fresh is in this bottle?", "香水叫「清新之水」，名字倒是好记。问题是我想到的清新是夏夜迎面的一阵风，别人想到的可能是刚洗完澡。那这一瓶到底算谁的清新？"),
-    SiteLanguage.text("A harbour in the rain is hard to pin down. There’s solid ground under my feet, but if I look out long enough I feel myself sway with the boats.", "雨里的港口有点说不清。脚底下明明是结实的地，往外多看几眼，就觉得自己也跟着那些船晃了一下。"),
-    SiteLanguage.text("Sometimes I pick up something I barely noticed at the time and call it foreshadowing. Writers get to do that, so I can too. Back then, though, I genuinely had no idea.", "我有时候会把以前完全没留意的事捡回来，当成伏笔。写故事的人可以这么干，我也可以。但当时的我是真的什么都没看出来。"),
-    SiteLanguage.text("The drawing in my head is just about ready for the museum. The one on the page is still working on a straight line.", "脑子里那张画都快挂进美术馆了。低头一看，手上这张还在努力画直线。"),
-    SiteLanguage.text("A lot of the time, when I want something, when I really, really want it, I actually end up getting it.", "很多时候，我想要一件东西，非常非常想要一件东西，我就真的会得到它。"),
-    SiteLanguage.text("An empty classroom to myself, sunlight coming in. Excellent conditions for studying. (I’ll sit here a minute first. No one’s here, so there’s no hurry to open the book.)", "难得有一整间空教室，阳光照进来，应该很适合学习。（先坐一会儿。既然都没人，也不急着翻书。）"),
-    SiteLanguage.text("I watch a horror film and think about the suspension bridge effect at the same time. My brain is still working out why my heart is racing. My hand’s already turned the volume down. That can come first.", "一边看恐怖片，一边想吊桥效应。脑子还在很认真地分析心跳到底怎么回事，手已经把音量调小了。反正先调小再说。"),
-    SiteLanguage.text("Some relationships are perfectly comfortable as they are. It’s usually when someone asks ‘so what are you two?’ that I start giving it serious thought. After a minute or so I usually let it go.", "有些关系待在原来的样子就很舒服。倒是每次有人问「所以你们到底算什么」，我才开始认真考虑这个问题。一般考虑一会儿，又觉得算了。"),
-    SiteLanguage.text("I’d almost worked out what happened. Then I thought about it a bit more. Still a little weird, actually.", "我都快把这件事分析明白了。后来又想了想，还是有点邪门。")
-  ];
+  function translatedNotes() {
+    return [
+      SiteLanguage.text("Sometimes I think we might have met somewhere else already. Something that flashes through your mind could be happening in another layer of space. Usually the two carry on separately. Then something sparks in your head, or a feeling comes on too strong, and they brush against each other. Maybe they overlap just enough for you to catch a sight, a sound, or a smell you can’t place.", "我有时候想，我们说不定已经在别的空间碰过面。脑子里一闪而过的事，可能正在另一层空间里发生。平时两边各过各的，偶尔脑子里啪地闪了一下，或者某种情绪来得太猛，两层空间就擦到一起。也许只重合了那么一小块，刚好够你看见一个画面，听到一点声音，或者闻到一股不知道从哪儿来的气味。"),
+      SiteLanguage.text("Nothing much happens in my imaginary golden age. I get on a tram at dusk and watch the neon lights go by. I know I’m wasting time. I still want the tram to go two more stops.", "我想象中的黄金时代，其实也没什么大事。傍晚坐上电车，霓虹灯一路闪过去。明知道在浪费时间，还是希望这车多开两站。"),
+      SiteLanguage.text("As a kid I thought blue and white tie-dye was a little boring. Then someone put a vase of yellow peonies on the table, and suddenly that cloth was beautiful. I’d love to see the moment the threads come out, when the fabric still holds all those creases.", "小时候嫌扎染只有蓝和白，后来桌上摆了一瓶黄芍药，才发现那块布原来那么好看。更想看的是拆线那一下，布上还留着刚才被扎紧的褶子。"),
+      SiteLanguage.text("Working on my thesis was the first time I’d read about Kunming so formally, in academic papers. Somewhere along the way I realised I was a little homesick.", "写论文的时候，第一次在文献里这么正式地读昆明。读着读着，才发现自己有点想家了。"),
+      SiteLanguage.text("I came across ‘tourism carrying capacity’ while studying and wondered if people have one too. How many things, how many words, and how many ‘no, it’s fine, go on’s can a person fit into one day?", "背书背到「旅游容量」，突然想知道人有没有一种类似的容量。一天能装多少事，多少话，以及多少句「没事，你继续说」。"),
+      SiteLanguage.text("The new computer is a little too clean. I went looking for one file and ended up reading something I wrote years ago. Still no file. Apparently I used to have a lot of fun writing.", "新电脑干净得有点过分。只是想找一份文件，最后翻出几年前的小作文。文件还是没找到，倒是发现那时候的我写东西挺来劲。"),
+      SiteLanguage.text("A song changes one pronoun. One line ago I was listening to somebody else’s story. Now it feels like the singer’s talking to me. A tiny word with a knack for stealing the scene.", "一首歌只换了一个代词，原来还在听别人的故事，下一句就好像唱到我这里来了。这么小一个词，挺会抢戏的。"),
+      SiteLanguage.text("Eight and a half hours. In my head it takes less than eight seconds to go by.", "八个半小时，脑子一过也仅仅是八秒不到的回忆。"),
+      SiteLanguage.text("Sometimes I wish I could borrow that easy confidence of someone who goes out in old shoes. I’ve already lost a few minutes just deciding whether to change mine.", "有时候真想借一点那种穿旧鞋出门也很自在的劲儿。我出门前光是想要不要换双鞋，就已经耽误了好几分钟。"),
+      SiteLanguage.text("At my computer, I sort through news articles and put each emotion in a column. A song comes on and I sit there staring for a while. When it’s my turn, I can’t say which column I’d go in.", "对着电脑改代码，新闻一条条地筛，情绪也一条条地分。中途听到一首歌，坐在那里愣了半天。轮到我自己的时候，倒说不出该分到哪一栏。"),
+      SiteLanguage.text("Brown leather boots, florals, checks, stripes. Each looks fairly composed on its own. Put them together and they start arguing. I stood there looking at the pile for a while and still wanted to wear all of it.", "咖色皮靴、碎花、格子、条纹。单看每一件都挺稳重，摆在一起就开始吵架。我对着这堆衣服看了半天，还是觉得都想穿。"),
+      SiteLanguage.text("The perfume is called ‘Fresh Water’. Easy enough to remember. To me, fresh is a breeze coming straight at you on a summer night. To somebody else it might be just out of the shower. So whose fresh is in this bottle?", "香水叫「清新之水」，名字倒是好记。问题是我想到的清新是夏夜迎面的一阵风，别人想到的可能是刚洗完澡。那这一瓶到底算谁的清新？"),
+      SiteLanguage.text("A harbour in the rain is hard to pin down. There’s solid ground under my feet, but if I look out long enough I feel myself sway with the boats.", "雨里的港口有点说不清。脚底下明明是结实的地，往外多看几眼，就觉得自己也跟着那些船晃了一下。"),
+      SiteLanguage.text("Sometimes I pick up something I barely noticed at the time and call it foreshadowing. Writers get to do that, so I can too. Back then, though, I genuinely had no idea.", "我有时候会把以前完全没留意的事捡回来，当成伏笔。写故事的人可以这么干，我也可以。但当时的我是真的什么都没看出来。"),
+      SiteLanguage.text("The drawing in my head is just about ready for the museum. The one on the page is still working on a straight line.", "脑子里那张画都快挂进美术馆了。低头一看，手上这张还在努力画直线。"),
+      SiteLanguage.text("A lot of the time, when I want something, when I really, really want it, I actually end up getting it.", "很多时候，我想要一件东西，非常非常想要一件东西，我就真的会得到它。"),
+      SiteLanguage.text("Life somewhere new is still a jumble in my head. My taste buds, meanwhile, have already worked out a routine. Sweet, sour, bitter, spicy. I taste them without really thinking about it. Somewhere in there, a life takes shape.", "在异乡生活，脑子还没理出什么头绪，味觉倒是先整理出了一套生活方式。酸甜苦辣不用刻意感知，不经意间尝到了，便是生活。"),
+      SiteLanguage.text("I watch a horror film and think about the suspension bridge effect at the same time. My brain is still working out why my heart is racing. My hand’s already turned the volume down. That can come first.", "一边看恐怖片，一边想吊桥效应。脑子还在很认真地分析心跳到底怎么回事，手已经把音量调小了。反正先调小再说。"),
+      SiteLanguage.text("Some relationships are perfectly comfortable as they are. It’s usually when someone asks ‘so what are you two?’ that I start giving it serious thought. After a minute or so I usually let it go.", "有些关系待在原来的样子就很舒服。倒是每次有人问「所以你们到底算什么」，我才开始认真考虑这个问题。一般考虑一会儿，又觉得算了。"),
+      SiteLanguage.text("I’d almost worked out what happened. Then I thought about it a bit more. Still a little weird, actually.", "我都快把这件事分析明白了。后来又想了想，还是有点邪门。")
+    ];
+  }
+  let notes = translatedNotes();
 
   const hoverNotes = {
     bachelor: SiteLanguage.text('old notes grew a flower.', "旧笔记长出了一朵花。"),
@@ -409,6 +412,25 @@
     if (event.key !== ' ' && event.key !== 'Enter') return;
     event.preventDefault();
     nextNote();
+  });
+
+  document.addEventListener('site-language-change', function () {
+    const currentIndex = notes.indexOf(noteCopy.textContent);
+    const remainingIndices = remainingNotes.map(text => notes.indexOf(text));
+    notes = translatedNotes();
+    remainingNotes = remainingIndices.map(index => notes[index]);
+    chinese = document.documentElement.lang === 'zh-Hans';
+    setHint(body.classList.contains('stage-close')
+      ? SiteLanguage.text('pick a flower to open my work', '挑一朵花，看看里面的项目')
+      : SiteLanguage.text('come closer', '再靠近一点'));
+    hideTooltip();
+    if (currentIndex !== -1) {
+      clearTimeout(noteFadeTimer);
+      note.classList.remove('is-fading');
+      renderNote(notes[currentIndex]);
+      fitNote();
+      scheduleNextNote();
+    }
   });
 
   const cockpit = document.getElementById('cockpit');

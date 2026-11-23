@@ -34,27 +34,31 @@
   let radioPending = null;
   let radioScript = null;
 
-  const notes = [
-    SiteLanguage.text('The fish insisted on coming.', "那条鱼坚持要跟来。"),
-    SiteLanguage.text('Somewhere between here and whatever comes next.', "在这里和下一站之间。"),
-    SiteLanguage.text('We packed a few things. Mostly memories.', "带了几样东西。大多是回忆。"),
-    SiteLanguage.text('No arrival time yet.', "还没定什么时候到。")
-  ];
+  function translatedCockpitCopy() {
+    const notes = [
+      SiteLanguage.text('The fish insisted on coming.', "那条鱼坚持要跟来。"),
+      SiteLanguage.text('Somewhere between here and whatever comes next.', "在这里和下一站之间。"),
+      SiteLanguage.text('We packed a few things. Mostly memories.', "带了几样东西。大多是回忆。"),
+      SiteLanguage.text('No arrival time yet.', "还没定什么时候到。")
+    ];
 
-  const copy = {
-    hill: SiteLanguage.text('I remember it being steeper.', "记得那个坡更陡来着。"),
-    future: SiteLanguage.text('Still figuring this one out.', "这件事还在想。"),
-    exit: SiteLanguage.text('A way out. Or a way into something else.', "一个出口。也可能是别处的入口。"),
-    sweet: SiteLanguage.text('Keeping these for no particular reason.', "这些东西，就这么留着了。"),
-    radio: SiteLanguage.text('Same song. Again.', "又是同一首歌。"),
-    apple: SiteLanguage.text('You interrupted the good part.', "你刚好打断了最精彩的地方。"),
-    fish: SiteLanguage.text('It has strong opinions about the route.', "它对路线很有意见。"),
-    fishClick: SiteLanguage.text('Fine. You navigate.', "好吧。你来导航。"),
-    bottle: SiteLanguage.text('Probably best left unopened.', "这瓶还是别开了。"),
-    danger1: SiteLanguage.text('That was definitely a button.', "那确实是个按钮。"),
-    danger2: SiteLanguage.text('The fish would like to leave.', "那条鱼想下船了。"),
-    danger3: SiteLanguage.text('Well.', "嗯……")
-  };
+    const copy = {
+      hill: SiteLanguage.text('I remember it being steeper.', "记得那个坡更陡来着。"),
+      future: SiteLanguage.text('Still figuring this one out.', "这件事还在想。"),
+      exit: SiteLanguage.text('A way out. Or a way into something else.', "一个出口。也可能是别处的入口。"),
+      sweet: SiteLanguage.text('Keeping these for no particular reason.', "这些东西，就这么留着了。"),
+      radio: SiteLanguage.text('Same song. Again.', "又是同一首歌。"),
+      apple: SiteLanguage.text('You interrupted the good part.', "你刚好打断了最精彩的地方。"),
+      fish: SiteLanguage.text('It has strong opinions about the route.', "它对路线很有意见。"),
+      fishClick: SiteLanguage.text('Fine. You navigate.', "好吧。你来导航。"),
+      bottle: SiteLanguage.text('Probably best left unopened.', "这瓶还是别开了。"),
+      danger1: SiteLanguage.text('That was definitely a button.', "那确实是个按钮。"),
+      danger2: SiteLanguage.text('The fish would like to leave.', "那条鱼想下船了。"),
+      danger3: SiteLanguage.text('Well.', "嗯……")
+    };
+    return { notes, copy };
+  }
+  let { notes, copy } = translatedCockpitCopy();
 
   const flash = document.createElement('div');
   flash.className = 'ck-flash';
@@ -459,7 +463,9 @@
   function startRadioPlayer() {
     if (radioScript) return;
     radioLoading.hidden = false;
-    radioLoading.textContent = SiteLanguage.text('Tuning in…', '正在调频…');
+    radioLoading.dataset.en = 'Tuning in…';
+    radioLoading.dataset.zh = '正在调频…';
+    radioLoading.textContent = SiteLanguage.text(radioLoading.dataset.en, radioLoading.dataset.zh);
     window.onSpotifyIframeApiReady = function (api) {
       api.createController(radioMount.querySelector('#fm-spotify'), {
         uri: 'spotify:playlist:' + radioPlaylist.value,
@@ -509,10 +515,9 @@
       radioRequested = false;
       updateRadioState();
       radioLoading.hidden = false;
-      radioLoading.textContent = SiteLanguage.text(
-        'Spotify could not load. Open the playlist using the link below.',
-        'Spotify 暂时无法加载，可以通过下方链接打开歌单。'
-      );
+      radioLoading.dataset.en = 'Spotify could not load. Open the playlist using the link below.';
+      radioLoading.dataset.zh = 'Spotify 暂时无法加载，可以通过下方链接打开歌单。';
+      radioLoading.textContent = SiteLanguage.text(radioLoading.dataset.en, radioLoading.dataset.zh);
     };
     document.body.appendChild(radioScript);
   }
@@ -590,8 +595,8 @@
     });
   });
 
-  function describeProp(el, text) {
-    function describe() { if (!busy) say(text); }
+  function describeProp(el, key) {
+    function describe() { if (!busy) say(copy[key]); }
     el.addEventListener('pointerenter', describe);
     el.addEventListener('focus', describe);
     el.addEventListener('pointerleave', scheduleNote);
@@ -600,7 +605,7 @@
 
   cockpit.querySelectorAll('.prop').forEach(function (prop) {
     const type = prop.dataset.prop;
-    if (copy[type]) describeProp(prop, copy[type]);
+    if (copy[type]) describeProp(prop, type);
     prop.addEventListener('click', function () {
       if (type === 'danger') { pressDanger(); return; }
       if (busy) return;
@@ -632,7 +637,7 @@
 
   const bottle = cockpit.querySelector('.bottle-slot');
   if (bottle) {
-    describeProp(bottle, copy.bottle);
+    describeProp(bottle, 'bottle');
     bottle.addEventListener('click', function () {
       if (busy) return;
       say(copy.bottle);
@@ -654,6 +659,17 @@
   bubble.addEventListener('click', function () {
     if (busy) return;
     nextNote();
+  });
+
+  document.addEventListener('site-language-change', function () {
+    const currentText = bubble.textContent;
+    const currentNote = notes.indexOf(currentText);
+    const currentKey = Object.keys(copy).find(key => copy[key] === currentText);
+    const translated = translatedCockpitCopy();
+    notes = translated.notes;
+    copy = translated.copy;
+    if (currentNote !== -1) say(notes[currentNote]);
+    else if (currentKey) say(copy[currentKey]);
   });
 
   document.addEventListener('visibilitychange', scheduleNote);

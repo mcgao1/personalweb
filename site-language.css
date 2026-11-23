@@ -24,10 +24,22 @@ body.quarto-light { padding-top: 52px; }
   color: #322a22;
   text-decoration: none;
   white-space: nowrap;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 .site-language a:hover { background: #ece3d2; }
 .site-language a[aria-current="page"] {
   background: #322a22;
   color: #fff9ec;
+}
+
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-language a { transition: none; }
 }

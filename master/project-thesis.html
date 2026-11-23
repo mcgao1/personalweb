@@ -114,8 +114,8 @@
   .chart-zoom img { aspect-ratio: 16 / 9; max-height: 310px; object-fit: contain; }
 </style>
 
-<link rel="stylesheet" href="../site-language.css?v=1">
-<script src="../site-language.js?v=1"></script>
+<link rel="stylesheet" href="../site-language.css?v=2">
+<script src="../site-language.js?v=2"></script>
 </head>
 <body>
 
@@ -217,7 +217,7 @@
     <div class="chart-track" id="chart-track" tabindex="0" role="group" aria-labelledby="chart-heading">
       <figure class="side-fig chart">
         <button class="chart-zoom" type="button">
-          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_C_FullVsSweet_Density.png" alt="In four office clusters, the net present value distributions shift from mostly below break-even under full deployment to mostly above it after selecting sunnier surfaces." data-alt-zh="四组楼群的净现值分布：满铺时大多落在盈亏平衡线左侧，筛选日照较好的表面后大多移到右侧。" loading="lazy">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_C_FullVsSweet_Density.png" alt="In four office clusters, the net present value distributions shift from mostly below break-even under full deployment to mostly above it after selecting sunnier surfaces." data-zh-alt="四组楼群的净现值分布：满铺时大多落在盈亏平衡线左侧，筛选日照较好的表面后大多移到右侧。" loading="lazy">
         </button>
         <figcaption><span data-copy lang="en">Full vs. selective deployment · crystalline silicon roofs (D), 20% glazing transmittance. The dashed line marks break-even.</span>
           <span data-copy lang="zh-Hans">满铺与筛选部署对比 · 晶硅屋顶方案（D），玻璃透光率 20%。虚线为盈亏平衡线。</span>
@@ -225,7 +225,7 @@
       </figure>
       <figure class="side-fig chart">
         <button class="chart-zoom" type="button">
-          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_NPV_per_m2_TwoTone.png" alt="Average net present value per square metre of selected deployment area, by cluster and rooftop scenario" data-alt-zh="按楼群和屋顶方案比较筛选后每平方米部署面积的平均净现值" loading="lazy">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_NPV_per_m2_TwoTone.png" alt="Average net present value per square metre of selected deployment area, by cluster and rooftop scenario" data-zh-alt="按楼群和屋顶方案比较筛选后每平方米部署面积的平均净现值" loading="lazy">
         </button>
         <figcaption><span data-copy lang="en">Average NPV per m² of selected area · rooftop scenarios D and E</span>
           <span data-copy lang="zh-Hans">筛选部署后每平方米的平均净现值 · 屋顶方案 D 与 E</span>
@@ -233,7 +233,7 @@
       </figure>
       <figure class="side-fig chart">
         <button class="chart-zoom" type="button">
-          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_Subsidy_Sensitivity_Pro.png" alt="Modelled net present value as subsidy support changes, at fixed selective deployment and 20% glazing transmittance" data-alt-zh="固定筛选部署面积和 20% 玻璃透光率时，净现值随补贴变化的估算" loading="lazy">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_Subsidy_Sensitivity_Pro.png" alt="Modelled net present value as subsidy support changes, at fixed selective deployment and 20% glazing transmittance" data-zh-alt="固定筛选部署面积和 20% 玻璃透光率时，净现值随补贴变化的估算" loading="lazy">
         </button>
         <figcaption><span data-copy lang="en">Modelled NPV at fixed deployment · subsidy as a share of the Shanghai benchmark</span>
           <span data-copy lang="zh-Hans">固定部署面积下的净现值估算 · 补贴以相对上海基准的比例表示</span>
@@ -241,7 +241,7 @@
       </figure>
       <figure class="side-fig chart">
         <button class="chart-zoom" type="button">
-          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_T1_SweetSpot_GradientDot_2x2_Darker.png" alt="Spearman rank correlations between model inputs and net present value across the four clusters under selective deployment in Scenario D" data-alt-zh="D 方案筛选部署后，四组楼群的模型输入与净现值之间的斯皮尔曼秩相关" loading="lazy">
+          <img class="lightbox-img" src="项目4_硕士论文/论文的图/Fig_T1_SweetSpot_GradientDot_2x2_Darker.png" alt="Spearman rank correlations between model inputs and net present value across the four clusters under selective deployment in Scenario D" data-zh-alt="D 方案筛选部署后，四组楼群的模型输入与净现值之间的斯皮尔曼秩相关" loading="lazy">
         </button>
         <figcaption><span data-copy lang="en">Which inputs track changes in NPV? · Spearman correlations, selective deployment, Scenario D</span>
           <span data-copy lang="zh-Hans">哪些输入和净现值的变化关系最强？· D 方案筛选部署后的斯皮尔曼秩相关</span>
@@ -291,15 +291,7 @@
   </section>
 </main>
 
-<script src="../lightbox.js?v=6"></script>
-<script>
-  if (document.documentElement.lang === "zh-Hans") {
-    document.title = document.querySelector("h1 [lang='zh-Hans']").textContent;
-    for (const image of document.querySelectorAll("[data-alt-zh]")) {
-      image.alt = image.dataset.altZh;
-    }
-  }
-</script>
+<script src="../lightbox.js?v=7"></script>
 <script>
   const chartTrack = document.querySelector(".chart-track");
   const chartCount = document.querySelector(".chart-count");
@@ -330,18 +322,20 @@
     }
   });
 
-  const chineseCharts = document.documentElement.lang === "zh-Hans";
-  if (chineseCharts) {
-    previousChart.setAttribute("aria-label", "上一张图");
-    nextChart.setAttribute("aria-label", "下一张图");
+  function translateChartLabels() {
+    const chineseCharts = document.documentElement.lang === "zh-Hans";
+    document.title = document.querySelector("h1 [lang='" + document.documentElement.lang + "']").textContent.trim();
+    previousChart.setAttribute("aria-label", SiteLanguage.text("Previous chart", "上一张图"));
+    nextChart.setAttribute("aria-label", SiteLanguage.text("Next chart", "下一张图"));
+    for (const button of chartTrack.querySelectorAll(".chart-zoom")) {
+      const image = button.querySelector("img");
+      button.dataset.lightboxSrc = image.getAttribute("src");
+      button.dataset.lightboxAlt = image.alt;
+      button.setAttribute("aria-label", (chineseCharts ? "放大图表：" : "Enlarge chart: ") + image.alt);
+    }
   }
-
-  for (const button of chartTrack.querySelectorAll(".chart-zoom")) {
-    const image = button.querySelector("img");
-    button.dataset.lightboxSrc = image.getAttribute("src");
-    button.dataset.lightboxAlt = image.alt;
-    button.setAttribute("aria-label", (chineseCharts ? "放大图表：" : "Enlarge chart: ") + image.alt);
-  }
+  document.addEventListener("DOMContentLoaded", translateChartLabels);
+  document.addEventListener("site-language-change", translateChartLabels);
   updateChartCount();
 </script>
 </body>

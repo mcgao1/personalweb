@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+function renderPosterLettering() {
   const chinese = document.documentElement.lang === 'zh-Hans';
   const tokenPattern = chinese ? /[「『（“]?[^\s][，。？！、」』）”……；：]*|\s+/gu : /\S+|\s+/gu;
 
@@ -30,4 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     element.replaceChildren(readable, ink);
   });
-});
+}
+
+document.addEventListener('DOMContentLoaded', renderPosterLettering);
+document.addEventListener('site-language-change', renderPosterLettering);

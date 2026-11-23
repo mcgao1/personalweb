@@ -6,10 +6,10 @@
 <title data-zh="硕士项目">Master · Portfolio</title>
 <link rel="stylesheet" href="../poster-lettering.css?v=1">
 <link rel="stylesheet" href="projects.css?v=11">
-<script src="../poster-lettering.js?v=1" defer></script>
+<script src="../poster-lettering.js?v=2" defer></script>
 
-<link rel="stylesheet" href="../site-language.css?v=1">
-<script src="../site-language.js?v=1"></script>
+<link rel="stylesheet" href="../site-language.css?v=2">
+<script src="../site-language.js?v=2"></script>
 </head>
 <body>
 
@@ -252,6 +252,10 @@
       '<span class="sign-index">0' + (i + 1) + '</span>' +
       '<span class="sign-title">' + SiteLanguage.text(p.title, p.titleZh) + '</span>' +
       '<span class="sign-tag">' + SiteLanguage.text(p.tagline, p.taglineZh) + '</span>';
+    sign.querySelector('.sign-title').dataset.en = p.title;
+    sign.querySelector('.sign-title').dataset.zh = p.titleZh;
+    sign.querySelector('.sign-tag').dataset.en = p.tagline;
+    sign.querySelector('.sign-tag').dataset.zh = p.taglineZh;
     addEdgePixels(sign, peelCounts[i]);
     thicket.appendChild(sign);
     if (signObserver) signObserver.observe(sign);

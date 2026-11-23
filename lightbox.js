@@ -8,10 +8,10 @@
   overlay.className = 'lb-overlay';
   overlay.innerHTML =
     '<div class="lb-toolbar">' +
-    '<button class="lb-zoom-btn" type="button" data-lb-out aria-label="Zoom out">&minus;</button>' +
-    '<button class="lb-zoom-btn" type="button" data-lb-in aria-label="Zoom in">&plus;</button>' +
+    '<button class="lb-zoom-btn" type="button" data-lb-out aria-label="Zoom out" data-zh-aria-label="缩小">&minus;</button>' +
+    '<button class="lb-zoom-btn" type="button" data-lb-in aria-label="Zoom in" data-zh-aria-label="放大">&plus;</button>' +
     '</div>' +
-    '<button class="lb-close" type="button" aria-label="Close">&times;</button>' +
+    '<button class="lb-close" type="button" aria-label="Close" data-zh-aria-label="关闭">&times;</button>' +
     '<div class="lb-viewport">' +
     '<div class="lb-pop"><img class="lb-full" alt=""></div>' +
     '</div>';
@@ -23,12 +23,8 @@
   const viewport = overlay.querySelector('.lb-viewport');
   const img = overlay.querySelector('.lb-full');
 
-  if (document.documentElement.lang === 'zh-Hans') {
-    closeBtn.setAttribute('aria-label', '关闭');
-    zoomInBtn.setAttribute('aria-label', '放大');
-    zoomOutBtn.setAttribute('aria-label', '缩小');
-  }
 
+  let sourceElement = null;
   let zoom = 1;
   let baseWidth = 640;
   const ZOOM_MIN = 0.8;
@@ -42,7 +38,8 @@
     applyZoom();
   }
 
-  function openWith(src, alt) {
+  function openWith(src, alt, source) {
+    sourceElement = source;
     img.src = src;
     img.alt = alt || '';
     overlay.classList.add('open');
@@ -57,15 +54,19 @@
 
   document.addEventListener('click', function (e) {
     const target = e.target.closest('img.lightbox-img');
-    if (target) { openWith(target.currentSrc || target.src, target.alt); return; }
+    if (target) { openWith(target.currentSrc || target.src, target.alt, target); return; }
 
     // for triggers that shouldn't ever have the full-size image sitting
     // in the page (e.g. a poster thumbnail): the src only gets used,
     // never loaded into the DOM, until this click actually happens
     const trigger = e.target.closest('[data-lightbox-src]');
     if (trigger) {
-      openWith(trigger.getAttribute('data-lightbox-src'), trigger.getAttribute('data-lightbox-alt') || '');
+      openWith(trigger.getAttribute('data-lightbox-src'), trigger.getAttribute('data-lightbox-alt') || '', trigger);
     }
+  });
+
+  document.addEventListener('site-language-change', function () {
+    if (sourceElement) img.alt = sourceElement.alt || sourceElement.querySelector('img')?.alt || sourceElement.getAttribute('data-lightbox-alt') || '';
   });
 
   closeBtn.addEventListener('click', close);
