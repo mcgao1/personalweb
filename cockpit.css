@@ -472,10 +472,9 @@ body.cockpit-open #cockpit .pilot-lid {
   pointer-events: none;
 }
 
-#cockpit .radio-wrap,
 #cockpit .danger-wrap { display: contents; }
 
-#cockpit .props :is(.prop, .bottle-slot, .apple-slot) {
+#cockpit .props :is(.radio-wrap, .fish-prop, .danger, .bottle-slot, .apple-slot) {
   position: absolute;
   left: var(--prop-left);
   top: var(--prop-top);
@@ -484,11 +483,11 @@ body.cockpit-open #cockpit .pilot-lid {
   pointer-events: auto;
 }
 
-body.cockpit-open #cockpit .props :is(.prop, .bottle-slot, .apple-slot) {
+body.cockpit-open #cockpit .props :is(.radio-wrap, .fish-prop, .danger, .bottle-slot, .apple-slot) {
   animation: ck-prop-drift var(--float-period, 6s) var(--float-phase, 0s) ease-in-out infinite;
 }
 
-body.cockpit-open #cockpit .props :is(.prop, .bottle-slot, .apple-slot):is(:hover, :focus-within) {
+body.cockpit-open #cockpit .props :is(.radio-wrap, .fish-prop, .danger, .bottle-slot, .apple-slot):is(:hover, :focus-within) {
   animation-play-state: paused;
 }
 
@@ -500,9 +499,14 @@ body.cockpit-open #cockpit .props :is(.prop, .bottle-slot, .apple-slot):is(:hove
 
 #cockpit .prop { padding: 0; border: 2px solid #171614; }
 #cockpit .prop:hover { filter: brightness(1.13); }
-#cockpit .radio {
+#cockpit .radio-wrap {
   width: clamp(82px, 7.1vw, 105px);
   height: clamp(48px, 4.1vw, 60px);
+}
+
+#cockpit .radio {
+  width: 100%;
+  height: 100%;
   border-radius: 13px 9px 15px 10px;
   background: #9de6b1;
   box-shadow: 2px 2px 0 var(--ck-ink);
@@ -528,8 +532,93 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   box-shadow: 27px -1px 0 -1px #ed8f45;
 }
 
-#cockpit .space-fm {
+#cockpit .radio[aria-pressed="true"]::after {
+  background: #247346;
+  box-shadow: 27px -1px 0 -1px #247346;
+}
+
+#cockpit .radio[aria-busy="true"]::after { background: #ed8f45; }
+
+#cockpit .radio-wrap:is(:hover, :focus-within) { z-index: 8; }
+body.cockpit-open #cockpit .radio-wrap:has(.radio-peek[aria-expanded="true"]) { animation-play-state: paused; }
+
+#cockpit .radio-peek {
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  width: 146px;
+  padding: 9px 11px;
+  border: 2px solid var(--ck-ink);
+  border-radius: 3px 7px 4px 5px;
+  background: #10120f;
+  color: var(--ck-ink);
+  box-shadow: 3px 3px 0 #ffbad5;
+  text-align: left;
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(6px, -50%);
+  transition: opacity 180ms, transform 180ms, visibility 0s 180ms;
+}
+
+#cockpit .radio-peek::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: -4px;
+  width: 14px;
+  height: calc(100% + 8px);
+}
+
+#cockpit .radio-wrap.peek-left .radio-peek { left: auto; right: calc(100% + 10px); }
+#cockpit .radio-wrap.peek-left .radio-peek::before { right: auto; left: 100%; }
+
+#cockpit .radio-wrap:is(:hover, :focus-within) .radio-peek {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(0, -50%);
+  transition-delay: 0s;
+}
+
+#cockpit .fm-peek-title {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font: 500 11px/1.5 'Inter', system-ui, sans-serif;
+}
+
+#cockpit .fm-peek-caption {
+  display: block;
+  margin-top: 3px;
+  color: #9de6b1;
+  font: 600 12px/1.5 'Inter', system-ui, sans-serif;
+}
+
+#cockpit .fm-peek-short { display: none; }
+
+@media (hover: none) {
+  #cockpit .radio-peek {
+    width: 46px;
+    min-height: 34px;
+    padding: 3px;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(0, -50%);
+    text-align: center;
+  }
+  #cockpit .fm-peek-title,
+  #cockpit .fm-peek-caption { display: none; }
+  #cockpit .fm-peek-short { display: block; font: 600 11px/1.5 'Inter', system-ui, sans-serif; }
+}
+
+#space-fm {
+  --ck-ink: #f7f0d9;
   position: fixed;
+  pointer-events: none;
   inset: 0;
   width: 100%;
   max-width: none;
@@ -543,15 +632,16 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   box-sizing: border-box;
 }
 
-#cockpit .space-fm[open] {
+#space-fm:popover-open {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#cockpit .space-fm::backdrop { background: rgb(6 6 6 / 82%); }
+#space-fm button:focus-visible { outline: 2px dashed #9de6b1; outline-offset: 4px; }
 
-#cockpit .fm-panel {
+#space-fm .fm-panel {
+  pointer-events: auto;
   width: min(440px, 100%);
   max-height: calc(100svh - 32px);
   padding: 18px;
@@ -563,7 +653,7 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   box-shadow: 6px 7px 0 #ffbad5;
 }
 
-#cockpit .fm-header {
+#space-fm .fm-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -571,7 +661,7 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   margin-bottom: 16px;
 }
 
-#cockpit .fm-header h2 {
+#space-fm .fm-header h2 {
   margin: 0;
   color: #9de6b1;
   font: 400 27px/1.1 'Archivo Black', 'Arial Black', sans-serif;
@@ -579,7 +669,7 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   transform: rotate(-3deg);
 }
 
-#cockpit .fm-close {
+#space-fm .fm-close {
   width: 36px;
   height: 36px;
   padding: 0;
@@ -591,15 +681,15 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   cursor: pointer;
 }
 
-#cockpit .fm-close:hover { background: #31372b; }
+#space-fm .fm-close:hover { background: #31372b; }
 
-#cockpit .fm-label {
+#space-fm .fm-label {
   display: block;
   margin-bottom: 5px;
   font: 600 14px/1.4 'Inter', system-ui, sans-serif;
 }
 
-#cockpit #fm-playlist {
+#space-fm #fm-playlist {
   display: block;
   width: 100%;
   min-height: 42px;
@@ -613,9 +703,9 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   font: 500 14px/1.4 'Inter', system-ui, sans-serif;
 }
 
-#cockpit .fm-player-stage { position: relative; height: 352px; }
+#space-fm .fm-player-stage { position: relative; height: 352px; }
 
-#cockpit .fm-loading {
+#space-fm .fm-loading {
   position: absolute;
   inset: 0;
   margin: 0;
@@ -624,9 +714,9 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   font: 500 15px/1.5 'Inter', system-ui, sans-serif;
 }
 
-#cockpit .fm-loading:not([hidden]) { display: grid; place-items: center; }
+#space-fm .fm-loading:not([hidden]) { display: grid; place-items: center; }
 
-#cockpit .fm-player {
+#space-fm .fm-player {
   display: block;
   width: 100%;
   min-width: 280px;
@@ -634,7 +724,7 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   border: 0;
 }
 
-#cockpit .fm-footer {
+#space-fm .fm-footer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -643,18 +733,18 @@ html[lang="zh-Hans"] #cockpit .radio::before { content: "太空电台"; }
   font: 500 12px/1.5 'Inter', system-ui, sans-serif;
 }
 
-#cockpit .fm-footer a { color: var(--ck-ink); }
-#cockpit .fm-footer .fm-open { color: #9de6b1; }
-#cockpit .fm-footer a:hover { color: #ffbad5; }
+#space-fm .fm-footer a { color: var(--ck-ink); }
+#space-fm .fm-footer .fm-open { color: #9de6b1; }
+#space-fm .fm-footer a:hover { color: #ffbad5; }
 
-#cockpit .fm-cookie-note {
+#space-fm .fm-cookie-note {
   margin: 8px 0 0;
   color: #b5baa9;
   font: 400 11px/1.5 'Inter', system-ui, sans-serif;
 }
 
 @media (max-width: 440px) {
-  #cockpit .fm-panel { padding: 8px; }
+  #space-fm .fm-panel { padding: 8px; }
 }
 
 #cockpit .danger {
@@ -831,7 +921,7 @@ body.cockpit-open #cockpit .fish-swim { animation-play-state: running; }
     gap: 14px 9px;
   }
 
-  #cockpit .props :is(.prop, .bottle-slot, .apple-slot) {
+  #cockpit .props :is(.radio-wrap, .fish-prop, .danger, .bottle-slot, .apple-slot) {
     position: relative;
     inset: auto;
     place-self: center;
@@ -842,7 +932,7 @@ body.cockpit-open #cockpit .fish-swim { animation-play-state: running; }
 }
 
 @media (max-width: 440px) {
-  #cockpit .radio { width: 73px; }
+  #cockpit .radio-wrap { width: 73px; }
   #cockpit .fish-prop { width: 78px; }
   #cockpit .bottle-slot { width: 57px; height: 74px; }
   #cockpit .apple-slot { width: 65px; }
@@ -852,7 +942,7 @@ body.cockpit-open #cockpit .fish-swim { animation-play-state: running; }
 
 @media (max-width: 370px) {
   #cockpit .stage { padding-inline: 14px; }
-  #cockpit .radio { width: 66px; }
+  #cockpit .radio-wrap { width: 66px; }
   #cockpit .fish-prop { width: 70px; }
   #cockpit .bottle-slot { width: 54px; }
   #cockpit .danger { width: 58px; }

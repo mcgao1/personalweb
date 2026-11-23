@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manchen Gao</title>
 <link rel="stylesheet" href="scene.css?v=46">
-<link rel="stylesheet" href="cockpit.css?v=24">
+<link rel="stylesheet" href="cockpit.css?v=25">
 
 <link rel="stylesheet" href="site-language.css?v=1">
 <script src="site-language.js?v=1"></script>
@@ -178,7 +178,12 @@
 
     <div class="props">
       <div class="radio-wrap">
-        <button class="prop radio" type="button" data-prop="radio" aria-label="Open Space FM" data-zh-aria-label="打开太空电台" aria-haspopup="dialog" aria-controls="space-fm" aria-expanded="false"></button>
+        <button class="prop radio" type="button" data-prop="radio" aria-label="Play or pause Space FM" data-zh-aria-label="播放或暂停太空电台" aria-pressed="false"></button>
+        <button class="radio-peek" type="button" popovertarget="space-fm" aria-label="View Space FM playlists" data-zh-aria-label="查看太空电台歌单" aria-haspopup="dialog" aria-controls="space-fm" aria-expanded="false">
+          <span class="fm-peek-title">2002 Write the FUTURE</span>
+          <span class="fm-peek-caption" data-zh="查看歌单 ↗">View playlist ↗</span>
+          <span class="fm-peek-short" data-zh="歌单">Info</span>
+        </button>
       </div>
       <button class="prop fish-prop" type="button" data-prop="fish" aria-label="the fish co-pilot" data-zh-aria-label="鱼副驾驶">
         <canvas class="fish-src" id="cv-fish"></canvas>
@@ -200,12 +205,13 @@
       </div>
     </div>
   </div>
+</section>
 
-  <dialog class="space-fm" id="space-fm" aria-labelledby="space-fm-title">
+<div class="space-fm" id="space-fm" popover role="dialog" aria-labelledby="space-fm-title">
     <div class="fm-panel">
       <div class="fm-header">
         <h2 id="space-fm-title">SPACE FM</h2>
-        <button class="fm-close" type="button" aria-label="Close Space FM" data-zh-aria-label="关闭太空电台" autofocus>×</button>
+        <button class="fm-close" type="button" popovertarget="space-fm" popovertargetaction="hide" aria-label="Close playlist details" data-zh-aria-label="关闭歌单详情" autofocus>×</button>
       </div>
       <label class="fm-label" for="fm-playlist" data-zh="选择歌单">Choose a playlist</label>
       <select id="fm-playlist">
@@ -214,7 +220,7 @@
       </select>
       <div class="fm-player-stage">
         <p class="fm-loading" role="status" data-zh="正在调频…" hidden>Tuning in…</p>
-        <iframe class="fm-player" style="border-radius: 12px" width="100%" height="352" title="Spotify Embed: 2002 Write the FUTURE" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div id="fm-embed"><div id="fm-spotify"></div></div>
       </div>
       <div class="fm-footer">
         <a class="fm-open" href="https://open.spotify.com/playlist/2J6aNdfWNuGUJIGbltnMAf" target="_blank" rel="noopener noreferrer" data-zh="在 Spotify 中打开 ↗">Open in Spotify ↗</a>
@@ -222,8 +228,7 @@
       </div>
       <p class="fm-cookie-note" data-zh="Spotify 播放器可能使用 Cookie。">The Spotify player may use cookies.</p>
     </div>
-  </dialog>
-</section>
+</div>
 
 <button class="cockpit-enter" type="button" data-zh="驾驶舱 ↓">Cockpit ↓</button>
 
@@ -233,6 +238,6 @@
 <div class="tooltip" id="tooltip"></div>
 
 <script src="scene.js?v=37"></script>
-<script src="cockpit.js?v=14" defer></script>
+<script src="cockpit.js?v=15" defer></script>
 </body>
 </html>

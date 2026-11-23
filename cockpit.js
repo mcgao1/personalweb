@@ -7,9 +7,11 @@
   const bubble = cockpit.querySelector('#bubble');
   const title = cockpit.querySelector('.title-scribble');
   const radio = cockpit.querySelector('.radio');
-  const radioDialog = cockpit.querySelector('#space-fm');
+  const radioWrap = cockpit.querySelector('.radio-wrap');
+  const radioPeek = cockpit.querySelector('.radio-peek');
+  const radioDialog = document.getElementById('space-fm');
   const radioPlaylist = radioDialog.querySelector('#fm-playlist');
-  const radioPlayer = radioDialog.querySelector('.fm-player');
+  const radioMount = radioDialog.querySelector('#fm-embed');
   const radioLoading = radioDialog.querySelector('.fm-loading');
   const radioLink = radioDialog.querySelector('.fm-open');
   const scenes = Array.from(cockpit.querySelectorAll('.scene'));
@@ -26,6 +28,11 @@
   let noteTimer = null;
   let fishBubbleTimer = null;
   let titleCloseTimer = null;
+  let radioController = null;
+  let radioReady = false;
+  let radioRequested = false;
+  let radioPending = null;
+  let radioScript = null;
 
   const notes = [
     SiteLanguage.text('The fish insisted on coming.', "那条鱼坚持要跟来。"),
@@ -238,7 +245,7 @@
     if (key !== 'appleIdle' && key !== 'bottleIdle') replay(key);
   }
 
-  const props = cockpit.querySelectorAll('.props :is(.prop, .bottle-slot, .apple-slot)');
+  const props = cockpit.querySelectorAll('.props :is(.radio-wrap, .fish-prop, .danger, .bottle-slot, .apple-slot)');
   const propAnchors = [[27, 91], [41, 89], [55, 91], [68, 91], [76, 75], [65, 10.25]];
   let previousLayout = '';
   let cockpitWasOpen = false;
@@ -273,7 +280,9 @@
     cockpitWasOpen = isOpen;
     if (isOpen) {
       scatterProps();
+      positionRadioPeek();
       startRive();
+      startRadioPlayer();
       scheduleNote();
     } else {
       resetCockpit();
@@ -301,7 +310,11 @@
   /* ---------- going home: shared by Exit, the explosion and the back button ---------- */
   function resetCockpit() {
     setTitleOpen(false);
-    radioDialog.close();
+    radioRequested = false;
+    radioPending = false;
+    updateRadioState();
+    if (radioController) radioController.pause();
+    if (radioDialog.matches(':popover-open')) radioDialog.hidePopover();
     busy = false;
     presses = 0;
     lockedScene = null;
@@ -433,30 +446,104 @@
     title.setAttribute('aria-pressed', String(open));
   }
 
+  function updateRadioState() {
+    radio.setAttribute('aria-pressed', String(radioRequested));
+    radio.setAttribute('aria-busy', String(radioRequested && !radioReady));
+  }
+
+  function positionRadioPeek() {
+    const right = radio.getBoundingClientRect().right;
+    radioWrap.classList.toggle('peek-left', right + radioPeek.offsetWidth + 16 > window.innerWidth);
+  }
+
+  function startRadioPlayer() {
+    if (radioScript) return;
+    radioLoading.hidden = false;
+    radioLoading.textContent = SiteLanguage.text('Tuning in…', '正在调频…');
+    window.onSpotifyIframeApiReady = function (api) {
+      api.createController(radioMount.querySelector('#fm-spotify'), {
+        uri: 'spotify:playlist:' + radioPlaylist.value,
+        width: '100%',
+        height: 352
+      }, function (controller) {
+        radioController = controller;
+        const frame = radioMount.querySelector('iframe');
+        frame.className = 'fm-player';
+        frame.loading = 'eager';
+        frame.title = 'Spotify Embed: ' + radioPlaylist.selectedOptions[0].textContent;
+        frame.style.borderRadius = '12px';
+        controller.addListener('ready', function () {
+          radioReady = true;
+          radioLoading.hidden = true;
+          updateRadioState();
+          if (radioRequested) {
+            radioPending = true;
+            controller.resume();
+          } else radioPending = null;
+        });
+        controller.addListener('playback_update', function (event) {
+          if (!radioReady) return;
+          const playing = !event.data.isPaused;
+          const detailsOpen = radioDialog.matches(':popover-open');
+          if (!detailsOpen && !radioRequested && playing) {
+            controller.pause();
+            return;
+          }
+          if (radioPending !== null) {
+            if (playing === radioPending) radioPending = null;
+            return;
+          }
+          if (detailsOpen) {
+            radioRequested = playing;
+            updateRadioState();
+          }
+        });
+      });
+    };
+    radioScript = document.createElement('script');
+    radioScript.src = 'https://open.spotify.com/embed/iframe-api/v1';
+    radioScript.async = true;
+    radioScript.onerror = function () {
+      radioScript.remove();
+      radioScript = null;
+      radioRequested = false;
+      updateRadioState();
+      radioLoading.hidden = false;
+      radioLoading.textContent = SiteLanguage.text(
+        'Spotify could not load. Open the playlist using the link below.',
+        'Spotify 暂时无法加载，可以通过下方链接打开歌单。'
+      );
+    };
+    document.body.appendChild(radioScript);
+  }
+
   function loadRadioPlaylist() {
     const id = radioPlaylist.value;
-    radioLoading.hidden = false;
-    radioPlayer.src = 'https://open.spotify.com/embed/playlist/' + id + '?utm_source=generator';
-    radioPlayer.title = 'Spotify Embed: ' + radioPlaylist.selectedOptions[0].textContent;
+    const name = radioPlaylist.selectedOptions[0].textContent;
     radioLink.href = 'https://open.spotify.com/playlist/' + id;
+    radioPeek.querySelector('.fm-peek-title').textContent = name;
+    radioLoading.hidden = false;
+    if (radioController) {
+      radioReady = false;
+      radioPending = null;
+      updateRadioState();
+      radioController.loadEntity('spotify:playlist:' + id);
+      radioMount.querySelector('iframe').title = 'Spotify Embed: ' + name;
+    }
+    startRadioPlayer();
   }
 
   /* ---------- wiring ---------- */
   radioPlaylist.addEventListener('change', loadRadioPlaylist);
-  radioPlayer.addEventListener('load', function () { radioLoading.hidden = true; });
-  radioDialog.querySelector('.fm-close').addEventListener('click', function () {
-    radioDialog.close();
-  });
-  radioDialog.addEventListener('click', function (event) {
-    if (event.target === radioDialog) radioDialog.close();
-  });
+  radioPeek.addEventListener('click', startRadioPlayer);
+  radioWrap.addEventListener('pointerenter', positionRadioPeek);
+  radioWrap.addEventListener('focusin', positionRadioPeek);
+  window.addEventListener('resize', positionRadioPeek);
   radioDialog.addEventListener('wheel', function (event) {
     event.stopPropagation();
   }, { passive: true });
-  radioDialog.addEventListener('close', function () {
-    radioLoading.hidden = true;
-    radioPlayer.removeAttribute('src');
-    radio.setAttribute('aria-expanded', 'false');
+  radioDialog.addEventListener('toggle', function () {
+    radioPeek.setAttribute('aria-expanded', String(radioDialog.matches(':popover-open')));
   });
 
   title.addEventListener('pointerenter', function (event) {
@@ -518,9 +605,15 @@
       if (type === 'danger') { pressDanger(); return; }
       if (busy) return;
       if (type === 'radio') {
-        loadRadioPlaylist();
-        radioDialog.showModal();
-        radio.setAttribute('aria-expanded', 'true');
+        startRadioPlayer();
+        if (radioDialog.matches(':popover-open')) radioDialog.hidePopover();
+        radioRequested = !radioRequested;
+        updateRadioState();
+        if (radioReady) {
+          radioPending = radioRequested;
+          if (radioRequested) radioController.resume();
+          else radioController.pause();
+        }
         say(copy.radio);
         return;
       }
